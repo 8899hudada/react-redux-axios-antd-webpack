@@ -55,9 +55,7 @@ const plugins = [
       NODE_ENV: JSON.stringify(NODE_ENV)
     }
   }),
-  happypackFactory('jsx?'),
-  happypackFactory('url.img'),
-  happypackFactory('url.font')
+  happypackFactory('jsx?')
 ]
 
 const rules = [
@@ -67,11 +65,18 @@ const rules = [
   },
   {
     test: /\.(png|jpe?g|gif)(\?.*)?$/,
-    use: 'happypack/loader?id=url.img'
+    loader: 'url-loader',
+    options: {
+      limit: 8192, // 将小于8192byte的图片转换成base64编码
+      name: '[name].[ext]?[hash]'
+    }
   },
   {
     test: /\.(woff|svg|eot|ttf|ico)(\?.*)?$/,
-    use: 'happypack/loader?id=url.font'
+    loader: 'url-loader',
+    options: {
+      limit: 8192 // 将小于8192byte的字体转换成base64编码
+    }
   }
 ]
 
