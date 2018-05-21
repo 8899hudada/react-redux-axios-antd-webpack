@@ -1,0 +1,110 @@
+body {
+	background: @gray1;
+}
+
+#app {
+	height: 100%;
+}
+
+.pull-left {
+	float: left;
+}
+
+.pull-right {
+	float: right;
+}
+
+.clearfix {
+	.clearfix()
+}
+
+.flex {
+	display: flex;
+}
+
+.flex-1 {
+	flex: 1;
+}
+
+.text-primary {
+  color: @primary;
+}
+
+.text-warning {
+  color: @warning;
+}
+
+.text-success {
+  color: @success;
+}
+
+.text-error {
+  color: @error;
+}
+
+.text-info {
+  color: @info;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.vertical-center-modal {
+  text-align: center;
+  white-space: nowrap;
+
+  &:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    width: 0;
+  }
+
+  .ant-modal {
+    display: inline-block;
+    vertical-align: middle;
+    top: 0;
+    text-align: left;
+  }
+}
+
+// antd 的FormItem，control部分自适应宽度
+.ant-form-control-auto-width {
+  .ant-form-item {
+    display:  flex;
+  }
+
+  .ant-form-item-control-wrapper {
+    flex: 1;
+  }
+}
+
+.ant-form-item-control-auto-width.ant-form-item {
+  display:  flex;
+
+  .ant-form-item-control-wrapper {
+    flex: 1;
+  }
+}
+
+.border-radius-0 {
+  border-radius: 0;
+}
+
+.border-gray-2 {
+  border: 1px solid @gray2;
+}
+
+.width-percent-100 {
+  width: 100%!important;
+}
