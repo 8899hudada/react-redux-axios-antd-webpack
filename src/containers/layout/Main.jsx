@@ -3,8 +3,7 @@ import PropTypes from 'prop-types'
 import { Layout } from 'antd'
 import {
   CompanyInfo,
-  FirstLevelRouter,
-  SecondLevelRouter,
+  RouterMenu,
   User
 } from '@components/main-layout'
 
@@ -12,21 +11,17 @@ const { Header, Content, Sider } = Layout
 
 class MainLayout extends Component {
   static propTypes = {
-    children: PropTypes.object.isRequired,
-    activeFirstLevelRoute: PropTypes.object
+    children: PropTypes.object.isRequired
   }
   constructor(props) {
     super(props)
   }
   render () {
-    const activeFirstLevelRoute = this.props.activeFirstLevelRoute
-
     return (
       <Layout className="main-layout">
         <Header className="header">
           <div className="pull-left">
             <CompanyInfo className="company-info" companyAvator={require('@/favicon.ico')}></CompanyInfo>
-            <FirstLevelRouter activeRoute={activeFirstLevelRoute}></FirstLevelRouter>
           </div>
           <div className="pull-right">
             <User></User>
@@ -34,7 +29,7 @@ class MainLayout extends Component {
         </Header>
         <Layout className="content-layout">
           <Sider className="sider">
-            <SecondLevelRouter activeFirstLevelRoute={activeFirstLevelRoute}></SecondLevelRouter>
+            <RouterMenu></RouterMenu>
           </Sider>
           <Layout className="content">
             <Content style={{ position: 'relative' }}>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 import MainLayout from './layout/Main'
 import routes from '@/routes'
 import { PageRouterSwitchProgress, AsyncLoadComponent } from '@/components/higer-components'
@@ -11,9 +10,6 @@ const MissWay = PageRouterSwitchProgress(AsyncLoadComponent(() => import('@compo
 const Login = PageRouterSwitchProgress(AsyncLoadComponent(() => import('./Login')))
 
 class Root extends Component {
-  static propTypes = {
-    activeFirstLevelRoute: PropTypes.object
-  }
   constructor (props) {
     super(props)
     this.state = {
@@ -26,7 +22,6 @@ class Root extends Component {
     this.setState({Layout})
   }
   render () {
-    const activeFirstLevelRoute = this.props.activeFirstLevelRoute
     const Layout = this.state.Layout
     const Routes = routes.map(route => {
       return (
@@ -49,7 +44,7 @@ class Root extends Component {
         <Switch>
           <Route path="/login" component={Login}></Route>
           <Route path="/">
-            <Layout activeFirstLevelRoute={activeFirstLevelRoute}>
+            <Layout>
               <Switch>
                 {Routes}
                 <Redirect from='//' to='/home'/>

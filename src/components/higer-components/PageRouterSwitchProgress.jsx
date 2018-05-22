@@ -3,15 +3,11 @@ import { connect } from 'react-redux'
 import 'nprogress/nprogress.css'
 import Nprogress from 'nprogress'
 import PropTypes from 'prop-types'
-import routes from '@/routes'
-import { getFirstLevelRoute } from '@/utils'
-import { updateActiveFirstLevelRouteAction } from '@/redux/common'
 
 const PageRouterSwitchProgress = (WrappedComponent) => {
   class PageRouterSwitchProgress extends React.PureComponent {
     static propTypes = {
-      history: PropTypes.object.isRequired,
-      updateActiveFirstLevelRouteAction: PropTypes.func.isRequired
+      history: PropTypes.object.isRequired
     }
     constructor (props) {
       Nprogress.start()
@@ -21,9 +17,6 @@ const PageRouterSwitchProgress = (WrappedComponent) => {
       if (!window.$history) {
         window.$history = props.history
       }
-        
-      const activeFirstLevelRoute = getFirstLevelRoute(window.$history.location.pathname, routes)
-      this.props.updateActiveFirstLevelRouteAction(activeFirstLevelRoute)
     }
     componentWillUpdate () {
       Nprogress.start()
@@ -43,12 +36,8 @@ const PageRouterSwitchProgress = (WrappedComponent) => {
     return {}
   }
 
-  const mapDispatchToProps = dispatch => {
-    return {
-      updateActiveFirstLevelRouteAction: activeFirstLevelRoute => {
-        dispatch(updateActiveFirstLevelRouteAction(activeFirstLevelRoute))
-      }
-    }
+  const mapDispatchToProps = () => {
+    return {}
   }
 
   return connect(

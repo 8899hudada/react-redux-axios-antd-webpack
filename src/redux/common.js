@@ -1,7 +1,6 @@
 import { createReducer } from '@/utils/redux'
 import {
-  UPDATE_LOADING,
-  UPDATE_ACTIVE_FIRST_LEVEL_ROUTE
+  UPDATE_LOADING
 } from '@/constants/action-name'
 
 function stateFactory () {
@@ -19,13 +18,6 @@ export const updateLoadingAction = (loading = false) => {
   }
 }
 
-export const updateActiveFirstLevelRouteAction = (activeFirstLevelRoute = null) => {
-  return {
-    type: UPDATE_ACTIVE_FIRST_LEVEL_ROUTE,
-    payload: activeFirstLevelRoute
-  } 
-}
-
 // reducer
 
 function updateLoading (state, action) {
@@ -35,14 +27,6 @@ function updateLoading (state, action) {
   }
 }
 
-function updateActiveFirstLevelRoute (state, action) {
-  return {
-    ...state,
-    activeFirstLevelRoute: action.payload 
-  }
-}
-
 export const commonReducer = createReducer(stateFactory(), {
-  [UPDATE_LOADING]: updateLoading,
-  [UPDATE_ACTIVE_FIRST_LEVEL_ROUTE]: updateActiveFirstLevelRoute,
+  [UPDATE_LOADING]: updateLoading
 })

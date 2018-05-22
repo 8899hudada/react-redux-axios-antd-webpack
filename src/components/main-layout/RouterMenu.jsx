@@ -1,19 +1,19 @@
 import React from 'react'
 import { Menu } from 'antd'
 import { Link } from 'react-router-dom'
-import PropTypes from 'prop-types'
+import routes from '@/routes'
 
-const { Item: MenuItem, ItemGroup: MenuItemGroup } = Menu
+const { Item: MenuItem, SubMenu } = Menu
 const routeRecursion = route => {
   if (route.children && route.children.length) {
     return (
-      <MenuItemGroup key={route.path} title={<span>{route.title}</span>}>
+      <SubMenu key={route.path} title={<span>{route.title}</span>}>
         {
           route.children.map(route => (
             routeRecursion(route)
           ))
         }
-      </MenuItemGroup>
+      </SubMenu>
     )
   }
 
@@ -24,19 +24,7 @@ const routeRecursion = route => {
   )
 }
 
-const SecondLevelRouter = ({ activeFirstLevelRoute }) => {
-  let routes = []
-  
-  if (activeFirstLevelRoute) {
-    const children = activeFirstLevelRoute.children
-
-    if (children && children.length) {
-      routes = children
-    } else {
-      routes = [activeFirstLevelRoute]
-    }
-  }
-
+const SecondLevelRouter = () => {
   const MenuItems = routes.map(route => {
     return routeRecursion(route)
   })
@@ -50,10 +38,6 @@ const SecondLevelRouter = ({ activeFirstLevelRoute }) => {
       {MenuItems}
     </Menu>
   )
-}
-
-SecondLevelRouter.propTypes = {
-  activeFirstLevelRoute: PropTypes.object
 }
 
 export default SecondLevelRouter
