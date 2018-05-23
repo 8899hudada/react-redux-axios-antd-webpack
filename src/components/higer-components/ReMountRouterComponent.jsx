@@ -6,8 +6,8 @@ import PropTypes from 'prop-types'
  * @param  {React.Component} WrappedComponent
  * @return {React.Component} 
  */
-const ReMount = (WrappedComponent) => {
-  class ReMount extends React.PureComponent {
+const ReMountRouterComponent = (WrappedComponent) => {
+  class ReMountRouterComponent extends React.PureComponent {
     static propTypes = {
       location: PropTypes.object.isRequired
     }
@@ -31,7 +31,7 @@ const ReMount = (WrappedComponent) => {
     }
   }
 
-  return ReMount
+  return ReMountRouterComponent
 }
 
-export default ReMount
+export default ReMountRouterComponent

@@ -2,17 +2,14 @@ import React from 'react'
 import { Menu } from 'antd'
 import { Link } from 'react-router-dom'
 import routes from '@/routes'
+// import { traversalTree } from '@utils'
 
 const { Item: MenuItem, SubMenu } = Menu
 
-// const routeTo = pathname => {
-//   if (window.$history.location.pathname === pathname) {
-//     // reload当前路由
-//     window.$history.push('/')
-//     setTimeout(() => window.$history.push(pathname), 0)
-//   } else {
-//     window.$history.push(pathname)
-//   }
+// const openKeysFactory = (pathname, routes) => {
+//   traversalTree(routes, node => {
+    
+//   })
 // }
 
 const routeRecursion = route => {
@@ -45,6 +42,7 @@ const RouterMenu = () => {
       theme="dark"
       className="sider-menu"
       mode="inline"
+      openKeys={['/system-setting', '/system-setting/user-manage']}
       selectedKeys={[window.$history && window.$history.location.pathname]}>
       {MenuItems}
     </Menu>
