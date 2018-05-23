@@ -1,19 +1,23 @@
-import { PageRouterSwitchProgress, AsyncLoadComponent } from '@/components/higer-components'
+import { PageRouterSwitchProgress, AsyncLoadComponent, ReMountRouterComponent } from '@/components/higer-components'
 
-const RouteWrapper = PageRouterSwitchProgress(AsyncLoadComponent(() => import('@/components/common/RouteWrapper')))
+const wrapperComponent = Component => (
+  ReMountRouterComponent(PageRouterSwitchProgress(AsyncLoadComponent(Component)))
+)
 
-// 首页
+// 父路由组件
+const RouteWrapper = wrapperComponent(() => import('@/components/common/RouteWrapper'))
+
 // 我的案件
-const MyCase = PageRouterSwitchProgress(AsyncLoadComponent(() => import('@/containers/MyCase')))
+const MyCase =wrapperComponent(() => import('@/containers/MyCase'))
 
 // 案件管理
-const CaseManage = PageRouterSwitchProgress(AsyncLoadComponent(() => import('@/containers/CaseManage')))
+const CaseManage = wrapperComponent(() => import('@/containers/CaseManage'))
 
 // 系统设置
-const TrustorManage = PageRouterSwitchProgress(AsyncLoadComponent(() => import('@/containers/system-setting/TrustorManage')))
-const PasswordSetting = PageRouterSwitchProgress(AsyncLoadComponent(() => import('@/containers/system-setting/PasswordSetting')))
-const UserManage = PageRouterSwitchProgress(AsyncLoadComponent(() => import('@/containers/system-setting/UserManage')))
-const DepartmentManage = PageRouterSwitchProgress(AsyncLoadComponent(() => import('@/containers/system-setting/DepartmentManage')))
+const TrustorManage = wrapperComponent(() => import('@/containers/system-setting/TrustorManage'))
+const PasswordSetting = wrapperComponent(() => import('@/containers/system-setting/PasswordSetting'))
+const UserManage = wrapperComponent(() => import('@/containers/system-setting/UserManage'))
+const DepartmentManage = wrapperComponent(() => import('@/containers/system-setting/DepartmentManage'))
 
 const routes = [
   {

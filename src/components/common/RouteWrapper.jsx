@@ -18,12 +18,10 @@ const RouteWrapper = ({ routes = [] }) => {
   ))
 
   return (
-    <div> 
-      <Switch>
-        {Routes}
-        <Redirect to={routes[0].path}/>
-      </Switch>
-    </div>
+    <Switch>
+      {Routes}
+      <Redirect to={routes[0].path}/>
+    </Switch>
   )
 }
 

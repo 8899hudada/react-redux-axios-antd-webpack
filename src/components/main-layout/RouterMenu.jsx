@@ -4,6 +4,17 @@ import { Link } from 'react-router-dom'
 import routes from '@/routes'
 
 const { Item: MenuItem, SubMenu } = Menu
+
+// const routeTo = pathname => {
+//   if (window.$history.location.pathname === pathname) {
+//     // reload当前路由
+//     window.$history.push('/')
+//     setTimeout(() => window.$history.push(pathname), 0)
+//   } else {
+//     window.$history.push(pathname)
+//   }
+// }
+
 const routeRecursion = route => {
   if (route.children && route.children.length) {
     return (
@@ -24,7 +35,7 @@ const routeRecursion = route => {
   )
 }
 
-const SecondLevelRouter = () => {
+const RouterMenu = () => {
   const MenuItems = routes.map(route => {
     return routeRecursion(route)
   })
@@ -40,4 +51,4 @@ const SecondLevelRouter = () => {
   )
 }
 
-export default SecondLevelRouter
+export default RouterMenu

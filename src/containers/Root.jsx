@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import MainLayout from './layout/Main'
 import routes from '@/routes'
 import { PageRouterSwitchProgress, AsyncLoadComponent } from '@/components/higer-components'
+import { RouteWrapper } from '@/components/common'
 import { getLocalStorage } from '@utils'
 
 const MissWay = PageRouterSwitchProgress(AsyncLoadComponent(() => import('@components/MissWay')))
@@ -23,21 +24,6 @@ class Root extends Component {
   }
   render () {
     const Layout = this.state.Layout
-    const Routes = routes.map(route => {
-      return (
-        <Route
-          key={route.path}
-          path={route.path}
-          render={
-            props => (
-              <route.component routes={route.children} {...props} />
-            )
-          }
-          exact={false}
-          strict={true}>
-        </Route>
-      )
-    })
 
     return (
       <Router>
@@ -46,8 +32,8 @@ class Root extends Component {
           <Route path="/">
             <Layout>
               <Switch>
-                {Routes}
-                <Redirect from='//' to='/home'/>
+                <RouteWrapper routes={routes}></RouteWrapper>
+                <Redirect from='//' to='/my-case'/>
                 <Route component={MissWay}></Route>
               </Switch>
             </Layout>
@@ -63,8 +49,8 @@ class Root extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {activeFirstLevelRoute: state.commonReducer.activeFirstLevelRoute}
+const mapStateToProps = () => {
+  return {}
 }
 
 export default connect(
