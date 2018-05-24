@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import MainLayout from './layout/Main'
-import routes from '@/routes'
+import router from '@/router'
 import { PageRouterSwitchProgress, AsyncLoadComponent } from '@/components/higer-components'
 import { RouteWrapper } from '@/components/common'
 import { getLocalStorage } from '@utils'
@@ -30,9 +30,9 @@ class Root extends Component {
         <Switch>
           <Route path="/login" component={Login}></Route>
           <Route path="/">
-            <Layout>
+            <Layout router={router}>
               <Switch>
-                <RouteWrapper routes={routes}></RouteWrapper>
+                <RouteWrapper routes={router.children}></RouteWrapper>
                 <Redirect from='//' to='/my-case'/>
                 <Route component={MissWay}></Route>
               </Switch>

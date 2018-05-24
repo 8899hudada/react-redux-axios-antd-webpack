@@ -105,7 +105,8 @@ let commonConfig = {
 			'@constants': path.resolve(SRC_PATH, 'constants'),
 			'@utils': path.resolve(SRC_PATH, 'utils'),
 			'@styles': path.resolve(SRC_PATH, 'styles'),
-			'@imgs': path.resolve(SRC_PATH, 'imgs')
+			'@imgs': path.resolve(SRC_PATH, 'imgs'),
+      '@redux': path.resolve(SRC_PATH, 'redux')
 		}
 	}
 }

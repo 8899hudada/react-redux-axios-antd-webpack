@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import { Layout } from 'antd'
+import { findParentsByKey } from '@utils'
+import { updateRouterMenuAction } from '@redux/common'
 import {
   CompanyInfo,
   RouterMenu,
@@ -11,12 +14,25 @@ const { Header, Content, Sider } = Layout
 
 class MainLayout extends Component {
   static propTypes = {
-    children: PropTypes.object.isRequired
+    children: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
+    openKeys: PropTypes.array.isRequired,
+    selectedKeys: PropTypes.array.isRequired,
+    updateRouterMenuAction: PropTypes.func.isRequired
   }
   constructor(props) {
     super(props)
   }
+  mountUpdateRouterMenu () {
+    const selectedKeys = [window.$history && window.$history.location.pathname]
+    const openKeys = findParentsByKey(window.$history && window.$history.location.pathname, this.props.router, 'path')
+
+    this.props.updateRouterMenuAction(openKeys, selectedKeys)
+  }
   render () {
+    const { openKeys, selectedKeys } = this.props
+    console.log(openKeys)
+    console.log(selectedKeys)
     return (
       <Layout className="main-layout">
         <Header className="header">
@@ -29,7 +45,7 @@ class MainLayout extends Component {
         </Header>
         <Layout className="content-layout">
           <Sider className="sider">
-            <RouterMenu></RouterMenu>
+            <RouterMenu selectedKeys={selectedKeys} openKeys={openKeys}></RouterMenu>
           </Sider>
           <Layout className="content">
             <Content style={{ position: 'relative' }}>
@@ -40,6 +56,21 @@ class MainLayout extends Component {
       </Layout>
     )
   }
+  componentDidMount () {
+    this.mountUpdateRouterMenu()
+  }
 }
 
-export default MainLayout
+const mapStateToProps = state => ({
+  openKeys: state.commonReducer.openKeys,
+  selectedKeys: state.commonReducer.selectedKeys
+})
+
+const mapActionToProps = dispatch => ({
+  updateRouterMenuAction: (openKeys, selectedKeys) => dispatch(updateRouterMenuAction(openKeys, selectedKeys))
+})
+
+export default connect(
+  mapStateToProps,
+  mapActionToProps
+)(MainLayout)

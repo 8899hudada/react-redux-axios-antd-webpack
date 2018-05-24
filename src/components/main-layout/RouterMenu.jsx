@@ -1,21 +1,15 @@
 import React from 'react'
 import { Menu } from 'antd'
 import { Link } from 'react-router-dom'
-import routes from '@/routes'
-// import { traversalTree } from '@utils'
+import router from '@/router'
+import PropTypes from 'prop-types'
 
 const { Item: MenuItem, SubMenu } = Menu
-
-// const openKeysFactory = (pathname, routes) => {
-//   traversalTree(routes, node => {
-    
-//   })
-// }
 
 const routeRecursion = route => {
   if (route.children && route.children.length) {
     return (
-      <SubMenu key={route.path} title={<span>{route.title}</span>}>
+      <SubMenu key={route.path} title={route.title} onTitleClick={handleOpenChange}>
         {
           route.children.map(route => (
             routeRecursion(route)
@@ -32,8 +26,12 @@ const routeRecursion = route => {
   )
 }
 
-const RouterMenu = () => {
-  const MenuItems = routes.map(route => {
+const handleOpenChange = key => {
+  console.log(key)
+}
+
+const RouterMenu = ({ openKeys = [], selectedKeys = [] }) => {
+  const MenuItems = router.children.map(route => {
     return routeRecursion(route)
   })
 
@@ -42,11 +40,16 @@ const RouterMenu = () => {
       theme="dark"
       className="sider-menu"
       mode="inline"
-      openKeys={['/system-setting', '/system-setting/user-manage']}
-      selectedKeys={[window.$history && window.$history.location.pathname]}>
+      openKeys={openKeys}
+      selectedKeys={selectedKeys}>
       {MenuItems}
     </Menu>
   )
+}
+
+RouterMenu.propTypes = {
+  selectedKeys: PropTypes.array.isRequired,
+  openKeys: PropTypes.array.isRequired
 }
 
 export default RouterMenu
