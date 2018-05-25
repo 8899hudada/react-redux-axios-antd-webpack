@@ -18,12 +18,16 @@ export const updateLoadingAction = (loading = false) => ({
   payload: loading
 })
 
-export const updateRouterMenuAction = (openKeys = [], selectedKeys = []) => ({
+/**
+ * 更新路由菜单
+ * @param  {Object} payload
+ * @param  {Array} payload.openKeys
+ * @param  {Array} payload.selectedKeys
+ * @return {Object}
+ */
+export const updateRouterMenuAction = (payload = {}) => ({
   type: UPDATE_ROUTER_MENU,
-  payload: {
-    openKeys,
-    selectedKeys
-  }
+  payload
 })
 
 // reducer
