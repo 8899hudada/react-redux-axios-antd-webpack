@@ -1,12 +1,12 @@
 import React from 'react'
 import { PageHeader } from '@components/common'
 
-class CaseManage extends React.PureComponent {
+class TaskManage extends React.PureComponent {
   render () {
     return (
-      <PageHeader title="案件管理" />
+      <PageHeader title="任务管理" />
     )
   }
 }
 
-export default CaseManage
+export default TaskManage

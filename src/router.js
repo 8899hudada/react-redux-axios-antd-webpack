@@ -13,6 +13,9 @@ const MyCase =wrapperComponent(() => import('@/containers/MyCase'))
 // 案件管理
 const CaseManage = wrapperComponent(() => import('@/containers/CaseManage'))
 
+// 任务管理
+const TaskManage = wrapperComponent(() => import('@/containers/TaskManage'))
+
 // 系统设置
 const TrustorManage = wrapperComponent(() => import('@/containers/system-setting/TrustorManage'))
 const PasswordSetting = wrapperComponent(() => import('@/containers/system-setting/PasswordSetting'))
@@ -31,6 +34,11 @@ const router = {
       path: '/case-manage',
       title: '案件管理',
       component: CaseManage
+    },
+    {
+      path: '/task-manage',
+      title: '任务管理',
+      component: TaskManage
     },
     {
       path: '/system-setting',
