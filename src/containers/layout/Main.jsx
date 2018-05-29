@@ -4,7 +4,8 @@ import { Layout } from 'antd'
 import {
   CompanyInfo,
   RouterMenu,
-  User
+  User,
+  GlobalSearch
 } from '@components/main-layout'
 
 const { Header, Content, Sider } = Layout
@@ -22,6 +23,9 @@ class MainLayout extends Component {
         <Header className="header">
           <div className="pull-left">
             <CompanyInfo className="company-info" companyAvator={require('@/favicon.ico')}></CompanyInfo>
+          </div>
+          <div className="pull-left">
+            <GlobalSearch />
           </div>
           <div className="pull-right">
             <User></User>

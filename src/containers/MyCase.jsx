@@ -1,7 +1,7 @@
 import React from 'react'
 import { PageHeader } from '@components/common'
 import { Actions, Table, TableActions, Search, LawerTreeSelectModal } from '@components/my-case'
-import { Card } from 'antd'
+import { Card, message } from 'antd'
 
 const data = [
   { id: 1, name: '哈哈' }
@@ -42,6 +42,7 @@ class MyCase extends React.PureComponent {
   tableActionsClick (action) {
     switch (action) {
     case 'caseTransfer':
+      if (this.state.selectedRowKeys.length === 0 ) return message.warning('请选择案件')
       this.setState({ treeSelectVisible: true })
       break
     }
@@ -63,7 +64,6 @@ class MyCase extends React.PureComponent {
     }))
   }
   selectedRowKeysChange (selectedRowKeys) {
-    console.log(selectedRowKeys)
     this.setState({ selectedRowKeys })
   }
   handlePageChange (current, pageSize) {
@@ -101,7 +101,8 @@ class MyCase extends React.PureComponent {
             pageChange={this.handlePageChange} />
         </Card>
         <LawerTreeSelectModal
-          visible={treeSelectVisible} />
+          visible={treeSelectVisible}
+          onCancel={() => this.setState({ treeSelectVisible: false })} />
       </div>
     )
   }

@@ -1,7 +1,8 @@
 import React from 'react'
 import { TreeSelect } from '@components/common'
-import { Modal } from 'antd'
+import { Modal, message } from 'antd'
 import PropTypes from 'prop-types'
+import { findNodeInTree } from '@utils'
 
 const data = [{
   label: '成都迪扬信风科技有限公司',
@@ -31,7 +32,8 @@ const data = [{
 
 class LawerTreeSelectModal extends React.PureComponent {
   static propTypes = {
-    visible: PropTypes.bool.isRequired
+    visible: PropTypes.bool,
+    onCancel: PropTypes.func
   }
   constructor (props) {
     super(props)
@@ -39,24 +41,43 @@ class LawerTreeSelectModal extends React.PureComponent {
       selectedKeys: []
     }
     this.onSelect = this.onSelect.bind(this)
+    this.onOk = this.onOk.bind(this)
   }
   onSelect (selectedKeys) {
     this.setState({ selectedKeys })
   }
+  onOk () {
+    const { selectedKeys } = this.state
+    if (selectedKeys.length === 0) return message.warning('请选择转交对象')
+    const selectedNode = findNodeInTree(data, { key: 'value', value: selectedKeys[0] })
+    Modal.confirm({
+      title: '提示',
+      content: `确定将案件转交给${selectedNode.label}？`,
+      onOk: () => this.props.onCancel() 
+    })
+  }
   render () {
     const { selectedKeys } = this.state
-    const { visible } = this.props
+    const { visible, onCancel } = this.props
     return (
       <Modal
         title="案件转交"
-        visible={visible}>
+        visible={visible}
+        onOk={this.onOk}
+        onCancel={onCancel}>
         <TreeSelect
           data={data}
           selectedKeys={selectedKeys}
-          onSelect={this.onSelect} />
+          onSelect={this.onSelect}
+          placeholder="请输入部门或律师姓名" />
       </Modal>
     )
   }
+}
+
+LawerTreeSelectModal.defaultProps = {
+  visible: false,
+  onCancel: () => {}
 }
 
 export default LawerTreeSelectModal

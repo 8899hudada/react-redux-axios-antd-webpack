@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tree, Input } from 'antd'
 import PropTypes from 'prop-types'
+import style from './style'
 
 const TreeNode = Tree.TreeNode
 const Search = Input.Search
@@ -14,7 +15,8 @@ class TreeSelect extends React.PureComponent {
       labelKey: PropTypes.string,
       valueKey: PropTypes.string,
       childrenKey: PropTypes.string,
-    })
+    }),
+    placeholder: PropTypes.string
   }
   constructor (props) {
     super(props)
@@ -108,13 +110,15 @@ class TreeSelect extends React.PureComponent {
   }
   render () {
     const { searchValue, expandedKeys, autoExpandParent } = this.state
-    const { data, onSelect, selectedKeys } = this.props
+    const { data, onSelect, selectedKeys, placeholder } = this.props
     return (
       <div>
         <Search
           value={searchValue}
-          onChange={this.searchChange} />
+          onChange={this.searchChange}
+          placeholder={placeholder} />
         <Tree
+          className={style['tree-select']}
           autoExpandParent={autoExpandParent}
           onExpand={this.onExpand}
           onSelect={onSelect}
@@ -132,7 +136,8 @@ TreeSelect.defaultProps = {
     labelKey: 'label',
     valueKey: 'value',
     childrenKey: 'children'
-  }
+  },
+  placeholder: ''
 }
 
 export default TreeSelect
