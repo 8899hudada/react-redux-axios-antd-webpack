@@ -38,13 +38,27 @@ class LawerTreeSelectModal extends React.PureComponent {
   constructor (props) {
     super(props)
     this.state = {
-      selectedKeys: []
+      selectedKeys: [],
+      confirmLoading: false
     }
     this.onSelect = this.onSelect.bind(this)
     this.onOk = this.onOk.bind(this)
+    this.submit = this.submit.bind(this)
+  }
+  componentWillReceiveProps (nextProps) {
+    if (this.props.visible && !nextProps.visible) {
+      this.setState({ selectedKeys: [] })
+    }
   }
   onSelect (selectedKeys) {
     this.setState({ selectedKeys })
+  }
+  submit () {
+    this.setState({ confirmLoading: true })
+    setTimeout(() => {
+      this.props.onCancel()
+      this.setState({ confirmLoading: false })
+    }, 2000)
   }
   onOk () {
     const { selectedKeys } = this.state
@@ -53,18 +67,20 @@ class LawerTreeSelectModal extends React.PureComponent {
     Modal.confirm({
       title: '提示',
       content: `确定将案件转交给${selectedNode.label}？`,
-      onOk: () => this.props.onCancel() 
+      onOk: () => this.submit() 
     })
   }
   render () {
-    const { selectedKeys } = this.state
+    const { selectedKeys, confirmLoading } = this.state
     const { visible, onCancel } = this.props
     return (
       <Modal
         title="案件转交"
         visible={visible}
         onOk={this.onOk}
-        onCancel={onCancel}>
+        onCancel={onCancel}
+        confirmLoading={confirmLoading}
+        okText={confirmLoading ? '提交中...' : '确定'}>
         <TreeSelect
           data={data}
           selectedKeys={selectedKeys}
