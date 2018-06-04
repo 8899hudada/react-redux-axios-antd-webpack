@@ -1,6 +1,6 @@
 import React from 'react'
-import { PageHeader, CaseImport } from '@components/common'
-import { Actions, Table, TableActions, Search, LawerTreeSelectModal } from '@components/my-case'
+import { PageHeader, CaseImport, LawerTreeSelectModal } from '@components/common'
+import { Actions, Table, TableActions, Search } from '@components/my-case'
 import { Card, message } from 'antd'
 
 const data = [
@@ -11,7 +11,11 @@ const columns = [
 ]
 
 const searchParamsFactory = () => ({
-  name: ''
+  customerName: '',
+  entrustDate: [],
+  trustorId: -1,
+  lawCaseCode: '',
+  caseProcess: -1
 })
 
 class MyCase extends React.PureComponent {
@@ -112,7 +116,10 @@ class MyCase extends React.PureComponent {
         </Card>
         <LawerTreeSelectModal
           visible={treeSelectVisible}
-          onCancel={() => this.setState({ treeSelectVisible: false })} />
+          onCancel={() => this.setState({ treeSelectVisible: false })}
+          title="案件转交"
+          unselectedTips="请选择转交对象"
+          confrimContent="确定将案件转交给" />
       </div>
     )
   }

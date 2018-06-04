@@ -33,7 +33,11 @@ const data = [{
 class LawerTreeSelectModal extends React.PureComponent {
   static propTypes = {
     visible: PropTypes.bool,
-    onCancel: PropTypes.func
+    onCancel: PropTypes.func,
+    submitMethod: PropTypes.func,
+    unselectedTips: PropTypes.string,
+    confrimContent: PropTypes.string,
+    title: PropTypes.string
   }
   constructor (props) {
     super(props)
@@ -53,29 +57,30 @@ class LawerTreeSelectModal extends React.PureComponent {
   onSelect (selectedKeys) {
     this.setState({ selectedKeys })
   }
-  submit () {
+  submit (selectedKey) {
     this.setState({ confirmLoading: true })
-    setTimeout(() => {
+    this.props.submitMethod(selectedKey).then(() => {
       this.props.onCancel()
       this.setState({ confirmLoading: false })
-    }, 2000)
+    })
   }
   onOk () {
     const { selectedKeys } = this.state
-    if (selectedKeys.length === 0) return message.warning('请选择转交对象')
+    const { unselectedTips, confrimContent } = this.props
+    if (selectedKeys.length === 0) return message.warning(unselectedTips)
     const selectedNode = findNodeInTree(data, { key: 'value', value: selectedKeys[0] })
     Modal.confirm({
       title: '提示',
-      content: `确定将案件转交给${selectedNode.label}？`,
-      onOk: () => this.submit() 
+      content: `${confrimContent}【${selectedNode.label}】？`,
+      onOk: () => this.submit(selectedKeys[0]) 
     })
   }
   render () {
     const { selectedKeys, confirmLoading } = this.state
-    const { visible, onCancel } = this.props
+    const { visible, onCancel, title } = this.props
     return (
       <Modal
-        title="案件转交"
+        title={title}
         visible={visible}
         onOk={this.onOk}
         onCancel={onCancel}
@@ -85,7 +90,7 @@ class LawerTreeSelectModal extends React.PureComponent {
           data={data}
           selectedKeys={selectedKeys}
           onSelect={this.onSelect}
-          placeholder="请输入部门或律师姓名" />
+          placeholder="请输入部门或姓名" />
       </Modal>
     )
   }
@@ -93,7 +98,11 @@ class LawerTreeSelectModal extends React.PureComponent {
 
 LawerTreeSelectModal.defaultProps = {
   visible: false,
-  onCancel: () => {}
+  onCancel: () => {},
+  title: '选择',
+  unselectedTips: '请选择操作对象',
+  confrimContent: '确定该选择',
+  submitMethod: () => new Promise(resolve => setTimeout(() => resolve(), 1000))
 }
 
 export default LawerTreeSelectModal

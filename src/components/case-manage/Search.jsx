@@ -3,7 +3,7 @@ import { Form, Button, Input, Select, DatePicker } from 'antd'
 import PropTypes from 'prop-types'
 import { trustorService } from '@services'
 import moment from 'moment'
-import { CASE_PROCESSES } from '@constants'
+import { CASE_PROCESSES, ASSIGN_STATUS } from '@constants'
 
 const FormItem = Form.Item
 const Option = Select.Option
@@ -19,7 +19,8 @@ class Search extends React.PureComponent {
   constructor (props) {
     super(props)
     this.state = {
-      trustors: [{ id: -1, name: '全部' }]
+      trustors: [{ id: -1, name: '全部' }],
+      lawyers: [{ id: -1, name: '全部' }]
     }
   }
   componentDidMount () {
@@ -34,8 +35,8 @@ class Search extends React.PureComponent {
   }
   render () {
     const { search, searchParams, onChange, reset } = this.props
-    const { trustors } = this.state
-    const { customerName, trustorId, entrustDate, lawCaseCode, caseProcess } = searchParams
+    const { trustors, lawyers } = this.state
+    const { customerName, trustorId, entrustDate, lawCaseCode, caseProcess, assignStatus, proxyLawyer } = searchParams
     return (
       <Form
         layout='inline'
@@ -46,7 +47,7 @@ class Search extends React.PureComponent {
             value={trustorId}
             onChange={value => onChange('trustorId', value)}
             placeholder="请选择委托方">
-            {trustors.map(trustor => <Option value={trustor.id} key={trustor.id}>{trustor.name}</Option>)}
+            {trustors.map(item => <Option value={item.id} key={item.id}>{item.name}</Option>)}
           </Select>
         </FormItem>
         <FormItem label="委案日期">
@@ -72,7 +73,23 @@ class Search extends React.PureComponent {
             value={caseProcess}
             onChange={value => onChange('caseProcess', value)}
             placeholder="请选择案件进程">
-            {CASE_PROCESSES.map(trustor => <Option value={trustor.id} key={trustor.id}>{trustor.name}</Option>)}
+            {CASE_PROCESSES.map(item => <Option value={item.id} key={item.id}>{item.name}</Option>)}
+          </Select>
+        </FormItem>
+        <FormItem label="分配状态">
+          <Select
+            value={assignStatus}
+            onChange={value => onChange('assignStatus', value)}
+            placeholder="请选择分配状态">
+            {ASSIGN_STATUS.map(item => <Option value={item.id} key={item.id}>{item.name}</Option>)}
+          </Select>
+        </FormItem>
+        <FormItem label="律师">
+          <Select
+            value={proxyLawyer}
+            onChange={value => onChange('proxyLawyer', value)}
+            placeholder="请选择律师">
+            {lawyers.map(item => <Option value={item.id} key={item.id}>{item.name}</Option>)}
           </Select>
         </FormItem>
         <FormItem>
