@@ -12,9 +12,15 @@ API_URL.common = {
   CASE_IMPORT: 'import/excel'
 }
 
-// 委托方管理
-API_URL.trustor = {
-  FETCH_LIST: 'system/client/get'
+// 系统设置
+API_URL.systemSetting = {
+  // 委托方管理
+  trustor: {
+    FETCH_LIST: 'system/client/get',
+    DELETE_TRUSTOR: (id = '') => `system/client/del/${id}`,
+    CREATE_TRUSTOR: 'system/client/save',
+    UPDATE_TRUSTOR: 'system/client/mod'
+  }
 }
 
 // 任务管理

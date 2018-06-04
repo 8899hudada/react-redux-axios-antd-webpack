@@ -58,19 +58,12 @@ const router = {
         {
           path: '/system-setting/user-manage',
           title: '人员管理',
-          component: RouteWrapper,
-          children: [
-            {
-              path: '/system-setting/user-manage/1',
-              title: '部门管理',
-              component: UserManage
-            },
-            {
-              path: '/system-setting/user-manage/department-manage',
-              title: '部门管理',
-              component: DepartmentManage
-            }
-          ]
+          component: UserManage
+        },
+        {
+          path: '/system-setting/department-manage',
+          title: '部门管理',
+          component: DepartmentManage
         }
       ]
     }

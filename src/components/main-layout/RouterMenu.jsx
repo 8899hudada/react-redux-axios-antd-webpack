@@ -56,7 +56,7 @@ class RouterMenu extends React.PureComponent {
     const MenuItems = router.children.map(route => {
       return this.routeRecursion(route)
     })
-
+    
     return (
       <Menu
         theme="dark"
