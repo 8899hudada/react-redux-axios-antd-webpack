@@ -27,7 +27,7 @@ class MyCase extends React.PureComponent {
       },
       loading: false,
       treeSelectVisible: false,
-      isImport: true
+      isImport: false
     }
     this.actionClick = this.actionClick.bind(this)
     this.tableActionsClick = this.tableActionsClick.bind(this)

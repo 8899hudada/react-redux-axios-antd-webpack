@@ -1,11 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { PageHeader, RemoteSelect, DraggerUpload } from '@components/common'
-import { Card, Form, Button } from 'antd'
+import { PageHeader, DraggerUpload } from '@components/common'
+import { Card, Form, Button, Select } from 'antd'
 import styles from './style'
 import { trustorService, commonService } from '@services'
 
 const FormItem = Form.Item
+const Option = Select.Option
 
 class CaseImport extends React.PureComponent {
   static propTypes = {
@@ -15,9 +16,20 @@ class CaseImport extends React.PureComponent {
   constructor (props) {
     super(props)
     this.state = {
-      loading: false
+      loading: false,
+      trustors: []
     }
     this.handleSubmit = this.handleSubmit.bind(this)
+  }
+  componentDidMount () {
+    this.fetchTrustors()
+  }
+  fetchTrustors () {
+    trustorService.fetchList().then(({ data }) => {
+      this.setState({
+        trustors: data
+      })
+    })
   }
   handleSubmit () {
     this.props.form.validateFields((err, values) => {
@@ -35,25 +47,28 @@ class CaseImport extends React.PureComponent {
   }
   render () {
     const { getFieldDecorator } = this.props.form
-    const { loading } = this.state
+    const { onBack } = this.props
+    const { loading, trustors } = this.state
     return (
       <div>
         <PageHeader
           title="导入案件"
-          extra={<a href="javascript:;">返回</a>} />
+          extra={<a href="javascript:;" onClick={onBack}>返回</a>} />
         <Card>
           <Form>
             <FormItem
               label="委托方">
               {
                 getFieldDecorator('trustorId', {
-                  initialValue:'',
-                  getValueFromEvent: value => value,
                   rules: [{ required: true, message: '请选择委托方' }]
                 })(
-                  <RemoteSelect
-                    remoteMethod={trustorService.fetchList}
-                    placeholder="请选择委托方，可搜索" />
+                  <Select
+                    optionFilterProp="children"
+                    showSearch
+                    filterOption={(input, option) => option.props.children.toLowerCase().includes(input.toLowerCase())}
+                    placeholder="请选择委托方">
+                    {trustors.map(trustor => <Option key={trustor.id}>{trustor.name}</Option>)}
+                  </Select>
                 )
               }
             </FormItem>
