@@ -32,7 +32,7 @@ class Root extends Component {
   updateRouterMenu () {
     const selectedKeys = [window.$history && window.$history.location.pathname]
     const openKeys = findParentsByKey(window.$history && window.$history.location.pathname, router, 'path')
-
+    
     this.props.updateRouterMenuAction({
       openKeys,
       selectedKeys

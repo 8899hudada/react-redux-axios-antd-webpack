@@ -11,7 +11,7 @@ const DropdownMenu = (onClickMenu) => {
     <Menu onClick={onClickMenu}>
       <MenuItem key="changePassword">
         <Icon type="edit" />
-        <span className="margin-left-xs">修改密码</span>
+        <span className="margin-left-xs">密码设置</span>
       </MenuItem>
       <MenuItem key="logout">
         <Icon type="logout" />
@@ -26,6 +26,9 @@ const User = props => {
     switch (key) {
     case 'logout':
       props.logoutAction()
+      break
+    case 'changePassword':
+      window.$history.push('/system-setting/password-setting')
       break
     }
   }

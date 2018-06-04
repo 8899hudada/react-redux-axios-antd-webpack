@@ -35,7 +35,8 @@ module.exports = {
 		'indent': ["error", 2], // 强制使用一致的缩进
 		'no-tabs': 'off', // 禁用 tab
 		'no-useless-escape': 'off', // 禁用不必要的转义字符
-		'no-console': 'off' // 禁用 console
+		'no-console': 'off', // 禁用 console
+		'react/display-name': ['off']
 	},
 	globals: {
 		API_ROOT: false,
