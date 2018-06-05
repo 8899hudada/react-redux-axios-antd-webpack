@@ -46,6 +46,16 @@ class Root extends Component {
       })
     }
   }
+  componentDidMount () {
+    setTimeout(() => {
+      if (!getLocalStorage('token')) {
+        window.$history && window.$history.push('/login')
+      }
+
+      this.updateRouterMenu()
+      window.$history && window.$history.listen(this.handleRouterChange)
+    }, 0)
+  }
   render () {
     const Layout = this.state.Layout
 
@@ -66,14 +76,6 @@ class Root extends Component {
         </Switch>
       </Router>
     )
-  }
-  componentDidMount () {
-    if (!getLocalStorage('token')) {
-      window.$history && window.$history.push('/login')
-    }
-
-    this.updateRouterMenu()
-    window.$history && window.$history.listen(this.handleRouterChange)
   }
 }
 

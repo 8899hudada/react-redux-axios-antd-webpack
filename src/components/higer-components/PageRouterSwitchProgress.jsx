@@ -11,9 +11,6 @@ const PageRouterSwitchProgress = (WrappedComponent) => {
     constructor (props) {
       Nprogress.start()
       super(props)
-      this.state = {
-        display: true
-      }
       
       // 将history实例放到window上面，便于在js代码里面进行路由控制
       if (!window.$history) {

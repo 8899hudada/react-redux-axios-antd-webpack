@@ -10,17 +10,17 @@ const {
 
 /**
  * 获取委托方列表
- * @param  {Object} data 请求参数
- * @param  {Number} data.pageSize 每页条数
- * @param  {Number} data.current 当前页码
- * @param  {String} data.name 名称模糊搜索
+ * @param  {Object} params 请求参数
+ * @param  {Number} params.pageSize 每页条数
+ * @param  {Number} params.current 当前页码
+ * @param  {String} params.name 名称模糊搜索
  * @return {Promise} Promise
  */
-const fetchList = (data = {}) => {
+const fetchList = (params = {}) => {
   return axios({
     url: FETCH_LIST,
-    method: 'POST',
-    data
+    method: 'GET',
+    params
   })
 }
 

@@ -9,14 +9,13 @@ const {
   UPDATE_TRUSTOR
 } = API_URL.systemSetting.trustor
 
-Mock.mock(`${HTTP_ROOT}/${FETCH_LIST}`, 'post', options => {
-  const { name } = JSON.parse(options.body)
+Mock.mock(`${HTTP_ROOT}/${FETCH_LIST}`, 'get', () => {
   return Mock.mock({
     code: 200,
     ok: true,
     'data|10': [{
       id: '@id()',
-      name: `${name || ''}@csentence(2, 6)`
+      name: '@csentence(2, 6)'
     }]
   })
 })
