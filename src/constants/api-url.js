@@ -20,6 +20,9 @@ API_URL.systemSetting = {
     DELETE_TRUSTOR: (id = '') => `system/client/del/${id}`,
     CREATE_TRUSTOR: 'system/client/save',
     UPDATE_TRUSTOR: 'system/client/mod'
+  },
+  passwordSetting: {
+    UPDATE_PASSWORD: 'account/uppwd'
   }
 }
 
