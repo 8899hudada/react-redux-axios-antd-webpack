@@ -4,6 +4,7 @@ import { PageHeader } from '@components/common'
 import { Card, Form, Button, Select, Input, DatePicker, Row, Col } from 'antd'
 import { trustorService } from '@services'
 import { REGEX } from '@constants'
+import { TrustorModal } from '@components/system-setting/trustor-manage'
 
 const FormItem = Form.Item
 const Option = Select.Option
@@ -17,9 +18,13 @@ class CaseCreate extends React.PureComponent {
     super(props)
     this.state = {
       loading: false,
-      trustors: []
+      trustors: [],
+      trustorModalVisible: false
     }
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.hideTrustorModal = this.hideTrustorModal.bind(this)
+    this.showTrustorModal = this.showTrustorModal.bind(this)
+    this.fetchTrustors = this.fetchTrustors.bind(this)
   }
   componentDidMount () {
     this.fetchTrustors()
@@ -31,6 +36,12 @@ class CaseCreate extends React.PureComponent {
       })
     })
   }
+  hideTrustorModal () {
+    this.setState({ trustorModalVisible: false })
+  }
+  showTrustorModal () {
+    this.setState({ trustorModalVisible: true })
+  }
   handleSubmit () {
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -41,7 +52,7 @@ class CaseCreate extends React.PureComponent {
   render () {
     const { getFieldDecorator } = this.props.form
     const { onBack } = this.props
-    const { loading, trustors } = this.state
+    const { loading, trustors, trustorModalVisible } = this.state
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -185,7 +196,9 @@ class CaseCreate extends React.PureComponent {
                   }
                 </Col>
                 <Col span={4}>
-                  <Button icon="plus"></Button>
+                  <Button
+                    icon="plus"
+                    onClick={this.showTrustorModal}></Button>
                 </Col>
               </Row>
             </FormItem>
@@ -193,7 +206,9 @@ class CaseCreate extends React.PureComponent {
               label="委案日期"
               {...formItemLayout}>
               {
-                getFieldDecorator('entrustDate')(
+                getFieldDecorator('entrustDate', {
+                  initialValue: ''
+                })(
                   <DatePicker />
                 )
               }
@@ -217,6 +232,11 @@ class CaseCreate extends React.PureComponent {
             </FormItem>
           </Form>
         </Card>
+        <TrustorModal
+          type="create"
+          visible={trustorModalVisible}
+          hideModal={this.hideTrustorModal}
+          fetchList={this.fetchTrustors} />
       </div>
     )
   }

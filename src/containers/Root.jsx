@@ -11,6 +11,7 @@ import { updateRouterMenuAction } from '@redux/common'
 
 const MissWay = PageRouterSwitchProgress(AsyncLoadComponent(() => import('@components/MissWay')))
 const Login = PageRouterSwitchProgress(AsyncLoadComponent(() => import('./Login')))
+const CaseDetail = PageRouterSwitchProgress(AsyncLoadComponent(() => import('./CaseDetail')))
 
 class Root extends Component {
   static propTypes = {
@@ -52,6 +53,7 @@ class Root extends Component {
       <Router>
         <Switch>
           <Route path="/login" component={Login}></Route>
+          <Route path="/case-detail" component={CaseDetail}></Route>
           <Route path="/">
             <Layout router={router}>
               <Switch>
