@@ -34,7 +34,7 @@ Mock.mock(`${HTTP_ROOT}/${CREATE_TRUSTOR}`, 'post', () => {
   })
 })
 
-Mock.mock(`${HTTP_ROOT}/${UPDATE_TRUSTOR}`, 'post', () => {
+Mock.mock(`${HTTP_ROOT}/${UPDATE_TRUSTOR}`, 'put', () => {
   return Mock.mock({
     code: 200,
     ok: true

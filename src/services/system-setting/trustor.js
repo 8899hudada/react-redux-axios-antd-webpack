@@ -64,7 +64,7 @@ const createTrustor = (data = {}) => {
 const updateTrustor = (data = {}) => {
   return axios({
     url: UPDATE_TRUSTOR,
-    method: 'POST',
+    method: 'PUT',
     data,
     showLoading: true,
     loadingMsg: '正在修改委托方...'
