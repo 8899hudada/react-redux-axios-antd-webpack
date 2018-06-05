@@ -20,7 +20,7 @@ class TrustorManage extends React.PureComponent {
   }
   fetchList () {
     trustorService.fetchList().then(res => {
-      this.setState({trustors: res.data.pageData})
+      this.setState({trustors: res.data})
     })
   }
   toggleTrustorModal (visible, type, editTrustorIndex) {

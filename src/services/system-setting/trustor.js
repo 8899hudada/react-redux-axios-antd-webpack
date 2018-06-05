@@ -20,7 +20,6 @@ const fetchList = (data = {}) => {
   return axios({
     url: FETCH_LIST,
     method: 'POST',
-    showLoading: true,
     data
   })
 }

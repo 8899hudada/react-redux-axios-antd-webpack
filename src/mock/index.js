@@ -1,6 +1,5 @@
 import './login'
 import './common'
-import './trustor'
 import './task'
 import './system-setting'
 import Mock from 'mockjs'

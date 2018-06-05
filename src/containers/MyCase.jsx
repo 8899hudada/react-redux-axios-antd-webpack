@@ -1,5 +1,5 @@
 import React from 'react'
-import { PageHeader, CaseImport, LawerTreeSelectModal } from '@components/common'
+import { PageHeader, CaseImport, CaseCreate, LawerTreeSelectModal } from '@components/common'
 import { Actions, Table, TableActions, Search } from '@components/my-case'
 import { Card, message } from 'antd'
 
@@ -31,7 +31,7 @@ class MyCase extends React.PureComponent {
       },
       loading: false,
       treeSelectVisible: false,
-      isImport: false
+      curView: 'list'
     }
     this.actionClick = this.actionClick.bind(this)
     this.tableActionsClick = this.tableActionsClick.bind(this)
@@ -45,7 +45,10 @@ class MyCase extends React.PureComponent {
   actionClick (action) {
     switch (action) {
     case 'caseImport':
-      this.setState({ isImport: true })
+      this.setState({ curView: 'import' })
+      break
+    case 'caseCreate':
+      this.setState({ curView: 'create' })
       break
     }
   }
@@ -86,15 +89,19 @@ class MyCase extends React.PureComponent {
     }))
   }
   caseImportBack () {
-    this.setState({ isImport: false })
+    this.setState({ curView: 'list' })
   }
   render () {
-    const { selectedRowKeys, searchParams, pagination, loading, treeSelectVisible, isImport } = this.state
+    const { selectedRowKeys, searchParams, pagination, loading, treeSelectVisible, curView } = this.state
     const rowSelection = {
       selectedRowKeys,
       onChange: this.selectedRowKeysChange
     }
-    if (isImport) return <CaseImport onBack={this.caseImportBack} />
+    if (curView === 'import') {
+      return <CaseImport onBack={this.caseImportBack} />
+    } else if (curView === 'create') {
+      return <CaseCreate onBack={this.caseImportBack} />
+    }
     return (
       <div>
         <PageHeader title="我的案件" />

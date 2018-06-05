@@ -14,12 +14,10 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_LIST}`, 'post', options => {
   return Mock.mock({
     code: 200,
     ok: true,
-    data: {
-      'pageData|10': [{
-        id: '@id()',
-        name: `${name || ''}@csentence(2, 6)`
-      }] 
-    }
+    'data|10': [{
+      id: '@id()',
+      name: `${name || ''}@csentence(2, 6)`
+    }]
   })
 })
 
