@@ -86,7 +86,7 @@ class LoginBox extends PureComponent {
   render () {
     return (
       <div className={style.loginBox}>
-        <h1 className={style.loginBoxTitle}>React Demo</h1>
+        <h1 className={style.loginBoxTitle}>登录</h1>
         <WrappedLoginForm />
       </div>
     )

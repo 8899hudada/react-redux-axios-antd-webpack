@@ -69,11 +69,11 @@ class Root extends Component {
   }
   componentDidMount () {
     if (!getLocalStorage('token')) {
-      window.$history.push('/login')
+      window.$history && window.$history.push('/login')
     }
 
     this.updateRouterMenu()
-    window.$history.listen(this.handleRouterChange)
+    window.$history && window.$history.listen(this.handleRouterChange)
   }
 }
 
