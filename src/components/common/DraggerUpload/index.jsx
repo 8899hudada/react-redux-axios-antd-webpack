@@ -19,7 +19,6 @@ class DraggerUpload extends React.PureComponent {
     this.onChange = this.onChange.bind(this)
   }
   onChange (info) {
-    console.log(info)
     const { file, fileList } = info
     const { status, response } = file
     const { errMsg, onChange } = this.props
@@ -48,7 +47,8 @@ class DraggerUpload extends React.PureComponent {
         action={`${API_ROOT[process.env.ENV]}/${API_URL.common.UPLOAD}`}
         fileList={fileList}
         onChange={this.onChange}
-        beforeUpload={beforeUpload}>
+        beforeUpload={beforeUpload}
+        headers={{ 'X-Requested-With': null }}>
         <p className="ant-upload-drag-icon">
           <Icon type="inbox" />
         </p>
