@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form, Button, Input, Select, DatePicker } from 'antd'
 import PropTypes from 'prop-types'
-import { trustorService } from '@services'
+import { trustorService, userManageService } from '@services'
 import moment from 'moment'
 import { CASE_PROCESSES, ASSIGN_STATUS } from '@constants'
 
@@ -25,11 +25,22 @@ class Search extends React.PureComponent {
   }
   componentDidMount () {
     this.fetchTrustors()
+    this.fetchLawyers()
   }
   fetchTrustors () {
     trustorService.fetchList().then(({ data }) => {
       this.setState({
         trustors: [{ id: -1, name: '全部' }, ...data]
+      })
+    })
+  }
+  fetchLawyers () {
+    userManageService.fetchUsers({
+      current: 1,
+      pageSize: 200
+    }).then(({ data }) => {
+      this.setState({
+        lawyers: [{ id: -1, name: '全部' }, ...data.pageData]
       })
     })
   }
@@ -86,6 +97,7 @@ class Search extends React.PureComponent {
         </FormItem>
         <FormItem label="律师">
           <Select
+            style={{ minWidth: 120 }}
             value={proxyLawyer}
             onChange={value => onChange('proxyLawyer', value)}
             placeholder="请选择律师">

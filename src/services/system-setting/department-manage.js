@@ -4,6 +4,7 @@ import { API_URL } from '@/constants'
 const {
   FETCH_DEPARTMENTS,
   FETCH_DEPARTMENT_TREE,
+  FETCH_DEPARTMENT_USER_TREE,
   FETCH_ROLES
 } = API_URL.systemSetting.departmentManage
 
@@ -37,6 +38,19 @@ const fetchDepartmentTree = () => {
 }
 
 /**
+ * 获取带人员的部门树
+ * @return {Object} Promise
+ */
+const fetchDepartmentUserTree = () => {
+  return axios({
+    url: FETCH_DEPARTMENT_USER_TREE,
+    method: 'GET',
+    showLoading: true,
+    showMessage: true
+  })
+}
+
+/**
  * 获取角色列表
  * @param  {Object} data 查询参数
  * @param  {Number} data.pageSize
@@ -55,5 +69,6 @@ const fetchRoles = (data = {}) => {
 export {
   fetchDepartments,
   fetchDepartmentTree,
+  fetchDepartmentUserTree,
   fetchRoles
 }

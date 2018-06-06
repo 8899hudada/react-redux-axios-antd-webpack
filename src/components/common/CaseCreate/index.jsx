@@ -163,7 +163,7 @@ class CaseCreate extends React.PureComponent {
             </FormItem>
             <FormItem
               label={(
-                <Select defaultValue="1">
+                <Select defaultValue="1" style={{ paddingRight: 10 }}>
                   <Option key="1">金融账号</Option>
                   <Option key="2">借款借据号</Option>
                 </Select>

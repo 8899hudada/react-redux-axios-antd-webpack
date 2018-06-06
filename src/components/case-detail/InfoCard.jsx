@@ -5,7 +5,7 @@ import style from './style'
 
 class InfoCard extends React.PureComponent {
   static propTypes = {
-    title: PropTypes.oneOf([PropTypes.string, PropTypes.node]).isRequired,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
     isEdit: PropTypes.bool,
     allowDelete: PropTypes.bool,
     onDelete: PropTypes.func,
