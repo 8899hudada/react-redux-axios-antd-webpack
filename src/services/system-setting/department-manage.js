@@ -3,7 +3,8 @@ import { API_URL } from '@/constants'
 
 const {
   FETCH_DEPARTMENTS,
-  FETCH_DEPARTMENT_TREE
+  FETCH_DEPARTMENT_TREE,
+  FETCH_ROLES
 } = API_URL.systemSetting.departmentManage
 
 /**
@@ -18,9 +19,7 @@ const fetchDepartments = (data = {}) => {
   return axios({
     url: FETCH_DEPARTMENTS,
     method: 'POST',
-    data,
-    showLoading: true,
-    showMessage: true
+    data
   })
 }
 
@@ -37,7 +36,24 @@ const fetchDepartmentTree = () => {
   })
 }
 
+/**
+ * 获取角色列表
+ * @param  {Object} data 查询参数
+ * @param  {Number} data.pageSize
+ * @param  {String} data.name
+ * @param  {Number} data.current
+ * @return {Object} Promise
+ */
+const fetchRoles = (data = {}) => {
+  return axios({
+    url: FETCH_ROLES,
+    method: 'POST',
+    data
+  }) 
+}
+
 export {
   fetchDepartments,
-  fetchDepartmentTree
+  fetchDepartmentTree,
+  fetchRoles
 }

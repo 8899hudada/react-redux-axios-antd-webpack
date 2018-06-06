@@ -28,7 +28,12 @@ API_URL.systemSetting = {
   // 部门管理
   departmentManage: {
     FETCH_DEPARTMENTS: 'system/dept/get',
-    FETCH_DEPARTMENT_TREE: 'system/dept/bigtree'
+    FETCH_DEPARTMENT_TREE: 'system/dept/bigtree',
+    FETCH_ROLES: 'system/role/get'
+  },
+  // 人员管理
+  userManage: {
+    FETCH_USERS: 'system/account/get'
   }
 }
 

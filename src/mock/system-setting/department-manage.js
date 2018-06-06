@@ -4,7 +4,8 @@ import { API_ROOT, API_URL } from '@constants'
 const HTTP_ROOT = API_ROOT[process.env.ENV]
 const {
   FETCH_DEPARTMENTS,
-  FETCH_DEPARTMENT_TREE
+  FETCH_DEPARTMENT_TREE,
+  FETCH_ROLES
 } = API_URL.systemSetting.departmentManage
 
 Mock.mock(`${HTTP_ROOT}/${FETCH_DEPARTMENTS}`, 'post', () => {
@@ -71,5 +72,18 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_DEPARTMENT_TREE}`, 'get', () => {
         name: '郑九'
       }]
     }]
+  })
+})
+
+Mock.mock(`${HTTP_ROOT}/${FETCH_ROLES}`, 'post', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true,
+    data: {
+      'pageData|10': [{
+        id: '@id()',
+        name: '@csentence(2, 6)'
+      }]
+    }
   })
 })

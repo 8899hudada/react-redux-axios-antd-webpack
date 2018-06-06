@@ -14,3 +14,5 @@ export * as trustorService from './system-setting/trustor'
 export * as passwordSettingService from './system-setting/password-setting'
 // 部门设置
 export * as departmentManageService from './system-setting/department-manage'
+// 人员管理
+export * as userManageService from './system-setting/user-manage'

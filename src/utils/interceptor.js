@@ -51,7 +51,7 @@ axios.interceptors.response.use(
     const errorMsg = config.errorMsg || data.msg
     const showMessage =config.showMessage
     const hideErrorMsg =config.hideErrorMsg
-
+    
     if (config.showLoading === true) {
       config.hideLoading()
       store.dispatch(updateLoadingAction(false))

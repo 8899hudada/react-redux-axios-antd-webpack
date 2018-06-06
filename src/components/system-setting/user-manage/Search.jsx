@@ -12,7 +12,9 @@ class Search extends React.PureComponent {
       phone: PropTypes.string,
       deptId: PropTypes.number,
       roleId: PropTypes.number
-    })
+    }).isRequired,
+    departments: PropTypes.array.isRequired,
+    roles: PropTypes.array.isRequired
   }
   constructor (props) {
     super(props)
@@ -23,29 +25,44 @@ class Search extends React.PureComponent {
   }
   render () {
     const { userInputType } = this.state
-    const { searchParams } = this.props
+    const { searchParams, departments, roles } = this.props
+
+    const departmentOptions = departments.map(department => (
+      <Option key={department.id} value={department.id}>{department.name}</Option>
+    ))
+    const roleOptions = roles.map(role => (
+      <Option key={role.id} value={role.id}>{role.name}</Option>
+    ))
 
     return (
       <Form layout='inline'>
         <FormItem label="员工查询">
-          <Select value={userInputType}>
+          <Select style={{width: 150}} value={userInputType}>
             <Option value="phone">员工电话</Option>
             <Option value="name">员工姓名</Option>
           </Select>
         </FormItem>
         <FormItem>
-          <Input value={searchParams[userInputType]}></Input>
+          <Input placeholder="请输入查询条件" value={searchParams[userInputType]}></Input>
         </FormItem>
         <FormItem label="部门">
-          <Select value={searchParams.deptId}>
-            <Option value="phone">员工电话</Option>
-            <Option value="name">员工姓名</Option>
+          <Select
+            style={{width: 150}}
+            value={searchParams.deptId}
+            allowClear={true}
+            dropdownMatchSelectWidth={false}>
+            <Option value={-1}>请选择</Option>
+            {departmentOptions}
           </Select>
         </FormItem>
         <FormItem label="角色">
-          <Select value={searchParams.roleId}>
-            <Option value="phone">员工电话</Option>
-            <Option value="name">员工姓名</Option>
+          <Select
+            style={{width: 150}}
+            value={searchParams.roleId}
+            allowClear={true}
+            dropdownMatchSelectWidth={false}>
+            <Option value={-1}>请选择</Option>
+            {roleOptions}
           </Select>
         </FormItem>
         <FormItem>
