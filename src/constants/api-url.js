@@ -21,8 +21,13 @@ API_URL.systemSetting = {
     CREATE_TRUSTOR: 'system/client/save',
     UPDATE_TRUSTOR: 'system/client/mod'
   },
+  // 密码设置
   passwordSetting: {
     UPDATE_PASSWORD: 'account/uppwd'
+  }
+  // 部门管理
+  departmentManage: {
+    FETCH_DEPARTMENTS: 'system/dept/get'
   }
 }
 
