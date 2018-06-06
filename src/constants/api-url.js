@@ -24,10 +24,11 @@ API_URL.systemSetting = {
   // 密码设置
   passwordSetting: {
     UPDATE_PASSWORD: 'account/uppwd'
-  }
+  },
   // 部门管理
   departmentManage: {
-    FETCH_DEPARTMENTS: 'system/dept/get'
+    FETCH_DEPARTMENTS: 'system/dept/get',
+    FETCH_DEPARTMENT_TREE: 'system/dept/bigtree'
   }
 }
 

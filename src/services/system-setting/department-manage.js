@@ -2,7 +2,8 @@ import axios from 'axios'
 import { API_URL } from '@/constants'
 
 const {
-  FETCH_DEPARTMENTS
+  FETCH_DEPARTMENTS,
+  FETCH_DEPARTMENT_TREE
 } = API_URL.systemSetting.departmentManage
 
 /**
@@ -23,6 +24,20 @@ const fetchDepartments = (data = {}) => {
   })
 }
 
+/**
+ * 获取部门树
+ * @return {Object} Promise
+ */
+const fetchDepartmentTree = () => {
+  return axios({
+    url: FETCH_DEPARTMENT_TREE,
+    method: 'GET',
+    showLoading: true,
+    showMessage: true
+  })
+}
+
 export {
-  fetchDepartments
+  fetchDepartments,
+  fetchDepartmentTree
 }

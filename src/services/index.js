@@ -12,4 +12,5 @@ export * as caseManageService from './case-manage'
 export * as trustorService from './system-setting/trustor'
 // 密码设置
 export * as passwordSettingService from './system-setting/password-setting'
-
+// 部门设置
+export * as departmentManageService from './system-setting/department-manage'

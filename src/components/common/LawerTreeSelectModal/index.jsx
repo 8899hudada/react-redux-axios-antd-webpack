@@ -3,6 +3,8 @@ import { TreeSelect } from '@components/common'
 import { Modal, message } from 'antd'
 import PropTypes from 'prop-types'
 import { findNodeInTree } from '@utils'
+import { departmentManageService } from '@services'
+import { formatTreeData } from './utils'
 
 const data = [{
   label: '成都迪扬信风科技有限公司',
@@ -43,16 +45,28 @@ class LawerTreeSelectModal extends React.PureComponent {
     super(props)
     this.state = {
       selectedKeys: [],
-      confirmLoading: false
+      confirmLoading: false,
+      data: []
     }
     this.onSelect = this.onSelect.bind(this)
     this.onOk = this.onOk.bind(this)
     this.submit = this.submit.bind(this)
   }
+  componentDidMount () {
+    this.fetchTreeData()
+  }
   componentWillReceiveProps (nextProps) {
     if (this.props.visible && !nextProps.visible) {
       this.setState({ selectedKeys: [] })
     }
+  }
+  fetchTreeData () {
+    departmentManageService.fetchDepartmentTree().then(({ data }) => {
+      console.log(formatTreeData(data))
+      // this.setState({
+      //   data: formatTreeData(data)
+      // })
+    })
   }
   onSelect (selectedKeys) {
     this.setState({ selectedKeys })
@@ -65,7 +79,7 @@ class LawerTreeSelectModal extends React.PureComponent {
     })
   }
   onOk () {
-    const { selectedKeys } = this.state
+    const { selectedKeys, data } = this.state
     const { unselectedTips, confrimContent } = this.props
     if (selectedKeys.length === 0) return message.warning(unselectedTips)
     const selectedNode = findNodeInTree(data, { key: 'value', value: selectedKeys[0] })
@@ -90,7 +104,12 @@ class LawerTreeSelectModal extends React.PureComponent {
           data={data}
           selectedKeys={selectedKeys}
           onSelect={this.onSelect}
-          placeholder="请输入部门或姓名" />
+          placeholder="请输入部门或姓名"
+          option={{
+            labelKey: 'name',
+            valueKey: 'id',
+            childrenKey: 'children'
+          }} />
       </Modal>
     )
   }
