@@ -15,7 +15,7 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_DEPARTMENTS}`, 'post', () => {
     ok: true,
     data: {
       'pageData|10': [{
-        id: '@id()',
+        id: '@increment(1)',
         name: '@csentence(2, 6)'
       }]
     }
@@ -110,7 +110,7 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_ROLES}`, 'post', () => {
     ok: true,
     data: {
       'pageData|10': [{
-        id: '@id()',
+        id:'@increment(1)',
         name: '@csentence(2, 6)'
       }]
     }

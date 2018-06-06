@@ -14,7 +14,9 @@ class Search extends React.PureComponent {
       roleId: PropTypes.number
     }).isRequired,
     departments: PropTypes.array.isRequired,
-    roles: PropTypes.array.isRequired
+    roles: PropTypes.array.isRequired,
+    updateSearchParams: PropTypes.func.isRequired,
+    fetchUsers: PropTypes.func.isRequired
   }
   constructor (props) {
     super(props)
@@ -22,10 +24,15 @@ class Search extends React.PureComponent {
     this.state = {
       userInputType: 'phone'
     }
+
+    this.handleUserInputTypeChange = this.handleUserInputTypeChange.bind(this)
+  }
+  handleUserInputTypeChange (userInputType) {
+    this.setState({userInputType})
   }
   render () {
     const { userInputType } = this.state
-    const { searchParams, departments, roles } = this.props
+    const { searchParams, departments, roles, updateSearchParams, fetchUsers } = this.props
 
     const departmentOptions = departments.map(department => (
       <Option key={department.id} value={department.id}>{department.name}</Option>
@@ -37,20 +44,28 @@ class Search extends React.PureComponent {
     return (
       <Form layout='inline'>
         <FormItem label="员工查询">
-          <Select style={{width: 150}} value={userInputType}>
+          <Select
+            style={{width: 150}}
+            value={userInputType}
+            onChange={value => this.handleUserInputTypeChange(value)}>
             <Option value="phone">员工电话</Option>
             <Option value="name">员工姓名</Option>
           </Select>
         </FormItem>
         <FormItem>
-          <Input placeholder="请输入查询条件" value={searchParams[userInputType]}></Input>
+          <Input
+            placeholder="请输入查询条件"
+            value={searchParams[userInputType]}
+            onChange={e => updateSearchParams({[userInputType]: e.target.value})}>
+          </Input>
         </FormItem>
         <FormItem label="部门">
           <Select
             style={{width: 150}}
             value={searchParams.deptId}
             allowClear={true}
-            dropdownMatchSelectWidth={false}>
+            dropdownMatchSelectWidth={false}
+            onChange={value => updateSearchParams({deptId: value})}>
             <Option value={-1}>请选择</Option>
             {departmentOptions}
           </Select>
@@ -60,13 +75,14 @@ class Search extends React.PureComponent {
             style={{width: 150}}
             value={searchParams.roleId}
             allowClear={true}
-            dropdownMatchSelectWidth={false}>
+            dropdownMatchSelectWidth={false}
+            onChange={value => updateSearchParams({roleId: value})}>
             <Option value={-1}>请选择</Option>
             {roleOptions}
           </Select>
         </FormItem>
         <FormItem>
-          <Button type="primary">搜索</Button>
+          <Button type="primary" onClick={fetchUsers}>搜索</Button>
         </FormItem>
       </Form>
     )

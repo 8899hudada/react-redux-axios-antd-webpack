@@ -15,7 +15,7 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_USERS}`, 'post', options => {
     ok: true,
     data: {
       current, 
-      'total|10-100': 10,
+      total: 100,
       pageSize: pageSize,
       [`pageData|${pageSize}`]: [{
         id: '@id()',
