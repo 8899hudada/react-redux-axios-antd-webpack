@@ -84,7 +84,7 @@ class UserTable extends React.PureComponent {
         align: 'center'
       }
     ]
-    console.log(pagination)
+    
     return (
       <Table
         columns={columns}

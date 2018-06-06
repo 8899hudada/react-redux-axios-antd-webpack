@@ -3,12 +3,17 @@ import { Card, Button } from 'antd'
 import { Search, Table } from '@components/system-setting/user-manage'
 import { PageHeader } from '@components/common'
 import { departmentManageService, userManageService } from '@services'
+import config from '@config'
 
 class UserManage extends React.PureComponent {
   constructor (props) {
     super(props)
     
-    this.handlePageChange = this.handlePageChange.bind(this)
+    this.fetchDepartments = this.fetchDepartments.bind(this)
+    this.fetchRoles = this.fetchRoles.bind(this)
+    this.fetchUsers = this.fetchUsers.bind(this)
+    this.updatePagination = this.updatePagination.bind(this)
+    this.updateSearchParams = this.updateSearchParams.bind(this)
 
     this.state = {
       searchParams: {
@@ -21,11 +26,9 @@ class UserManage extends React.PureComponent {
       roles: [], // 角色列表
       users: [], // 角色列表
       pagination: { // 分页
-        current: 1, // 当前页数
-        pageSize: 10, // 一页的条数
-        total: 0, // 用户总条数
-        pageSizeOptions: ['10', '20', '50', '100'],
-        onChange: this.handlePageChange
+        ...config.pagination,
+        onChange: current => this.updatePagination({current}),
+        onShowSizeChange: (current, pageSize) => this.updatePagination({pageSize})  
       }
     }
   }
@@ -49,24 +52,39 @@ class UserManage extends React.PureComponent {
       })
     })
   }
-  fetchUsers (data) {
-    userManageService.fetchUsers(data).then(res => {
+  fetchUsers () {
+    const { searchParams, pagination } = this.state
+    const { current, pageSize } = pagination
+    
+    userManageService.fetchUsers({
+      current,
+      pageSize,
+      ...searchParams
+    }).then(res => {
       this.setState({
-        users: res.data.pageData,
+        users: res.data.pageData || [],
         pagination: {
           ...this.state.pagination,
-          total: res.data.total
+          total: res.data.total || 0
         }
       })
     })
   }
-  handlePageChange (current) {
+  updatePagination (pagination = {}) {
     this.setState({
       pagination: {
         ...this.state.pagination,
-        current
+        ...pagination
       }
-    })
+    }, this.fetchUsers) 
+  }
+  updateSearchParams (searchParams = {}) {
+    this.setState({
+      searchParams: {
+        ...this.state.searchParams,
+        ...searchParams
+      }
+    }) 
   }
   render () {
     const { searchParams, departments, roles, users, pagination } = this.state
@@ -78,7 +96,9 @@ class UserManage extends React.PureComponent {
           <Search
             searchParams={searchParams}
             departments={departments}
-            roles={roles}>
+            roles={roles}
+            updateSearchParams={this.updateSearchParams}
+            fetchUsers={this.fetchUsers}>
           </Search>
         </Card>
         <Card className="margin-top-xs">
@@ -95,7 +115,7 @@ class UserManage extends React.PureComponent {
   componentDidMount () {
     this.fetchDepartments()
     this.fetchRoles()
-    this.fetchUsers({pageSize: 20})
+    this.fetchUsers()
   }
 }
 
