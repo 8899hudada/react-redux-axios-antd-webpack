@@ -9,10 +9,11 @@ class UserTable extends React.PureComponent {
       current: PropTypes.number,
       pageSize: PropTypes.number,
       total: PropTypes.number
-    })
+    }),
+    openUserModal: PropTypes.func.isRequired
   }
   render () {
-    const { users, pagination } = this.props
+    const { users, pagination, openUserModal } = this.props
     const columns = [
       {
         title: '姓名',
@@ -49,7 +50,7 @@ class UserTable extends React.PureComponent {
       },
       {
         title: '操作',
-        render: () => {
+        render: (text, column, index) => {
           return (
             <div>
               <Button
@@ -59,7 +60,8 @@ class UserTable extends React.PureComponent {
               </Button>
               <Button
                 type="primary"
-                className="margin-right-xs">
+                className="margin-right-xs"
+                onClick={() => {openUserModal('update', index)}}>
                 编辑
               </Button>
               <Button

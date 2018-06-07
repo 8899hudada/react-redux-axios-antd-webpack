@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, Button } from 'antd'
-import { Search, Table } from '@components/system-setting/user-manage'
+import { Search, Table, UserModal } from '@components/system-setting/user-manage'
 import { PageHeader } from '@components/common'
 import { departmentManageService, userManageService } from '@services'
 import config from '@config'
@@ -14,6 +14,7 @@ class UserManage extends React.PureComponent {
     this.fetchUsers = this.fetchUsers.bind(this)
     this.updatePagination = this.updatePagination.bind(this)
     this.updateSearchParams = this.updateSearchParams.bind(this)
+    this.toggleUserModal = this.toggleUserModal.bind(this)
 
     this.state = {
       searchParams: {
@@ -29,7 +30,10 @@ class UserManage extends React.PureComponent {
         ...config.pagination,
         onChange: current => this.updatePagination({current}),
         onShowSizeChange: (current, pageSize) => this.updatePagination({pageSize})  
-      }
+      },
+      userModalVisible: false, // 显示人员弹窗
+      userModalType: 'create', // 人员弹窗类型 [create：新增，update：编辑]
+      editUserIndex: 0 // 编辑的人员索引
     }
   }
   fetchDepartments () {
@@ -86,8 +90,20 @@ class UserManage extends React.PureComponent {
       }
     }) 
   }
+  toggleUserModal (visible = false, type = 'create', editUserIndex = 0) {
+    const state = {
+      userModalVisible: visible,
+      userModalType: type,
+    }
+    
+    if (type === 'update') {
+      state.editUserIndex = editUserIndex
+    }
+
+    this.setState(state)
+  }
   render () {
-    const { searchParams, departments, roles, users, pagination } = this.state
+    const { searchParams, departments, roles, users, pagination, userModalVisible, userModalType } = this.state
     
     return (
       <div>
@@ -103,12 +119,21 @@ class UserManage extends React.PureComponent {
         </Card>
         <Card className="margin-top-xs">
           <div>
-            <Button type="primary">增加人员</Button>
+            <Button type="primary" onClick={() => this.toggleUserModal(true, 'create')}>增加人员</Button>
           </div>
           <div className="margin-top-xs">
-            <Table pagination={pagination} users={users}></Table>
+            <Table
+              pagination={pagination}
+              users={users}
+              openUserModal={(type, index) => this.toggleUserModal(true, type, index)}>
+            </Table>
           </div>
         </Card>
+        <UserModal
+          visible={userModalVisible}
+          type={userModalType}
+          hideModal={() => this.toggleUserModal(false)}>
+        </UserModal>
       </div>
     )
   }
