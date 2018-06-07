@@ -8,7 +8,8 @@ API_URL.admin = {
 
 // 公共
 API_URL.common = {
-  UPLOAD: 'file/local',
+  UPLOAD_LOCAL: 'file/local',
+  UPLOAD: 'file/upload',
   CASE_IMPORT: 'import/excel'
 }
 

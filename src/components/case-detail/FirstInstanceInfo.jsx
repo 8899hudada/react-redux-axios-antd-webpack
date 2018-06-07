@@ -1,7 +1,15 @@
 import React from 'react'
 import { InfoCard } from '@components/case-detail'
+import { Form } from 'antd'
+import { ImageListUpload } from '@components/common'
+import PropTypes from 'prop-types'
+
+const FormItem = Form.Item
 
 class FirstInstanceInfo extends React.PureComponent {
+  static propTypes = {
+    form: PropTypes.object.isRequired
+  }
   constructor (props) {
     super(props)
     this.state = {
@@ -21,16 +29,36 @@ class FirstInstanceInfo extends React.PureComponent {
     this.setState({ isEdit: false })
   }
   render () {
+    const { getFieldDecorator } = this.props.form
     const { isEdit } = this.state
+    console.log(isEdit)
     return (
       <InfoCard
         title="一审信息"
         isEdit={isEdit}
         onEdit={this.onEdit}
         onCancel={this.onCancel}
-        onSave={this.onSave}></InfoCard>
+        onSave={this.onSave}>
+        <Form>
+          <FormItem label="一审传票">
+            {
+              getFieldDecorator('firstInstanceSummons', {
+                valuePropName: 'imgList',
+                initialValue: ['http://www.remarkfin.com/static/cooper/cooper1.jpg'],
+                getValueFromEvent: value => value
+              })(
+                <ImageListUpload
+                  allowDelete={isEdit}
+                  allowUpload={isEdit} />
+              )
+            }
+          </FormItem>
+        </Form>
+      </InfoCard>
     )
   }
 }
 
-export default FirstInstanceInfo
+const WrappedFirstInstanceInfo = Form.create()(FirstInstanceInfo)
+
+export default WrappedFirstInstanceInfo

@@ -44,7 +44,7 @@ class DraggerUpload extends React.PureComponent {
     return (
       <Dragger
         accept={accept}
-        action={`${API_ROOT[process.env.ENV]}/${API_URL.common.UPLOAD}`}
+        action={`${API_ROOT[process.env.ENV]}/${API_URL.common.UPLOAD_LOCAL}`}
         fileList={fileList}
         onChange={this.onChange}
         beforeUpload={beforeUpload}
