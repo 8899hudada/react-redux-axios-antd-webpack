@@ -1,5 +1,6 @@
 export { default as BaseInfo } from './BaseInfo'
 export { default as EntrustInfo } from './EntrustInfo'
+export { default as RegisterCaseInfo } from './RegisterCaseInfo'
 export { default as FirstInstanceInfo } from './FirstInstanceInfo'
 export { default as SecondInstanceInfo } from './SecondInstanceInfo'
 export { default as ExecInfo } from './ExecInfo'

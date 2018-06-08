@@ -49,4 +49,8 @@ API_URL.caseManage = {
   FETCH_LIST: 'case/manage/list'
 }
 
+API_URL.caseDetail = {
+  FETCH_DETAIL: (id = '') => `case/detail/${id}`
+}
+
 export default API_URL

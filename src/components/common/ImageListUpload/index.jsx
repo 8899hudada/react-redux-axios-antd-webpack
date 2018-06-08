@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Upload, Icon, message } from 'antd'
+import { Upload, Icon, message, Popconfirm } from 'antd'
 import { API_URL, API_ROOT } from '@constants'
 import styles from './style'
 import { deepCopy } from '@utils'
@@ -61,11 +61,12 @@ class ImageListUpload extends React.PureComponent {
             imgList.map((img, index) => (
               <li key={index}>
                 <img src={img} />
-                <Icon
-                  type="delete"
-                  className={styles['del-btn']}
-                  style={{ color: '#fff', fontSize: 20, display: !allowDelete && 'none' }}
-                  onClick={() => this.handleDelete(index)} />
+                <Popconfirm title="确认删除？" onConfirm={() => this.handleDelete(index)}>
+                  <Icon
+                    type="delete"
+                    className={styles['del-btn']}
+                    style={{ color: '#fff', fontSize: 20, display: !allowDelete && 'none' }} />
+                </Popconfirm>
               </li>
             ))
           }

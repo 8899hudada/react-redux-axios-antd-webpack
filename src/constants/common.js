@@ -19,7 +19,16 @@ const ASSIGN_STATUS = [
   { id: 2, name: '未分配' }
 ]
 
+// 账号类型
+const ACCOUNT_TYPES = {
+  0: '金融账号',
+  1: '借款借据号',
+  2: '合同编号',
+  3: '信用卡号'
+}
+
 export {
   CASE_PROCESSES,
-  ASSIGN_STATUS
+  ASSIGN_STATUS,
+  ACCOUNT_TYPES
 }

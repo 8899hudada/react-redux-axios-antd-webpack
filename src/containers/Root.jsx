@@ -63,7 +63,7 @@ class Root extends Component {
       <Router>
         <Switch>
           <Route path="/login" component={Login}></Route>
-          <Route path="/case-detail" component={CaseDetail}></Route>
+          <Route path="/case-detail/:id" component={CaseDetail}></Route>
           <Route path="/">
             <Layout router={router}>
               <Switch>

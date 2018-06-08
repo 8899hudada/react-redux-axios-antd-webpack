@@ -6,6 +6,8 @@ export * as commonService from './common'
 export * as taskService from './task'
 // 案件管理
 export * as caseManageService from './case-manage'
+// 案件详情
+export * as caseDetailService from './case-detail'
 
 // 系统设置
 // 委托方管理
