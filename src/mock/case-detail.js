@@ -59,7 +59,7 @@ Mock.mock(new RegExp(`^${HTTP_ROOT}/${FETCH_DETAIL()}\\d+$`), 'get', () => {
         noticeFee: '@float(0, 1000000, 0, 2)',
         sealUpBeginDate: '@date()',
         sealUpEndDate: '@date()',
-        'attachments|0-8': [{
+        'attachments|4-8': [{
           id: '@increment(1)',
           filePath: `@pick(['https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4092268509,251462197&fm=27&gp=0.jpg','https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4164555870,3002820394&fm=27&gp=0.jpg'])`,
           fileProperty: '@pick([2, 3, 4])'

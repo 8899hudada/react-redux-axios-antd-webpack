@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card } from 'antd'
 import PropTypes from 'prop-types'
-import style from './style'
+import styles from './style'
 
 class InfoCard extends React.PureComponent {
   static propTypes = {
@@ -12,21 +12,22 @@ class InfoCard extends React.PureComponent {
     onEdit: PropTypes.func,
     onCancel: PropTypes.func,
     onSave: PropTypes.func,
-    children: PropTypes.node
+    children: PropTypes.node,
+    style: PropTypes.object
   }
   constructor (props) {
     super(props)
   }
   render () {
-    const { title, isEdit, allowDelete, onDelete, onEdit, onCancel, onSave, children } = this.props
+    const { title, isEdit, allowDelete, onDelete, onEdit, onCancel, onSave, children, style } = this.props
     const normalExtra = (
-      <div className={style['extra-wrap']}>
+      <div className={styles['extra-wrap']}>
         { allowDelete && <a href="javascript:;" onClick={onDelete}>删除</a> }
         <a href="javascript:;" onClick={onEdit}>编辑</a>
       </div>
     )
     const editingExtra = (
-      <div className={style['extra-wrap']}>
+      <div className={styles['extra-wrap']}>
         <a href="javascript:;" onClick={onCancel}>取消</a>
         <a href="javascript:;" onClick={onSave}>保存</a>
       </div>
@@ -35,7 +36,7 @@ class InfoCard extends React.PureComponent {
       <Card
         title={title}
         extra={isEdit ? editingExtra : normalExtra}
-        style={{ marginTop: 10 }}>
+        style={{ marginTop: 10, ...style }}>
         { children }
       </Card>
     )
@@ -48,7 +49,8 @@ InfoCard.defaultProps = {
   onDelete: () => {},
   onEdit: () => {},
   onCancel: () => {},
-  onSave: () => {}
+  onSave: () => {},
+  style: {}
 }
 
 export default InfoCard

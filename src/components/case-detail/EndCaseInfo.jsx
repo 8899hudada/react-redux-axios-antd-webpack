@@ -1,7 +1,18 @@
 import React from 'react'
 import { InfoCard } from '@components/case-detail'
+import { Form, Row, Col, DatePicker } from 'antd'
+import { ImageListUpload } from '@components/common'
+import PropTypes from 'prop-types'
+import moment from 'moment'
+
+const FormItem = Form.Item
 
 class EndCaseInfo extends React.PureComponent {
+  static propTypes = {
+    form: PropTypes.object.isRequired,
+    params: PropTypes.object,
+    style: PropTypes.object
+  }
   constructor (props) {
     super(props)
     this.state = {
@@ -21,6 +32,8 @@ class EndCaseInfo extends React.PureComponent {
     this.setState({ isEdit: false })
   }
   render () {
+    const { getFieldDecorator } = this.props.form
+    const { params, style } = this.props
     const { isEdit } = this.state
     return (
       <InfoCard
@@ -28,9 +41,50 @@ class EndCaseInfo extends React.PureComponent {
         isEdit={isEdit}
         onEdit={this.onEdit}
         onCancel={this.onCancel}
-        onSave={this.onSave}></InfoCard>
+        onSave={this.onSave}
+        style={style}>
+        <Form>
+          <Row>
+            <Col span={8}>
+              <FormItem label="结案时间" style={{ display: 'flex' }}>
+                {
+                  isEdit
+                    ? getFieldDecorator('closeCaseDate', {
+                      initialValue: moment(params.closeCaseDate)
+                    })(
+                      <DatePicker
+                        placeholder="请输入结案时间" />
+                    )
+                    : <span>{params.closeCaseDate}</span>
+                }
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <FormItem label="调解书/结案文书">
+              {
+                getFieldDecorator('endCasePaper', {
+                  valuePropName: 'imgList',
+                  initialValue: params.attachments.filter(item => item.fileProperty === 9).map(item => item.filePath),
+                  getValueFromEvent: value => value
+                })(
+                  <ImageListUpload
+                    allowDelete={isEdit}
+                    allowUpload={isEdit} />
+                )
+              }
+            </FormItem>
+          </Row>
+        </Form>
+      </InfoCard>
     )
   }
 }
 
-export default EndCaseInfo
+EndCaseInfo.defaultProps = {
+  style: {}
+}
+
+const WrappedEndCaseInfo = Form.create()(EndCaseInfo)
+
+export default WrappedEndCaseInfo
