@@ -50,7 +50,8 @@ API_URL.caseManage = {
 }
 
 API_URL.caseDetail = {
-  FETCH_DETAIL: (id = '') => `case/detail/${id}`
+  FETCH_DETAIL: (id = '') => `case/detail/${id}`,
+  UPDATE_ENTRUST_INFO: 'case/detail/basic'
 }
 
 export default API_URL

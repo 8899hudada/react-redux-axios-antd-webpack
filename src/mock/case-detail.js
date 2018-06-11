@@ -2,7 +2,10 @@ import Mock from 'mockjs'
 import { API_ROOT, API_URL } from '@constants'
 
 const HTTP_ROOT = API_ROOT[process.env.ENV]
-const { FETCH_DETAIL } = API_URL.caseDetail
+const {
+  FETCH_DETAIL,
+  UPDATE_ENTRUST_INFO
+} = API_URL.caseDetail
 const { Random } = Mock
 
 Mock.mock(new RegExp(`^${HTTP_ROOT}/${FETCH_DETAIL()}\\d+$`), 'get', () => {
@@ -100,5 +103,12 @@ Mock.mock(new RegExp(`^${HTTP_ROOT}/${FETCH_DETAIL()}\\d+$`), 'get', () => {
         }]
       }
     }
+  })
+})
+
+Mock.mock(`${HTTP_ROOT}/${UPDATE_ENTRUST_INFO}`, 'put', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true
   })
 })

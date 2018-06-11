@@ -1,7 +1,10 @@
 import axios from 'axios'
 import { API_URL } from '@/constants'
 
-const { FETCH_DETAIL } = API_URL.caseDetail
+const {
+  FETCH_DETAIL,
+  UPDATE_ENTRUST_INFO
+} = API_URL.caseDetail
 
 const fetchDetail = (id = '') => {
   return axios({
@@ -12,6 +15,15 @@ const fetchDetail = (id = '') => {
   })
 }
 
+const updateEntrustInfo = data => {
+  return axios({
+    url: UPDATE_ENTRUST_INFO,
+    method: 'PUT',
+    data
+  })
+}
+
 export {
-  fetchDetail
+  fetchDetail,
+  updateEntrustInfo
 }
