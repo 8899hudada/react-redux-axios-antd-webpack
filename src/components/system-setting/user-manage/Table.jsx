@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Table, Button } from 'antd'
+import { Confirm } from '@components/common'
+import { userManageService } from '@services'
 
 class UserTable extends React.PureComponent {
   static propTypes = {
@@ -10,10 +12,29 @@ class UserTable extends React.PureComponent {
       pageSize: PropTypes.number,
       total: PropTypes.number
     }),
-    openUserModal: PropTypes.func.isRequired
+    openUserModal: PropTypes.func.isRequired,
+    openUpdatePasswordModal: PropTypes.func.isRequired,
+    fetchUsers: PropTypes.func.isRequired
+  }
+  constructor (props) {
+    super(props)
+
+    this.deleteUser = this.deleteUser.bind(this)
+    this.updateUserStatus = this.updateUserStatus.bind(this)
+  }
+  deleteUser (id) {
+    userManageService.deleteUser(id).then(() => {
+      this.props.fetchUsers()
+    })
+  }
+  // 启用或者禁用状态
+  updateUserStatus (id, status) {
+    userManageService.updateUserStatus(id, status).then(() => {
+      this.props.fetchUsers()
+    })
   }
   render () {
-    const { users, pagination, openUserModal } = this.props
+    const { users, pagination, openUserModal, openUpdatePasswordModal } = this.props
     const columns = [
       {
         title: '姓名',
@@ -44,19 +65,20 @@ class UserTable extends React.PureComponent {
         title: '状态',
         dataIndex : 'status',
         render: (text) => {
-          return <span>{text === 1 ? '启用' : '禁用'}</span>
+          return <span>{text ? '启用' : '禁用'}</span>
         },
         align: 'center',
       },
       {
         title: '操作',
-        render: (text, column, index) => {
+        render: (text, record, index) => {
           return (
             <div>
               <Button
                 type="primary"
-                className="margin-right-xs">
-                停用
+                className="margin-right-xs"
+                onClick={() => this.updateUserStatus(record.id, record.status)}>
+                { record.status ? '禁用' : '启用' }
               </Button>
               <Button
                 type="primary"
@@ -71,14 +93,13 @@ class UserTable extends React.PureComponent {
               </Button>
               <Button
                 type="primary"
-                className="margin-right-xs">
+                className="margin-right-xs"
+                onClick={() => {openUpdatePasswordModal(index)}}>
                 重置密码
               </Button>
-              <Button
-                type="danger"
-                className="margin-right-xs">
-                删除
-              </Button>
+              <Confirm options={{onOk: () => this.deleteUser(record.id)}}>
+                <Button type="danger" className="margin-right-xs">删除</Button>
+              </Confirm>
             </div>
           )
         },

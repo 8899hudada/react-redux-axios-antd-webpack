@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, Button } from 'antd'
-import { Search, Table, UserModal } from '@components/system-setting/user-manage'
+import { Search, Table, UserModal, UpdatePasswordModal } from '@components/system-setting/user-manage'
 import { PageHeader } from '@components/common'
 import { departmentManageService, userManageService } from '@services'
 import config from '@config'
@@ -32,8 +32,9 @@ class UserManage extends React.PureComponent {
         onShowSizeChange: (current, pageSize) => this.updatePagination({pageSize})  
       },
       userModalVisible: false, // 显示人员弹窗
-      userModalType: 'create', // 人员弹窗类型 [create：新增，update：编辑]
-      editUserIndex: 0 // 编辑的人员索引
+      userModalType: 'update', // 人员弹窗类型 [create：新增，update：编辑]
+      editUserIndex: 0, // 编辑的人员索引
+      updatePasswordModalVisible: false // 显示更新密码弹窗
     }
   }
   fetchDepartments () {
@@ -102,8 +103,17 @@ class UserManage extends React.PureComponent {
 
     this.setState(state)
   }
+  toggleUpdatePasswordModal (visible = false, editUserIndex = 0) {
+    const state = {updatePasswordModalVisible: visible}
+
+    if (visible) {
+      state.editUserIndex = editUserIndex
+    }
+
+    this.setState(state)
+  }
   render () {
-    const { searchParams, departments, roles, users, pagination, userModalVisible, userModalType } = this.state
+    const { searchParams, departments, roles, users, editUserIndex, pagination, userModalVisible, userModalType, updatePasswordModalVisible } = this.state
     
     return (
       <div>
@@ -125,15 +135,27 @@ class UserManage extends React.PureComponent {
             <Table
               pagination={pagination}
               users={users}
-              openUserModal={(type, index) => this.toggleUserModal(true, type, index)}>
+              openUserModal={(type, index) => this.toggleUserModal(true, type, index)}
+              openUpdatePasswordModal={index => this.toggleUpdatePasswordModal(true, index)}
+              fetchUsers={this.fetchUsers}>
             </Table>
           </div>
         </Card>
         <UserModal
           visible={userModalVisible}
           type={userModalType}
-          hideModal={() => this.toggleUserModal(false)}>
+          hideModal={() => this.toggleUserModal(false)}
+          departments={departments}
+          roles={roles}
+          fetchUsers={this.fetchUsers}
+          user={userModalType === 'update' && users[editUserIndex] || {}}>
         </UserModal>
+        <UpdatePasswordModal
+          visible={updatePasswordModalVisible}
+          hideModal={() => this.toggleUpdatePasswordModal(false)}
+          fetchUsers={this.fetchUsers}
+          userId={userModalType === 'update' && users[editUserIndex] && users[editUserIndex].id || -1}>
+        </UpdatePasswordModal>
       </div>
     )
   }

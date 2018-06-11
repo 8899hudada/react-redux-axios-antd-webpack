@@ -37,6 +37,7 @@ class Search extends React.PureComponent {
     const departmentOptions = departments.map(department => (
       <Option key={department.id} value={department.id}>{department.name}</Option>
     ))
+    
     const roleOptions = roles.map(role => (
       <Option key={role.id} value={role.id}>{role.name}</Option>
     ))
