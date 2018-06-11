@@ -7,7 +7,7 @@ const findNodeInTree = (tree, options) => {
   for (let i = 0; i < len; i++) {
     let node = tree[i]
     
-    if (options.value === node[options.key]) {
+    if (options.value == node[options.key]) {
       return node
     }
 

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 
 const FormItem = Form.Item
 
-class FirstInstanceInfo extends React.PureComponent {
+class RegisterCaseInfo extends React.PureComponent {
   static propTypes = {
     form: PropTypes.object.isRequired
   }
@@ -34,7 +34,7 @@ class FirstInstanceInfo extends React.PureComponent {
     console.log(isEdit)
     return (
       <InfoCard
-        title="一审信息"
+        title="立案信息"
         isEdit={isEdit}
         onEdit={this.onEdit}
         onCancel={this.onCancel}
@@ -59,6 +59,6 @@ class FirstInstanceInfo extends React.PureComponent {
   }
 }
 
-const WrappedFirstInstanceInfo = Form.create()(FirstInstanceInfo)
+const WrappedRegisterCaseInfo = Form.create()(RegisterCaseInfo)
 
-export default WrappedFirstInstanceInfo
+export default WrappedRegisterCaseInfo

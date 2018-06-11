@@ -8,7 +8,8 @@ API_URL.admin = {
 
 // 公共
 API_URL.common = {
-  UPLOAD: 'file/local',
+  UPLOAD_LOCAL: 'file/local',
+  UPLOAD: 'file/upload',
   CASE_IMPORT: 'import/excel'
 }
 
@@ -28,7 +29,8 @@ API_URL.systemSetting = {
   // 部门管理
   departmentManage: {
     FETCH_DEPARTMENTS: 'system/dept/get',
-    FETCH_DEPARTMENT_TREE: 'system/dept/bigtree',
+    FETCH_DEPARTMENT_TREE: 'system/dept/tree',
+    FETCH_DEPARTMENT_USER_TREE: 'system/dept/tree/user',
     FETCH_ROLES: 'system/role/get'
   },
   // 人员管理
@@ -45,6 +47,10 @@ API_URL.task = {
 // 案件管理
 API_URL.caseManage = {
   FETCH_LIST: 'case/manage/list'
+}
+
+API_URL.caseDetail = {
+  FETCH_DETAIL: (id = '') => `case/detail/${id}`
 }
 
 export default API_URL

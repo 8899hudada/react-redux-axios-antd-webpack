@@ -5,6 +5,7 @@ const HTTP_ROOT = API_ROOT[process.env.ENV]
 const {
   FETCH_DEPARTMENTS,
   FETCH_DEPARTMENT_TREE,
+  FETCH_DEPARTMENT_USER_TREE,
   FETCH_ROLES
 } = API_URL.systemSetting.departmentManage
 
@@ -26,49 +27,77 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_DEPARTMENT_TREE}`, 'get', () => {
     code: 200,
     ok: true,
     data: [{
-      id: 1,
+      id: '@increment(1)',
       name: '睿码科技',
       children: [{
-        id: 2,
+        id: '@increment(1)',
         name: '开发部',
         children: [{
-          id: 11,
+          id: '@increment(1)',
+          name: '金融科技组',
+          children: []
+        }]
+      }]
+    }, {
+      id: '@increment(1)',
+      name: '睿码金融',
+      children: [{
+        id: '@increment(1)',
+        name: '催收部',
+        children: []
+      }]
+    }]
+  })
+})
+
+Mock.mock(`${HTTP_ROOT}/${FETCH_DEPARTMENT_USER_TREE}`, 'get', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true,
+    data: [{
+      id: '@increment(1)',
+      name: '睿码科技',
+      children: [{
+        id: '@increment(1)',
+        name: '开发部',
+        children: [{
+          id: '@increment(1)',
           name: '金融科技组',
           children: [],
           users: [{
-            id: 12,
+            id: '@increment(1)',
             name: '曾十'
           }]
         }],
         users: [{
-          id: 3,
+          id: '@increment(1)',
           name: '张三'
         }, {
-          id: 4,
+          id: '@increment(1)',
           name: '李四'
         }]
       }],
       users: [{
-        id: 5,
+        id: '@increment(1)',
         name: '陈八'
       }]
     }, {
-      id: 6,
+      id: '@increment(1)',
       name: '睿码金融',
       children: [{
-        id: 7,
+        id: '@increment(1)',
         name: '催收部',
         children: [],
         users: [{
-          id: 8,
+          id: '@increment(1)',
           name: '王五'
         }, {
-          id: 9,
+          id: '@increment(1)',
           name: '赵六'
         }]
       }],
       users: [{
-        id: 10,
+        id: '@increment(1)',
         name: '郑九'
       }]
     }]

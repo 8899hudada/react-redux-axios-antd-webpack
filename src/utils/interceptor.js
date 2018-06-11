@@ -12,14 +12,10 @@ import { updateLoadingAction } from '@/redux/common'
  * @param {Boolean} res.config.showLoading 响应结束后是否关闭全局loading图标
  * @param {Boolean} res.config.loadingMsg 加载中提示文字
  */
-let config = {}
-
 axios.interceptors.request.use(
-  reqConfig => {
+  config => {
     const token = store.getState().loginReducer.token
     
-    config = reqConfig || {}
-
     if (config.showLoading === true) {
       config.hideLoading = message.loading(config.loadingMsg || '正在加载中...', 0)
       store.dispatch(updateLoadingAction(true))
@@ -45,7 +41,7 @@ axios.interceptors.request.use(
  */
 axios.interceptors.response.use(
   res => {
-    const { data } = res
+    const { data, config } = res
     const messageDuration = config.messageDuration || 2
     const successMsg = config.successMsg || data.msg
     const errorMsg = config.errorMsg || data.msg
@@ -80,7 +76,7 @@ axios.interceptors.response.use(
     return data
   },
   err => {
-    const { response } = err
+    const { response, config } = err
     const sysErr = '系统错误'
     const errorMsg = config && config.errorMsg || (response && response.data && response.data.msg) || sysErr
     
