@@ -1,9 +1,10 @@
 import React from 'react'
-import { Card, Button, Menu, Dropdown, Row, Col } from 'antd'
+import { Card, Button, Menu, Dropdown, Row, Col, Form } from 'antd'
 import PropTypes from 'prop-types'
 import styles from './style'
 
 const MenuItem = Menu.Item
+const FormItem = Form.Item
 
 class BaseInfo extends React.PureComponent {
   static propTypes = {
@@ -35,12 +36,28 @@ class BaseInfo extends React.PureComponent {
         <Row>
           <Col span={16}>
             <Row>
-              <Col span={12} className={styles['col-item']}>创建日期：{params.createTime}</Col>
-              <Col span={12} className={styles['col-item']}>最近更新日期：{params.updateTime}</Col>
+              <Col span={12}>
+                <FormItem label="创建日期" style={{ display: 'flex' }}>
+                  <span>{params.createTime}</span>
+                </FormItem>
+              </Col>
+              <Col span={12}>
+                <FormItem label="最近更新日期" style={{ display: 'flex' }}>
+                  <span>{params.updateTime}</span>
+                </FormItem>
+              </Col>
             </Row>
             <Row>
-              <Col span={12} className={styles['col-item']}>创建人：{params.createByName}</Col>
-              <Col span={12} className={styles['col-item']}>案件状态：{params.caseProcess}</Col>
+              <Col span={12}>
+                <FormItem label="创建人" style={{ display: 'flex' }}>
+                  <span>{params.createByName}</span>
+                </FormItem>
+              </Col>
+              <Col span={12}>
+                <FormItem label="案件状态" style={{ display: 'flex' }}>
+                  <span>{params.caseProcess}</span>
+                </FormItem>
+              </Col>
             </Row>
           </Col>
           <Col span={8} className={styles['col-item-single']}>关联催收案件：<a href="javascript:;">0</a></Col>

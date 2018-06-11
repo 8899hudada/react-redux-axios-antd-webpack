@@ -26,6 +26,13 @@ class ImageListUpload extends React.PureComponent {
   componentDidMount () {
     this.viewer = new Viewer(this.imgListBox)
   }
+  componentDidUpdate () {
+    if (this.viewer) {
+      this.viewer.update()
+    } else {
+      this.viewer = new Viewer(this.imgListBox)
+    }
+  }
   onChange (info) {
     const { file } = info
     const { status, response } = file
@@ -38,7 +45,6 @@ class ImageListUpload extends React.PureComponent {
       if (!response.ok) return message.warning((response && response.msg) || errMsg)
       if (imgList.length >= maxCount) return message.warning(`最多只能上传${maxCount}张`)
       onChange([...imgList, response.data.filePath])
-      this.viewer.update()
       break
     }
   }
@@ -47,7 +53,6 @@ class ImageListUpload extends React.PureComponent {
     const tempImgList = deepCopy(imgList)
     tempImgList.splice(index, 1)
     onChange(tempImgList)
-    this.viewer.update()
   }
   render () {
     const { beforeUpload, imgList, maxCount, multiple, allowDelete, allowUpload } = this.props

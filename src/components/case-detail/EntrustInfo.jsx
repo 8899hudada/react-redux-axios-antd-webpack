@@ -1,34 +1,54 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { InfoCard } from '@components/case-detail'
-import { Row, Col } from 'antd'
-import styles from './style'
+import { Form, Row, Col, Input, DatePicker, Select } from 'antd'
 import { ACCOUNT_TYPES } from '@constants'
+import { trustorService } from '@services'
+import moment from 'moment'
+import { REGEX } from '@constants'
+
+const FormItem = Form.Item
+const Option = Select.Option
 
 class EntrustInfo extends React.PureComponent {
   static propTypes = {
-    params: PropTypes.object
+    form: PropTypes.object.isRequired,
+    params: PropTypes.object,
+    fetchMethod: PropTypes.func
   }
   constructor (props) {
     super(props)
     this.state = {
-      isEdit: false
+      isEdit: false,
+      trustors: []
     }
     this.onEdit = this.onEdit.bind(this)
     this.onCancel = this.onCancel.bind(this)
     this.onSave = this.onSave.bind(this)
+  }
+  componentDidMount () {
+    this.fetchTrustors()
+  }
+  fetchTrustors () {
+    trustorService.fetchList().then(({ data }) => {
+      this.setState({
+        trustors: data
+      })
+    })
   }
   onEdit () {
     this.setState({ isEdit: true })
   }
   onCancel () {
     this.setState({ isEdit: false })
+    // this.props.fetchMethod()
   }
   onSave () {
     this.setState({ isEdit: false })
   }
   render () {
-    const { isEdit } = this.state
+    const { getFieldDecorator } = this.props.form
+    const { isEdit, trustors } = this.state
     const { params } = this.props
     return (
       <InfoCard
@@ -38,26 +58,162 @@ class EntrustInfo extends React.PureComponent {
         onEdit={this.onEdit}
         onCancel={this.onCancel}
         onSave={this.onSave}>
-        <Row>
+        <Form>
           <Row>
-            <Col span={8} className={styles['col-item']}>姓名：{params.customName}</Col>
-            <Col span={8} className={styles['col-item']}>身份证：{params.idCard}</Col>
-            <Col span={8} className={styles['col-item']}>委案金额：{params.entrustAmt}</Col>
+            <Col span={8}>
+              <FormItem label="姓名" style={{ display: 'flex' }}>
+                {
+                  isEdit
+                    ? getFieldDecorator('customName', {
+                      initialValue: params.customName
+                    })(
+                      <Input
+                        maxLength={16}
+                        placeholder="请输入姓名" />
+                    )
+                    : <span>{params.customName}</span>
+                }
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem label="身份证" style={{ display: 'flex' }}>
+                {
+                  isEdit
+                    ? getFieldDecorator('idCard', {
+                      initialValue: params.idCard,
+                      validateTrigger: 'onBlur',
+                      rules: [{ pattern: REGEX.idCardReg, message: '请输入正确的身份证' }]
+                    })(
+                      <Input
+                        placeholder="请输入身份证" />
+                    )
+                    : <span>{params.idCard}</span>
+                }
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem label="委案金额" style={{ display: 'flex' }}>
+                {
+                  isEdit
+                    ? getFieldDecorator('entrustAmt', {
+                      initialValue: params.entrustAmt,
+                      validateTrigger: 'onBlur',
+                      rules: [{ pattern: REGEX.decimal2Reg, message: '请输入正确的委案金额' }]
+                    })(
+                      <Input
+                        placeholder="请输入委案金额" />
+                    )
+                    : <span>{params.entrustAmt}</span>
+                }
+              </FormItem>
+            </Col>
           </Row>
           <Row>
-            <Col span={8} className={styles['col-item']}>本金余额：{params.principalBalance}</Col>
-            <Col span={8} className={styles['col-item']}>{ACCOUNT_TYPES[params.accountType] ? ACCOUNT_TYPES[params.accountType]: '账户'}：{params.accountNumber}</Col>
-            <Col span={8} className={styles['col-item']}>委托方：{params.trustorName}</Col>
+            <Col span={8}>
+              <FormItem label="本金余额" style={{ display: 'flex' }}>
+                {
+                  isEdit
+                    ? getFieldDecorator('principalBalance', {
+                      initialValue: params.principalBalance,
+                      validateTrigger: 'onBlur',
+                      rules: [{ pattern: REGEX.decimal2Reg, message: '请输入正确的本金余额' }]
+                    })(
+                      <Input
+                        placeholder="请输入本金余额" />
+                    )
+                    : <span>{params.principalBalance}</span>
+                }
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem label={ACCOUNT_TYPES[params.accountType] ? ACCOUNT_TYPES[params.accountType]: '账户'} style={{ display: 'flex' }}>
+                {
+                  isEdit
+                    ? getFieldDecorator('accountNumber', {
+                      initialValue: params.accountNumber
+                    })(
+                      <Input
+                        placeholder="请输入" />
+                    )
+                    : <span>{params.accountNumber}</span>
+                }
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem label="委托方" style={{ display: 'flex' }}>
+                {
+                  isEdit
+                    ? getFieldDecorator('trustorId', {
+                      initialValue: params.trustorId
+                    })(
+                      <Select
+                        style={{ minWidth: 150 }}
+                        optionFilterProp="children"
+                        showSearch
+                        filterOption={(input, option) => option.props.children.toLowerCase().includes(input.toLowerCase())}
+                        placeholder="请选择委托方">
+                        {trustors.map(trustor => <Option key={trustor.id}>{trustor.name}</Option>)}
+                      </Select>
+                    )
+                    : <span>{params.trustorName}</span>
+                }
+              </FormItem>
+            </Col>
           </Row>
           <Row>
-            <Col span={8} className={styles['col-item']}>委案日期：{params.entrustDate}</Col>
-            <Col span={8} className={styles['col-item']}>产品名称：{params.productName}</Col>
-            <Col span={8} className={styles['col-item']}>代理律师：{params.proxyLawyer}</Col>
+            <Col span={8}>
+              <FormItem label="委案日期" style={{ display: 'flex' }}>
+                {
+                  isEdit
+                    ? getFieldDecorator('entrustDate', {
+                      initialValue: moment(params.entrustDate)
+                    })(
+                      <DatePicker
+                        placeholder="请选择委案日期" />
+                    )
+                    : <span>{params.entrustDate}</span>
+                }
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem label="产品名称" style={{ display: 'flex' }}>
+                {
+                  isEdit
+                    ? getFieldDecorator('productName', {
+                      initialValue: params.productName
+                    })(
+                      <Input
+                        placeholder="请输入产品名称" />
+                    )
+                    : <span>{params.productName}</span>
+                }
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem label="代理律师" style={{ display: 'flex' }}>
+                {
+                  isEdit
+                    ? getFieldDecorator('proxyLawyer', {
+                      initialValue: params.proxyLawyer
+                    })(
+                      <Input
+                        placeholder="请输入代理律师" />
+                    )
+                    : <span>{params.proxyLawyer}</span>
+                }
+              </FormItem>
+            </Col>
           </Row>
-        </Row>
+        </Form>
       </InfoCard>
     )
   }
 }
 
-export default EntrustInfo
+EntrustInfo.defaultProps = {
+  fetchMethod: () => {}
+}
+
+const WrappedEntrustInfo = Form.create()(EntrustInfo)
+
+export default WrappedEntrustInfo

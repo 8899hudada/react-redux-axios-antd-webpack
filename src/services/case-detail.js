@@ -6,7 +6,9 @@ const { FETCH_DETAIL } = API_URL.caseDetail
 const fetchDetail = (id = '') => {
   return axios({
     url: FETCH_DETAIL(id),
-    method: 'GET'
+    method: 'GET',
+    showLoading: true,
+    loadingMsg: '获取数据中...'
   })
 }
 
