@@ -84,7 +84,8 @@ class LawerTreeSelectModal extends React.PureComponent {
           selectedKeys={selectedKeys}
           onSelect={this.onSelect}
           placeholder="请输入部门或姓名"
-          option={option} />
+          option={option}
+          isSearch />
       </Modal>
     )
   }

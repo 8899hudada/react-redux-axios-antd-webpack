@@ -23,6 +23,13 @@
   }
 }
 
+.tree-select :global(.notSelectedNode .ant-tree-node-content-wrapper-normal) {
+  &:before,
+  &:after {
+    display: none;
+  }
+}
+
 .tree-select :global(.ant-tree-node-selected) {
   &:before {
     border-color: #1890ff;

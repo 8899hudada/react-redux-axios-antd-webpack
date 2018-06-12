@@ -9,14 +9,18 @@ const Search = Input.Search
 class TreeSelect extends React.PureComponent {
   static propTypes = {
     data: PropTypes.array.isRequired,
-    selectedKeys: PropTypes.array.isRequired,
-    onSelect: PropTypes.func.isRequired,
+    selectedKeys: PropTypes.array,
+    onSelect: PropTypes.func,
+    checkedKeys: PropTypes.array,
+    onCheck: PropTypes.func,
     option: PropTypes.shape({
       labelKey: PropTypes.string,
       valueKey: PropTypes.string,
       childrenKey: PropTypes.string,
     }),
-    placeholder: PropTypes.string
+    placeholder: PropTypes.string,
+    isSearch: PropTypes.bool,
+    checkable: PropTypes.bool
   }
   constructor (props) {
     super(props)
@@ -87,6 +91,7 @@ class TreeSelect extends React.PureComponent {
   renderTreeNodes (data) {
     const searchValue = this.state.searchValue
     const { labelKey, valueKey, childrenKey } = this.props.option
+    const { checkable } = this.props
     return data.map(item => {
       const index = item[labelKey].indexOf(searchValue)
       const beforeStr = item[labelKey].substr(0, index)
@@ -98,32 +103,45 @@ class TreeSelect extends React.PureComponent {
           {afterStr}
         </span>
       ) : <span>{item[labelKey]}</span>
-      if (item[childrenKey]) {
-        return (
-          <TreeNode title={title} key={item[valueKey]} dataRef={item} selectable={false}>
+      if (checkable) {
+        if (item[childrenKey] && item[childrenKey].length) {
+          return <TreeNode title={title} key={item[valueKey]} dataRef={item} selectable={false}>
             {this.renderTreeNodes(item[childrenKey])}
           </TreeNode>
-        )
+        }
+        return <TreeNode title={title} key={item[valueKey]} dataRef={item} selectable={false} />;
+      } else {
+        if (item[childrenKey]) {
+          return item[childrenKey].length ? (
+            <TreeNode className={style['tree-select']} title={title} key={item[valueKey]} dataRef={item} selectable={false}>
+              {this.renderTreeNodes(item[childrenKey])}
+            </TreeNode>
+          ) : null
+        }
+        return <TreeNode className={style['tree-select']} title={title} key={item[valueKey]} dataRef={item} />;
       }
-      return <TreeNode title={title} key={item[valueKey]} dataRef={item} />;
     })
   }
   render () {
     const { searchValue, expandedKeys, autoExpandParent } = this.state
-    const { data, onSelect, selectedKeys, placeholder } = this.props
+    const { data, onSelect, selectedKeys, placeholder, isSearch, onCheck, checkedKeys, checkable } = this.props
     return (
       <div>
-        <Search
-          value={searchValue}
-          onChange={this.searchChange}
-          placeholder={placeholder} />
+        {
+          isSearch && <Search
+            value={searchValue}
+            onChange={this.searchChange}
+            placeholder={placeholder} />
+        }
         <Tree
-          className={style['tree-select']}
           autoExpandParent={autoExpandParent}
           onExpand={this.onExpand}
           onSelect={onSelect}
           selectedKeys={selectedKeys}
-          expandedKeys={expandedKeys}>
+          onCheck={onCheck}
+          checkedKeys={checkedKeys}
+          expandedKeys={expandedKeys}
+          checkable={checkable}>
           {this.renderTreeNodes(data)}
         </Tree>
       </div>
@@ -137,7 +155,13 @@ TreeSelect.defaultProps = {
     valueKey: 'value',
     childrenKey: 'children'
   },
-  placeholder: ''
+  placeholder: '',
+  selectedKeys: [],
+  onSelect: () => {},
+  checkedKeys: [],
+  onCheck: () => {},
+  isSearch: false,
+  checkable: false
 }
 
 export default TreeSelect
