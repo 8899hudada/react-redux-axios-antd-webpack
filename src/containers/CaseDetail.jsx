@@ -102,7 +102,7 @@ class CaseDetail extends React.PureComponent {
     const caseId = this.props.match.params.id
     caseDetailService.fetchDetail(caseId).then(({ data }) => {
       const caseInfo = data.caseInfo
-      // const registerCaseInfo = data.registerCaseInfo
+      const registerCaseInfo = data.registerCaseInfo
       const judgmentCaseInfo = data.judgmentCaseInfo
       const firstInstanceInfo = 
         judgmentCaseInfo 
@@ -121,7 +121,7 @@ class CaseDetail extends React.PureComponent {
       this.setState(() => {
         return {
           caseInfo: caseInfo ? caseInfo : initDataFactory().caseInfo,
-          // registerCaseInfo: registerCaseInfo ? registerCaseInfo : initDataFactory().registerCaseInfo,
+          registerCaseInfo: registerCaseInfo ? registerCaseInfo : initDataFactory().registerCaseInfo,
           firstInstanceInfo: firstInstanceInfo ? firstInstanceInfo : initDataFactory().firstInstanceInfo,
           secondInstanceInfo: secondInstanceInfo ? secondInstanceInfo : initDataFactory().secondInstanceInfo,
           execInfo: execInfo ? execInfo : initDataFactory().execInfo,

@@ -46,12 +46,20 @@ API_URL.task = {
 
 // 案件管理
 API_URL.caseManage = {
-  FETCH_LIST: 'case/manage/list'
+  FETCH_LIST: 'case/manage/list',
+  CREATE_CASE: 'case/manage/add'
+}
+
+// 我的案件
+API_URL.myCase = {
+  FETCH_LIST: 'my-case/list'
 }
 
 API_URL.caseDetail = {
   FETCH_DETAIL: (id = '') => `case/detail/${id}`,
-  UPDATE_ENTRUST_INFO: 'case/detail/basic'
+  UPDATE_ENTRUST_INFO: 'case/detail/basic',
+  UPDATE_REGISTER_CASE_INFO: 'case/detail/register',
+  DELETE_REGISTER_CASE_INFO: (id = '') => `case/detail/register/${id}`
 }
 
 export default API_URL

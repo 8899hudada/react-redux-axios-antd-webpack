@@ -45,10 +45,16 @@ class EntrustInfo extends React.PureComponent {
     this.props.form.resetFields()
   }
   onSave () {
-    this.props.form.validateFields((err, values) => {
+    const { form, params, fetchMethod } = this.props
+    form.validateFields((err, values) => {
       if (err) return false
-      caseDetailService.updateEntrustInfo(values).then(() => {
-        this.props.fetchMethod()
+      const data = {
+        ...values,
+        id: params.id,
+        entrustDate: values.entrustDate.format('YYYY-MM-DD')
+      }
+      caseDetailService.updateEntrustInfo(data).then(() => {
+        fetchMethod()
         this.setState({ isEdit: false })
       })
     })

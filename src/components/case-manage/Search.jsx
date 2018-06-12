@@ -57,6 +57,9 @@ class Search extends React.PureComponent {
             style={{ minWidth: 120 }}
             value={trustorId}
             onChange={value => onChange('trustorId', value)}
+            optionFilterProp="children"
+            showSearch
+            filterOption={(input, option) => option.props.children.toLowerCase().includes(input.toLowerCase())}
             placeholder="请选择委托方">
             {trustors.map(item => <Option value={item.id} key={item.id}>{item.name}</Option>)}
           </Select>
@@ -100,6 +103,9 @@ class Search extends React.PureComponent {
             style={{ minWidth: 120 }}
             value={proxyLawyer}
             onChange={value => onChange('proxyLawyer', value)}
+            optionFilterProp="children"
+            showSearch
+            filterOption={(input, option) => option.props.children.toLowerCase().includes(input.toLowerCase())}
             placeholder="请选择律师">
             {lawyers.map(item => <Option value={item.id} key={item.id}>{item.name}</Option>)}
           </Select>
