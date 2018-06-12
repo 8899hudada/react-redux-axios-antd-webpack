@@ -14,7 +14,7 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_LIST}`, 'post', () => {
         id: '@id()',
         customName: '@cname()',
         idCard: '@id()',
-        trustorName: '@csentence()',
+        trustorName: "@cword(2, 4)@pick(['金融', '消费', '银行'])",
         entrustDate: '@date()',
         entrustAmt: '@float(0, 1000000, 0, 2)',
         lawCaseCode: '(@date(yyyy))川@integer(1000, 1500)民初@integer(1000, 1500)号',

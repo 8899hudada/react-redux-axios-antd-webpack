@@ -82,6 +82,7 @@ class MyCase extends React.PureComponent {
       entrustDateBegin: searchParams.entrustDate.length ? searchParams.entrustDate[0].format('YYYY-MM-DD'): '',
       entrustDateEnd: searchParams.entrustDate.length ? searchParams.entrustDate[1].format('YYYY-MM-DD'): ''
     }
+    this.setState({ loading: true })
     myCaseService.fetchList(data).then(({ data }) => {
       this.setState(prevState => ({
         data: data.pageData,
@@ -91,7 +92,7 @@ class MyCase extends React.PureComponent {
         },
         selectedRowKeys: []
       }))
-    })
+    }).finally(() => this.setState({ loading: false }))
   }
   resetSearchParams () {
     this.setState({

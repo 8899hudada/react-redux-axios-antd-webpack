@@ -4,6 +4,8 @@ import { Form, Row, Col, DatePicker, Input } from 'antd'
 import { ImageListUpload } from '@components/common'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import { fileProperties } from './constant'
+import { caseDetailService } from '@services'
 
 const FormItem = Form.Item
 const TextArea = Input.TextArea
@@ -34,12 +36,32 @@ class SecondInstanceInfo extends React.PureComponent {
     this.setState({ isEdit: false })
   }
   onSave () {
-    this.setState({ isEdit: false })
+    const { form, params, caseId, fetchMethod } = this.props
+    form.validateFields((err, values) => {
+      if (err) return false
+      const data = {
+        ...values,
+        id: params.id ? params.id : null,
+        caseId,
+        attachments: [
+          ...values.secondInstanceCitation.map(item => ({ filePath: item, fileProperty: fileProperties.SECOND_INSTANCE_CITATION, caseId })),
+          ...values.secondInstanceJudgement.map(item => ({ filePath: item, fileProperty: fileProperties.SECOND_INSTANCE_JUDGEMENT, caseId }))
+        ],
+        openCourtTime: values.openCourtTime ? values.openCourtTime.format('YYYY-MM-DD hh:mm') : '',
+        judgePeriod: params.judgePeriod
+      }
+      caseDetailService.updateInstanceInfo(data).then(() => {
+        fetchMethod()
+        this.setState({ isEdit: false })
+      })
+    })
   }
   onDelete () {
-    const { params, localDelete } = this.props
+    const { params, localDelete, fetchMethod } = this.props
     if (params.id) {
-      console.log('删除')
+      caseDetailService.deleteInstanceInfo(params.id).then(() => {
+        fetchMethod()
+      })
     } else {
       localDelete('secondInstanceInfo')
     }
@@ -67,6 +89,7 @@ class SecondInstanceInfo extends React.PureComponent {
                       initialValue: moment(params.openCourtTime)
                     })(
                       <DatePicker
+                        showTime
                         placeholder="请输入开庭时间" />
                     )
                     : <span>{params.openCourtTime}</span>
@@ -94,9 +117,9 @@ class SecondInstanceInfo extends React.PureComponent {
           <Row>
             <FormItem label="二审传票">
               {
-                getFieldDecorator('secondInstanceSummons', {
+                getFieldDecorator('secondInstanceCitation', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.filter(item => item.fileProperty === 5).map(item => item.filePath),
+                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.SECOND_INSTANCE_CITATION).map(item => item.filePath),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload
@@ -109,7 +132,7 @@ class SecondInstanceInfo extends React.PureComponent {
               {
                 getFieldDecorator('secondInstanceJudgement', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.filter(item => item.fileProperty === 6).map(item => item.filePath),
+                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.SECOND_INSTANCE_JUDGEMENT).map(item => item.filePath),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload

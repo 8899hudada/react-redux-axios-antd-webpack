@@ -51,7 +51,7 @@ class EntrustInfo extends React.PureComponent {
       const data = {
         ...values,
         id: params.id,
-        entrustDate: values.entrustDate.format('YYYY-MM-DD')
+        entrustDate: values.entrustDate ? values.entrustDate.format('YYYY-MM-DD') : ''
       }
       caseDetailService.updateEntrustInfo(data).then(() => {
         fetchMethod()

@@ -88,7 +88,7 @@ class CaseManage extends React.PureComponent {
       entrustDateBegin: searchParams.entrustDate.length ? searchParams.entrustDate[0].format('YYYY-MM-DD'): '',
       entrustDateEnd: searchParams.entrustDate.length ? searchParams.entrustDate[1].format('YYYY-MM-DD'): ''
     }
-    console.log(data)
+    this.setState({ loading: true })
     caseManageService.fetchList(data).then(({ data }) => {
       this.setState(prevState => ({
         data: data.pageData,
@@ -98,7 +98,7 @@ class CaseManage extends React.PureComponent {
         },
         selectedRowKeys: []
       }))
-    })
+    }).finally(() => this.setState({ loading: false }))
   }
   resetSearchParams () {
     this.setState({

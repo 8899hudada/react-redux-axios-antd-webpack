@@ -57,7 +57,7 @@ class CaseCreate extends React.PureComponent {
     })
   }
   render () {
-    const { getFieldDecorator } = this.props.form
+    const { getFieldDecorator, getFieldValue } = this.props.form
     const { onBack } = this.props
     const { loading, trustors, trustorModalVisible } = this.state
     const formItemLayout = {
@@ -184,7 +184,7 @@ class CaseCreate extends React.PureComponent {
                   initialValue: '',
                   validateTrigger: 'onBlur'
                 })(
-                  <Input placeholder="请输入" />
+                  <Input placeholder={`请输入${ACCOUNT_TYPES[getFieldValue('accountType')]}`} />
                 )
               }
             </FormItem>

@@ -60,11 +60,14 @@ API_URL.myCase = {
   FETCH_LIST: 'my-case/list'
 }
 
+// 案件详情
 API_URL.caseDetail = {
   FETCH_DETAIL: (id = '') => `case/detail/${id}`,
   UPDATE_ENTRUST_INFO: 'case/detail/basic',
   UPDATE_REGISTER_CASE_INFO: 'case/detail/register',
-  DELETE_REGISTER_CASE_INFO: (id = '') => `case/detail/register/${id}`
+  DELETE_REGISTER_CASE_INFO: (id = '') => `case/detail/register/${id}`,
+  UPDATE_INSTANCE_INFO: 'case/detail/judgment',
+  DELETE_INSTANCE_INFO: (id = '') => `case/detail/judgment/${id}`
 }
 
 export default API_URL
