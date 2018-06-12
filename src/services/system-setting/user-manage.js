@@ -2,7 +2,12 @@ import axios from 'axios'
 import { API_URL } from '@/constants'
 
 const {
-  FETCH_USERS
+  FETCH_USERS,
+  CREATE_USER,
+  UPDATE_USER,
+  DELETE_USER,
+  UPDATE_USER_STATUS,
+  UPDATE_USER_PASSWORD
 } = API_URL.systemSetting.userManage
 
 /**
@@ -25,6 +30,111 @@ const fetchUsers = (data = {}) => {
   })
 }
 
+/**
+ * 创建人员
+ * @param  {Object} data 创建人员参数
+ * @param  {String} data.name 姓名
+ * @param  {String} data.phone 员工电话
+ * @param  {String} data.loginName 登录账号
+ * @param  {Object} data.dept 部门
+ * @param  {Object} data.role 角色
+ * @param  {String} data.passwd 密码
+ * @return {Promise} Promise
+ */
+const createUser = (data = {}) => {
+  return axios({
+    url: CREATE_USER,
+    method: 'POST',
+    showLoading: true,
+    showMessage: true,
+    loadingMsg: '正在创建人员...',
+    data
+  })
+}
+
+/**
+ * 更新人员
+ * @param  {Object} data 创建人员参数
+ * @param  {String} data.id 人员ID
+ * @param  {String} data.name 姓名
+ * @param  {String} data.phone 员工电话
+ * @param  {String} data.loginName 登录账号
+ * @param  {Object} data.dept 部门
+ * @param  {Object} data.role 角色
+ * @param  {String} data.passwd 密码
+ * @return {Promise} Promise
+ */
+const updateUser = (data = {}) => {
+  return axios({
+    url: UPDATE_USER,
+    method: 'PUT',
+    showLoading: true,
+    showMessage: true,
+    loadingMsg: '正在编辑人员...',
+    data
+  })
+}
+
+/**
+ * 删除人员
+ * @param  {Number} id 人员ID
+ * @return {Promise} Promise
+ */
+const deleteUser = (id = '') => {
+  return axios({
+    url: DELETE_USER(id),
+    method: 'DELETE',
+    showLoading: true,
+    showMessage: true,
+    loadingMsg: '正在删除...'
+  })
+}
+
+/**
+ * 启用或者禁用人员状态
+ * @param  {Number} id 人员ID
+ * @param  {Boolean} status 人员状态
+ * @return {Promise} Promise
+ */
+const updateUserStatus = (id, status) => {
+  return axios({
+    url: UPDATE_USER_STATUS,
+    method: 'PUT',
+    showLoading: true,
+    showMessage: true,
+    loadingMsg: `正在${status ? '禁用' : '停用'}...`,
+    data: {
+      id,
+      status
+    }
+  })
+}
+
+/**
+ * 更新人员密码
+ * @param  {Number} userId 人员ID
+ * @param  {String} password 人员密码
+ * @return {Promise} Promise
+ */
+const updateUserPassword = (userId, password) => {
+  return axios({
+    url: UPDATE_USER_PASSWORD,
+    method: 'PUT',
+    showLoading: true,
+    showMessage: true,
+    loadingMsg: `正在重置密码...`,
+    data: {
+      userId,
+      password
+    }
+  })
+}
+
 export {
-  fetchUsers
+  fetchUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+  updateUserStatus,
+  updateUserPassword
 }

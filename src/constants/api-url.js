@@ -35,7 +35,12 @@ API_URL.systemSetting = {
   },
   // 人员管理
   userManage: {
-    FETCH_USERS: 'system/account/get'
+    FETCH_USERS: 'system/account/get',
+    CREATE_USER: 'system/account/save',
+    UPDATE_USER: 'system/account/mod',
+    DELETE_USER: (id = '') => `system/account/del/${id}`,
+    UPDATE_USER_STATUS: 'system/account/status',
+    UPDATE_USER_PASSWORD: 'system/account/uppwd'
   }
 }
 

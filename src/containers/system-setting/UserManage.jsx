@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, Button } from 'antd'
-import { Search, Table } from '@components/system-setting/user-manage'
+import { Search, Table, UserModal, UpdatePasswordModal } from '@components/system-setting/user-manage'
 import { PageHeader } from '@components/common'
 import { departmentManageService, userManageService } from '@services'
 import config from '@config'
@@ -14,6 +14,7 @@ class UserManage extends React.PureComponent {
     this.fetchUsers = this.fetchUsers.bind(this)
     this.updatePagination = this.updatePagination.bind(this)
     this.updateSearchParams = this.updateSearchParams.bind(this)
+    this.toggleUserModal = this.toggleUserModal.bind(this)
 
     this.state = {
       searchParams: {
@@ -29,7 +30,11 @@ class UserManage extends React.PureComponent {
         ...config.pagination,
         onChange: current => this.updatePagination({current}),
         onShowSizeChange: (current, pageSize) => this.updatePagination({pageSize})  
-      }
+      },
+      userModalVisible: false, // 显示人员弹窗
+      userModalType: 'update', // 人员弹窗类型 [create：新增，update：编辑]
+      editUserIndex: 0, // 编辑的人员索引
+      updatePasswordModalVisible: false // 显示更新密码弹窗
     }
   }
   fetchDepartments () {
@@ -86,8 +91,29 @@ class UserManage extends React.PureComponent {
       }
     }) 
   }
+  toggleUserModal (visible = false, type = 'create', editUserIndex = 0) {
+    const state = {
+      userModalVisible: visible,
+      userModalType: type,
+    }
+    
+    if (type === 'update') {
+      state.editUserIndex = editUserIndex
+    }
+
+    this.setState(state)
+  }
+  toggleUpdatePasswordModal (visible = false, editUserIndex = 0) {
+    const state = {updatePasswordModalVisible: visible}
+
+    if (visible) {
+      state.editUserIndex = editUserIndex
+    }
+
+    this.setState(state)
+  }
   render () {
-    const { searchParams, departments, roles, users, pagination } = this.state
+    const { searchParams, departments, roles, users, editUserIndex, pagination, userModalVisible, userModalType, updatePasswordModalVisible } = this.state
     
     return (
       <div>
@@ -103,12 +129,33 @@ class UserManage extends React.PureComponent {
         </Card>
         <Card className="margin-top-xs">
           <div>
-            <Button type="primary">增加人员</Button>
+            <Button type="primary" onClick={() => this.toggleUserModal(true, 'create')}>增加人员</Button>
           </div>
           <div className="margin-top-xs">
-            <Table pagination={pagination} users={users}></Table>
+            <Table
+              pagination={pagination}
+              users={users}
+              openUserModal={(type, index) => this.toggleUserModal(true, type, index)}
+              openUpdatePasswordModal={index => this.toggleUpdatePasswordModal(true, index)}
+              fetchUsers={this.fetchUsers}>
+            </Table>
           </div>
         </Card>
+        <UserModal
+          visible={userModalVisible}
+          type={userModalType}
+          hideModal={() => this.toggleUserModal(false)}
+          departments={departments}
+          roles={roles}
+          fetchUsers={this.fetchUsers}
+          user={userModalType === 'update' && users[editUserIndex] || {}}>
+        </UserModal>
+        <UpdatePasswordModal
+          visible={updatePasswordModalVisible}
+          hideModal={() => this.toggleUpdatePasswordModal(false)}
+          fetchUsers={this.fetchUsers}
+          userId={userModalType === 'update' && users[editUserIndex] && users[editUserIndex].id || -1}>
+        </UpdatePasswordModal>
       </div>
     )
   }

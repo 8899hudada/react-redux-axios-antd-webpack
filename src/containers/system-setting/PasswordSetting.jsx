@@ -6,7 +6,6 @@ import { REGEX } from '@constants'
 import { passwordSettingService } from '@services'
 
 const FormItem = Form.Item
-const formItemLayout = {}
 
 class PasswordSetting extends React.PureComponent {
   static propTypes = {
@@ -48,7 +47,7 @@ class PasswordSetting extends React.PureComponent {
         <PageHeader title="密码设置" />
         <Card>
           <Form style={{width: 600}} onSubmit={this.handleSubmit}>
-            <FormItem {...formItemLayout} label="原密码">
+            <FormItem label="原密码">
               {getFieldDecorator('oldPassword', {
                 rules: [
                   {
@@ -60,7 +59,7 @@ class PasswordSetting extends React.PureComponent {
                 <Input type="password" placeholder="请输入原密码" />
               )}
             </FormItem>
-            <FormItem {...formItemLayout} label="新密码">
+            <FormItem label="新密码">
               {getFieldDecorator('newPassword', {
                 rules: [
                   {
@@ -73,7 +72,7 @@ class PasswordSetting extends React.PureComponent {
                 <Input type="password" placeholder="请输入6-16个字符，前后不能有空格，区分大小写·可以是字母/数字/或特殊字符-=+_等" />
               )}
             </FormItem>
-            <FormItem {...formItemLayout} label="确认密码">
+            <FormItem label="确认密码">
               {getFieldDecorator('confirmPassword', {
                 rules: [
                   {
