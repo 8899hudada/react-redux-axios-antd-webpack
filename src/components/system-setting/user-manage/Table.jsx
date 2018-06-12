@@ -14,6 +14,7 @@ class UserTable extends React.PureComponent {
     }),
     openUserModal: PropTypes.func.isRequired,
     openUpdatePasswordModal: PropTypes.func.isRequired,
+    openPermissionModal: PropTypes.func.isRequired,
     fetchUsers: PropTypes.func.isRequired
   }
   constructor (props) {
@@ -34,7 +35,7 @@ class UserTable extends React.PureComponent {
     })
   }
   render () {
-    const { users, pagination, openUserModal, openUpdatePasswordModal } = this.props
+    const { users, pagination, openUserModal, openUpdatePasswordModal, openPermissionModal } = this.props
     const columns = [
       {
         title: '姓名',
@@ -88,7 +89,8 @@ class UserTable extends React.PureComponent {
               </Button>
               <Button
                 type="primary"
-                className="margin-right-xs">
+                className="margin-right-xs"
+                onClick={() => {openPermissionModal(index)}}>
                 权限
               </Button>
               <Button

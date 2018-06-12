@@ -71,6 +71,7 @@ class LawerTreeSelectModal extends React.PureComponent {
   render () {
     const { selectedKeys, confirmLoading, data } = this.state
     const { visible, onCancel, title } = this.props
+    
     return (
       <Modal
         title={title}
@@ -84,6 +85,7 @@ class LawerTreeSelectModal extends React.PureComponent {
           selectedKeys={selectedKeys}
           onSelect={this.onSelect}
           placeholder="请输入部门或姓名"
+          isSearch={true}
           option={option} />
       </Modal>
     )

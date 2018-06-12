@@ -16,7 +16,8 @@ class TreeSelect extends React.PureComponent {
       valueKey: PropTypes.string,
       childrenKey: PropTypes.string,
     }),
-    placeholder: PropTypes.string
+    placeholder: PropTypes.string,
+    isSearch: PropTypes.bool
   }
   constructor (props) {
     super(props)
@@ -110,13 +111,17 @@ class TreeSelect extends React.PureComponent {
   }
   render () {
     const { searchValue, expandedKeys, autoExpandParent } = this.state
-    const { data, onSelect, selectedKeys, placeholder } = this.props
+    const { data, onSelect, selectedKeys, placeholder, isSearch } = this.props
     return (
       <div>
-        <Search
-          value={searchValue}
-          onChange={this.searchChange}
-          placeholder={placeholder} />
+        {
+          isSearch && (
+            <Search
+              value={searchValue}
+              onChange={this.searchChange}
+              placeholder={placeholder} />
+          ) || null
+        }
         <Tree
           className={style['tree-select']}
           autoExpandParent={autoExpandParent}
