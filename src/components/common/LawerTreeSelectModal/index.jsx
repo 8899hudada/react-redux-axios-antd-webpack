@@ -1,5 +1,5 @@
 import React from 'react'
-import { TreeSelect } from '@components/common'
+import { Tree } from '@components/common'
 import { Modal, message } from 'antd'
 import PropTypes from 'prop-types'
 import { findNodeInTree } from '@utils'
@@ -79,7 +79,7 @@ class LawerTreeSelectModal extends React.PureComponent {
         onCancel={onCancel}
         confirmLoading={confirmLoading}
         okText={confirmLoading ? '提交中...' : '确定'}>
-        <TreeSelect
+        <Tree
           data={data}
           selectedKeys={selectedKeys}
           onSelect={this.onSelect}

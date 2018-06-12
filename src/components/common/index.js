@@ -1,7 +1,7 @@
 export { default as Loading } from './Loading'
 export { default as RouteWrapper } from './RouteWrapper'
 export { default as PageHeader } from './PageHeader'
-export { default as TreeSelect } from './TreeSelect'
+export { default as Tree } from './Tree'
 export { default as CaseImport } from './CaseImport'
 export { default as RemoteSelect } from './RemoteSelect'
 export { default as DraggerUpload } from './DraggerUpload'
