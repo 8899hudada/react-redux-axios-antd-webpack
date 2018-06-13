@@ -71,6 +71,7 @@ class LawerTreeSelectModal extends React.PureComponent {
   render () {
     const { selectedKeys, confirmLoading, data } = this.state
     const { visible, onCancel, title } = this.props
+    
     return (
       <Modal
         title={title}

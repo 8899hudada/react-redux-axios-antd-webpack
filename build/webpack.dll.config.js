@@ -13,9 +13,6 @@ const entry = {
   vendor: [
     'axios',
     'babel-polyfill',
-    'react-loadable',
-    'react-dnd',
-    'react-dnd-html5-backend',
     'nprogress',
     'nprogress/nprogress.css',
     'history',
@@ -24,12 +21,16 @@ const entry = {
   ],
   react: [
     'react',
-    'react-dom',
+    // 'react-dom', // antd依赖了react-dom，重复打包会出问题
     'react-router',
     'prop-types',
-    'react-router-dom'
+    'react-router-dom',
+    'react-loadable',
+    'react-dnd',
+    'react-dnd-html5-backend',
+    'react-redux'
   ],
-  redux: ['redux', 'redux-saga', 'react-redux'],
+  redux: ['redux', 'redux-saga'],
   moment: ['moment', 'moment/locale/zh-cn'],
   antd: ['antd', 'antd/lib/locale-provider/zh_CN', 'antd-css']
 }
@@ -133,17 +134,13 @@ if (NODE_ENV === 'production') {
     'html-entities',
     'url',
     'punycode',
-    'redbox-react',
-    'react-proxy',
     'events',
     'lodash',
     'error-stack-parser',
     'querystring-es3',
     'loglevel',
     'stackframe',
-    'ansi-html',
-    'react-transform-hmr',
-    'react-transform-catch-errors'
+    'ansi-html'
   ]
 }
 

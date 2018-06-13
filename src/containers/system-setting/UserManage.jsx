@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, Button } from 'antd'
-import { Search, Table, UserModal, UpdatePasswordModal } from '@components/system-setting/user-manage'
+import { Search, Table, UserModal, UpdatePasswordModal, PermissionModal } from '@components/system-setting/user-manage'
 import { PageHeader } from '@components/common'
 import { departmentManageService, userManageService } from '@services'
 import config from '@config'
@@ -34,7 +34,8 @@ class UserManage extends React.PureComponent {
       userModalVisible: false, // 显示人员弹窗
       userModalType: 'update', // 人员弹窗类型 [create：新增，update：编辑]
       editUserIndex: 0, // 编辑的人员索引
-      updatePasswordModalVisible: false // 显示更新密码弹窗
+      updatePasswordModalVisible: false, // 显示更新密码弹窗
+      permissionModalVisible: false // 显示分配权限弹窗
     }
   }
   fetchDepartments () {
@@ -112,8 +113,28 @@ class UserManage extends React.PureComponent {
 
     this.setState(state)
   }
+  togglePermissionModal (visible = false, editUserIndex = 0) {
+    const state = {permissionModalVisible: visible}
+
+    if (visible) {
+      state.editUserIndex = editUserIndex
+    }
+
+    this.setState(state) 
+  }
   render () {
-    const { searchParams, departments, roles, users, editUserIndex, pagination, userModalVisible, userModalType, updatePasswordModalVisible } = this.state
+    const {
+      searchParams,
+      departments,
+      roles,
+      users,
+      editUserIndex,
+      pagination,
+      userModalVisible,
+      userModalType,
+      updatePasswordModalVisible,
+      permissionModalVisible
+    } = this.state
     
     return (
       <div>
@@ -137,6 +158,7 @@ class UserManage extends React.PureComponent {
               users={users}
               openUserModal={(type, index) => this.toggleUserModal(true, type, index)}
               openUpdatePasswordModal={index => this.toggleUpdatePasswordModal(true, index)}
+              openPermissionModal={index => this.togglePermissionModal(true, index)}
               fetchUsers={this.fetchUsers}>
             </Table>
           </div>
@@ -156,6 +178,10 @@ class UserManage extends React.PureComponent {
           fetchUsers={this.fetchUsers}
           userId={userModalType === 'update' && users[editUserIndex] && users[editUserIndex].id || -1}>
         </UpdatePasswordModal>
+        <PermissionModal
+          visible={permissionModalVisible}
+          hideModal={() => this.togglePermissionModal(false)}>
+        </PermissionModal>
       </div>
     )
   }

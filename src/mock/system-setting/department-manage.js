@@ -88,13 +88,7 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_DEPARTMENT_USER_TREE}`, 'get', () => {
         id: '@increment(1)',
         name: '催收部',
         children: [],
-        users: [{
-          id: '@increment(1)',
-          name: '王五'
-        }, {
-          id: '@increment(1)',
-          name: '赵六'
-        }]
+        users: []
       }],
       users: [{
         id: '@increment(1)',
