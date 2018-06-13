@@ -2,12 +2,18 @@ import React from 'react'
 import { PageHeader, CaseImport, CaseCreate, LawerTreeSelectModal } from '@components/common'
 import { Actions, Table, TableActions, Search } from '@components/case-manage'
 import { Card, message } from 'antd'
+import { caseManageService } from '@services'
 
-const data = [
-  { id: 1, name: '哈哈' }
-]
 const columns = [
-  { title: '姓名', dataIndex: 'name', key: 'name' }
+  { title: '姓名', dataIndex: 'customName', key: 'customName', render: (text, record) => <a href={`/case-detail/${record.id}`} target="_blank">{text}</a> },
+  { title: '身份证号', dataIndex: 'idCard', key: 'idCard' },
+  { title: '委托方', dataIndex: 'trustorName', key: 'trustorName' },
+  { title: '委案日期', dataIndex: 'entrustDate', key: 'entrustDate' },
+  { title: '委案金额', dataIndex: 'entrustAmt', key: 'entrustAmt' },
+  { title: '诉讼案号', dataIndex: 'lawCaseCode', key: 'lawCaseCode' },
+  { title: '分配状态', dataIndex: 'assignStatus', key: 'assignStatus' },
+  { title: '代理律师', dataIndex: 'proxyLawyer', key: 'proxyLawyer' },
+  { title: '案件进程', dataIndex: 'caseProcess', key: 'caseProcess' }
 ]
 
 const searchParamsFactory = () => ({
@@ -26,6 +32,7 @@ class CaseManage extends React.PureComponent {
     this.state = {
       selectedRowKeys: [],
       searchParams: searchParamsFactory(),
+      data: [],
       pagination: {
         current: 1,
         total: 0,
@@ -42,7 +49,10 @@ class CaseManage extends React.PureComponent {
     this.resetSearchParams = this.resetSearchParams.bind(this)
     this.selectedRowKeysChange = this.selectedRowKeysChange.bind(this)
     this.handlePageChange = this.handlePageChange.bind(this)
-    this.caseImportBack = this.caseImportBack.bind(this)
+    this.actionBack = this.actionBack.bind(this)
+  }
+  componentDidMount () {
+    this.search()
   }
   actionClick (action) {
     switch (action) {
@@ -60,10 +70,35 @@ class CaseManage extends React.PureComponent {
       if (this.state.selectedRowKeys.length === 0 ) return message.warning('请选择案件')
       this.setState({ treeSelectVisible: true })
       break
+    case 'selectedExport':
+      if (this.state.selectedRowKeys.length === 0 ) return message.warning('请选择案件')
+      break
+    case 'queryExport':
+      break
     }
   }
   search () {
-    console.log(this.state.searchParams)
+    const { searchParams } = this.state
+    const data = {
+      ...searchParams,
+      trustorId: searchParams.trustorId === -1 ? '' : searchParams.trustorId,
+      caseProcess: searchParams.caseProcess === -1 ? '' : searchParams.caseProcess,
+      assignStatus: searchParams.assignStatus === -1 ? '' : searchParams.assignStatus,
+      proxyLawyer: searchParams.proxyLawyer === -1 ? '' : searchParams.proxyLawyer,
+      entrustDateBegin: searchParams.entrustDate.length ? searchParams.entrustDate[0].format('YYYY-MM-DD'): '',
+      entrustDateEnd: searchParams.entrustDate.length ? searchParams.entrustDate[1].format('YYYY-MM-DD'): ''
+    }
+    this.setState({ loading: true })
+    caseManageService.fetchList(data).then(({ data }) => {
+      this.setState(prevState => ({
+        data: data.pageData,
+        pagination: {
+          ...prevState.pagination,
+          total: data.total
+        },
+        selectedRowKeys: []
+      }))
+    }).finally(() => this.setState({ loading: false }))
   }
   resetSearchParams () {
     this.setState({
@@ -88,21 +123,21 @@ class CaseManage extends React.PureComponent {
         current,
         pageSize
       }
-    }))
+    }), this.search)
   }
-  caseImportBack () {
-    this.setState({ curView: 'list' })
+  actionBack () {
+    this.setState({ curView: 'list' }, this.search)
   }
   render () {
-    const { selectedRowKeys, searchParams, pagination, loading, treeSelectVisible, curView } = this.state
+    const { selectedRowKeys, searchParams, pagination, loading, treeSelectVisible, curView, data } = this.state
     const rowSelection = {
       selectedRowKeys,
       onChange: this.selectedRowKeysChange
     }
     if (curView === 'import') {
-      return <CaseImport onBack={this.caseImportBack} />
+      return <CaseImport onBack={this.actionBack} />
     } else if (curView === 'create') {
-      return <CaseCreate onBack={this.caseImportBack} />
+      return <CaseCreate onBack={this.actionBack} />
     }
     return (
       <div>

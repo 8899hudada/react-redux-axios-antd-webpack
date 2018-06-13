@@ -23,9 +23,6 @@ class ImageListUpload extends React.PureComponent {
     this.onChange = this.onChange.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
   }
-  componentDidMount () {
-    this.viewer = new Viewer(this.imgListBox)
-  }
   componentDidUpdate () {
     if (this.viewer) {
       this.viewer.update()

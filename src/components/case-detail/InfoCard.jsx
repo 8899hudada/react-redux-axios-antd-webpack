@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card } from 'antd'
+import { Card, Modal } from 'antd'
 import PropTypes from 'prop-types'
 import styles from './style'
 
@@ -17,12 +17,20 @@ class InfoCard extends React.PureComponent {
   }
   constructor (props) {
     super(props)
+    this.handleDelete = this.handleDelete.bind(this)
+  }
+  handleDelete () {
+    Modal.confirm({
+      title: '提示',
+      content: '确认删除？',
+      onOk: () => this.props.onDelete()
+    })
   }
   render () {
-    const { title, isEdit, allowDelete, onDelete, onEdit, onCancel, onSave, children, style } = this.props
+    const { title, isEdit, allowDelete, onEdit, onCancel, onSave, children, style } = this.props
     const normalExtra = (
       <div className={styles['extra-wrap']}>
-        { allowDelete && <a href="javascript:;" onClick={onDelete}>删除</a> }
+        { allowDelete && <a href="javascript:;" onClick={this.handleDelete}>删除</a> }
         <a href="javascript:;" onClick={onEdit}>编辑</a>
       </div>
     )

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { InfoCard } from '@components/case-detail'
 import { Form, Row, Col, Input, DatePicker, Select } from 'antd'
 import { ACCOUNT_TYPES } from '@constants'
-import { trustorService } from '@services'
+import { trustorService, caseDetailService } from '@services'
 import moment from 'moment'
 import { REGEX } from '@constants'
 
@@ -14,7 +14,8 @@ class EntrustInfo extends React.PureComponent {
   static propTypes = {
     form: PropTypes.object.isRequired,
     params: PropTypes.object,
-    fetchMethod: PropTypes.func
+    fetchMethod: PropTypes.func,
+    caseId: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
   }
   constructor (props) {
     super(props)
@@ -41,10 +42,22 @@ class EntrustInfo extends React.PureComponent {
   }
   onCancel () {
     this.setState({ isEdit: false })
-    // this.props.fetchMethod()
+    this.props.form.resetFields()
   }
   onSave () {
-    this.setState({ isEdit: false })
+    const { form, params, fetchMethod } = this.props
+    form.validateFields((err, values) => {
+      if (err) return false
+      const data = {
+        ...values,
+        id: params.id,
+        entrustDate: values.entrustDate ? values.entrustDate.format('YYYY-MM-DD') : ''
+      }
+      caseDetailService.updateEntrustInfo(data).then(() => {
+        fetchMethod()
+        this.setState({ isEdit: false })
+      })
+    })
   }
   render () {
     const { getFieldDecorator } = this.props.form
@@ -126,7 +139,15 @@ class EntrustInfo extends React.PureComponent {
               </FormItem>
             </Col>
             <Col span={8}>
-              <FormItem label={ACCOUNT_TYPES[params.accountType] ? ACCOUNT_TYPES[params.accountType]: '账户'} style={{ display: 'flex' }}>
+              <FormItem
+                label={isEdit
+                  ? getFieldDecorator('accountType', {
+                    initialValue: String(params.accountType)
+                  })(<Select>
+                    { Object.keys(ACCOUNT_TYPES).map(key => <Option key={key}>{ACCOUNT_TYPES[key]}</Option>) }
+                  </Select>)
+                  : ACCOUNT_TYPES[params.accountType] ? ACCOUNT_TYPES[params.accountType]: '账户'}
+                style={{ display: 'flex' }}>
                 {
                   isEdit
                     ? getFieldDecorator('accountNumber', {

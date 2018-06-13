@@ -1,6 +1,6 @@
 import React from 'react'
 import { departmentManageService } from '@services'
-import { TreeSelect } from '@components/common'
+import { Tree } from '@components/common'
 
 const treeOption = {
   labelKey: 'name',
@@ -30,15 +30,15 @@ class DepartmentManage extends React.PureComponent {
   }
   render () {
     const { departmentTree, selectedDepartmentKeys } = this.state
-    console.log(departmentTree)
+    
     return (
       <div>
-        <TreeSelect
+        <Tree
           data={departmentTree}
           selectedKeys={selectedDepartmentKeys}
           onSelect={selectedKeys => this.handleTreeSelect('selectedDepartmentKeys', selectedKeys)}
           option={treeOption}>
-        </TreeSelect>
+        </Tree>
       </div>
     )
   }

@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { PageHeader } from '@components/common'
 import { Card, Form, Button, Select, Input, DatePicker, Row, Col } from 'antd'
-import { trustorService } from '@services'
-import { REGEX } from '@constants'
+import { trustorService, caseManageService } from '@services'
+import { REGEX, ACCOUNT_TYPES } from '@constants'
 import { TrustorModal } from '@components/system-setting/trustor-manage'
 
 const FormItem = Form.Item
@@ -43,14 +43,21 @@ class CaseCreate extends React.PureComponent {
     this.setState({ trustorModalVisible: true })
   }
   handleSubmit () {
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log(values)
+    const { form, onBack } = this.props
+    form.validateFields((err, values) => {
+      if (err) return false
+      const data = {
+        ...values,
+        entrustDate: values.entrustDate ? values.entrustDate.format('YYYY-MM-DD') : '',
+        trustorId: values.trustorId ? values.trustorId : ''
       }
+      caseManageService.createCase(data).then(() => {
+        onBack()
+      })
     })
   }
   render () {
-    const { getFieldDecorator } = this.props.form
+    const { getFieldDecorator, getFieldValue } = this.props.form
     const { onBack } = this.props
     const { loading, trustors, trustorModalVisible } = this.state
     const formItemLayout = {
@@ -86,7 +93,7 @@ class CaseCreate extends React.PureComponent {
               label="姓名"
               {...formItemLayout}>
               {
-                getFieldDecorator('customerName', {
+                getFieldDecorator('customName', {
                   initialValue: '',
                   validateTrigger: 'onBlur',
                   rules: [
@@ -162,19 +169,22 @@ class CaseCreate extends React.PureComponent {
               }
             </FormItem>
             <FormItem
-              label={(
-                <Select defaultValue="1" style={{ paddingRight: 10 }}>
-                  <Option key="1">金融账号</Option>
-                  <Option key="2">借款借据号</Option>
+              label={getFieldDecorator('accountType', {
+                initialValue: '0',
+              })(
+                <Select style={{ paddingRight: 10 }}>
+                  {
+                    Object.keys(ACCOUNT_TYPES).map(key => <Option key={key}>{ACCOUNT_TYPES[key]}</Option>)
+                  }
                 </Select>
               )}
               {...formItemLayout}>
               {
-                getFieldDecorator('wtfNum', {
+                getFieldDecorator('accountNumber', {
                   initialValue: '',
                   validateTrigger: 'onBlur'
                 })(
-                  <Input placeholder="请输入" />
+                  <Input placeholder={`请输入${ACCOUNT_TYPES[getFieldValue('accountType')]}`} />
                 )
               }
             </FormItem>
@@ -206,9 +216,7 @@ class CaseCreate extends React.PureComponent {
               label="委案日期"
               {...formItemLayout}>
               {
-                getFieldDecorator('entrustDate', {
-                  initialValue: ''
-                })(
+                getFieldDecorator('entrustDate')(
                   <DatePicker />
                 )
               }

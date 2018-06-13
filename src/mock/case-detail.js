@@ -2,7 +2,14 @@ import Mock from 'mockjs'
 import { API_ROOT, API_URL } from '@constants'
 
 const HTTP_ROOT = API_ROOT[process.env.ENV]
-const { FETCH_DETAIL } = API_URL.caseDetail
+const {
+  FETCH_DETAIL,
+  UPDATE_ENTRUST_INFO,
+  UPDATE_REGISTER_CASE_INFO,
+  DELETE_REGISTER_CASE_INFO,
+  UPDATE_INSTANCE_INFO,
+  DELETE_INSTANCE_INFO
+} = API_URL.caseDetail
 const { Random } = Mock
 
 Mock.mock(new RegExp(`^${HTTP_ROOT}/${FETCH_DETAIL()}\\d+$`), 'get', () => {
@@ -32,9 +39,9 @@ Mock.mock(new RegExp(`^${HTTP_ROOT}/${FETCH_DETAIL()}\\d+$`), 'get', () => {
         lawCaseCode: '(@date(yyyy))川@integer(1000, 1500)民初@integer(1000, 1500)号',
         acceptCourt: '@city(trur)人民法院',
         judgeName: '@cname()',
-        judgePhone: /^1[3|4|5|7|8]\d{9}$/,
+        judgePhone: /^1(3|4|5|7|8)\d{9}$/,
         judgeAssistName: '@cname()',
-        judgeAssistPhone: /^1[3|4|5|7|8]\d{9}$/,
+        judgeAssistPhone: /^1(3|4|5|7|8)\d{9}$/,
         registerTime: '@date()',
         prosecutionAmount: '@float(0, 1000000, 0, 2)',
         legalCosts: '@float(0, 1000000, 0, 2)',
@@ -100,5 +107,40 @@ Mock.mock(new RegExp(`^${HTTP_ROOT}/${FETCH_DETAIL()}\\d+$`), 'get', () => {
         }]
       }
     }
+  })
+})
+
+Mock.mock(`${HTTP_ROOT}/${UPDATE_ENTRUST_INFO}`, 'put', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true
+  })
+})
+
+Mock.mock(`${HTTP_ROOT}/${UPDATE_REGISTER_CASE_INFO}`, 'post', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true
+  })
+})
+
+Mock.mock(new RegExp(`^${HTTP_ROOT}/${DELETE_REGISTER_CASE_INFO()}\\d+$`), 'delete', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true
+  })
+})
+
+Mock.mock(`${HTTP_ROOT}/${UPDATE_INSTANCE_INFO}`, 'post', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true
+  })
+})
+
+Mock.mock(new RegExp(`^${HTTP_ROOT}/${DELETE_INSTANCE_INFO()}\\d+$`), 'delete', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true
   })
 })

@@ -8,16 +8,19 @@ const FormItem = Form.Item
 
 class BaseInfo extends React.PureComponent {
   static propTypes = {
-    params: PropTypes.object
+    params: PropTypes.object,
+    extraDisableObj: PropTypes.object,
+    menuClick: PropTypes.func
   }
   render () {
+    const { params, extraDisableObj, menuClick } = this.props
     const menu = (
-      <Menu>
-        <MenuItem key="1" disabled>立案信息</MenuItem>
-        <MenuItem key="2">一审信息</MenuItem>
-        <MenuItem key="3" disabled>二审信息</MenuItem>
-        <MenuItem key="4">执行信息</MenuItem>
-        <MenuItem key="5">结案信息</MenuItem>
+      <Menu onClick={menuClick}>
+        <MenuItem key="registerCaseInfo" disabled={extraDisableObj.registerCaseInfo}>立案信息</MenuItem>
+        <MenuItem key="firstInstanceInfo" disabled={extraDisableObj.firstInstanceInfo}>一审信息</MenuItem>
+        <MenuItem key="secondInstanceInfo" disabled={extraDisableObj.secondInstanceInfo}>二审信息</MenuItem>
+        <MenuItem key="execInfo" disabled={extraDisableObj.execInfo}>执行信息</MenuItem>
+        <MenuItem key="endCaseInfo" disabled={extraDisableObj.endCaseInfo}>结案信息</MenuItem>
       </Menu>
     )
     const extra = (
@@ -28,7 +31,6 @@ class BaseInfo extends React.PureComponent {
         </Dropdown>
       </div>
     )
-    const { params } = this.props 
     return (
       <Card
         title={<h3>案件详情</h3>}
@@ -66,5 +68,7 @@ class BaseInfo extends React.PureComponent {
     )
   }
 }
+
+BaseInfo.defaultProps = {}
 
 export default BaseInfo

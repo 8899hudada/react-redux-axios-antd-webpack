@@ -5,6 +5,8 @@ import { ImageListUpload } from '@components/common'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { REGEX } from '@constants'
+import { fileProperties } from './constant'
+import { caseDetailService } from '@services'
 
 const FormItem = Form.Item
 
@@ -12,7 +14,10 @@ class RegisterCaseInfo extends React.PureComponent {
   static propTypes = {
     form: PropTypes.object.isRequired,
     params: PropTypes.object,
-    style: PropTypes.object
+    style: PropTypes.object,
+    fetchMethod: PropTypes.func,
+    caseId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    localDelete: PropTypes.func
   }
   constructor (props) {
     super(props)
@@ -22,6 +27,7 @@ class RegisterCaseInfo extends React.PureComponent {
     this.onEdit = this.onEdit.bind(this)
     this.onCancel = this.onCancel.bind(this)
     this.onSave = this.onSave.bind(this)
+    this.onDelete = this.onDelete.bind(this)
   }
   onEdit () {
     this.setState({ isEdit: true })
@@ -30,7 +36,35 @@ class RegisterCaseInfo extends React.PureComponent {
     this.setState({ isEdit: false })
   }
   onSave () {
-    this.setState({ isEdit: false })
+    const { form, params, caseId, fetchMethod } = this.props
+    form.validateFields((err, values) => {
+      if (err) return false
+      const data = {
+        ...values,
+        id: params.id ? params.id : null,
+        caseId,
+        registerTime: values.registerTime.format('YYYY-MM-DD'),
+        attachments: values.acceptanceNotification.map(item => ({
+          filePath: item,
+          fileProperty: fileProperties.ACCEPTED_NOTICE,
+          caseId
+        }))
+      }
+      caseDetailService.updateRegisterCaseInfo(data).then(() => {
+        fetchMethod()
+        this.setState({ isEdit: false })
+      })
+    })
+  }
+  onDelete () {
+    const { params, localDelete, fetchMethod } = this.props
+    if (params.id) {
+      caseDetailService.deleteRegisterCaseInfo(params.id).then(() => {
+        fetchMethod()
+      })
+    } else {
+      localDelete('registerCaseInfo')
+    }
   }
   render () {
     const { getFieldDecorator } = this.props.form
@@ -43,6 +77,7 @@ class RegisterCaseInfo extends React.PureComponent {
         onEdit={this.onEdit}
         onCancel={this.onCancel}
         onSave={this.onSave}
+        onDelete={this.onDelete}
         style={style}>
         <Form>
           <Row>
@@ -85,6 +120,50 @@ class RegisterCaseInfo extends React.PureComponent {
                         placeholder="请输入法官姓名" />
                     )
                     : <span>{params.judgeName}</span>
+                }
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={8}>
+              <FormItem label="法官电话" style={{ display: 'flex' }}>
+                {
+                  isEdit
+                    ? getFieldDecorator('judgePhone', {
+                      initialValue: params.judgePhone
+                    })(
+                      <Input
+                        placeholder="请输入法官电话" />
+                    )
+                    : <span>{params.judgePhone}</span>
+                }
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem label="法官助理姓名" style={{ display: 'flex' }}>
+                {
+                  isEdit
+                    ? getFieldDecorator('judgeAssistName', {
+                      initialValue: params.judgeAssistName
+                    })(
+                      <Input
+                        placeholder="请输入法官助理姓名" />
+                    )
+                    : <span>{params.judgeAssistName}</span>
+                }
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem label="法官助理电话" style={{ display: 'flex' }}>
+                {
+                  isEdit
+                    ? getFieldDecorator('judgeAssistPhone', {
+                      initialValue: params.judgeAssistPhone
+                    })(
+                      <Input
+                        placeholder="请输入法官助理电话" />
+                    )
+                    : <span>{params.judgeAssistPhone}</span>
                 }
               </FormItem>
             </Col>

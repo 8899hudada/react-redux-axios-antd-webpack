@@ -1,19 +1,25 @@
 import React from 'react'
 import { InfoCard } from '@components/case-detail'
-import { Form, Row, Col, Input, DatePicker, InputNumber } from 'antd'
+import { Form, Row, Col, Input, DatePicker, InputNumber, Radio } from 'antd'
 import { ImageListUpload } from '@components/common'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { REGEX } from '@constants'
+import { fileProperties } from './constant'
+import { caseDetailService } from '@services'
 
 const FormItem = Form.Item
 const TextArea = Input.TextArea
+const RadioGroup = Radio.Group
 
 class FirstInstanceInfo extends React.PureComponent {
   static propTypes = {
     form: PropTypes.object.isRequired,
     params: PropTypes.object,
-    style: PropTypes.object
+    style: PropTypes.object,
+    fetchMethod: PropTypes.func,
+    caseId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    localDelete: PropTypes.func
   }
   constructor (props) {
     super(props)
@@ -23,6 +29,7 @@ class FirstInstanceInfo extends React.PureComponent {
     this.onEdit = this.onEdit.bind(this)
     this.onCancel = this.onCancel.bind(this)
     this.onSave = this.onSave.bind(this)
+    this.onDelete = this.onDelete.bind(this)
   }
   onEdit () {
     this.setState({ isEdit: true })
@@ -31,10 +38,41 @@ class FirstInstanceInfo extends React.PureComponent {
     this.setState({ isEdit: false })
   }
   onSave () {
-    this.setState({ isEdit: false })
+    const { form, params, caseId, fetchMethod } = this.props
+    form.validateFields((err, values) => {
+      if (err) return false
+      const data = {
+        ...values,
+        id: params.id ? params.id : null,
+        caseId,
+        attachments: [
+          ...values.firstInstanceCitation.map(item => ({ filePath: item, fileProperty: fileProperties.FIRST_INSTANCE_JUDGEMENT, caseId })),
+          ...values.announcement.map(item => ({ filePath: item, fileProperty: fileProperties.ANNOUNCEMENT, caseId })),
+          ...values.firstInstanceJudgement.map(item => ({ filePath: item, fileProperty: fileProperties.FIRST_INSTANCE_JUDGEMENT, caseId }))
+        ],
+        openCourtTime: values.openCourtTime ? values.openCourtTime.format('YYYY-MM-DD hh:mm') : '',
+        sealUpBeginDate: values.sealUpBeginDate ? values.sealUpBeginDate.format('YYYY-MM-DD') : '',
+        sealUpEndDate: values.sealUpEndDate ? values.sealUpEndDate.format('YYYY-MM-DD') : '',
+        judgePeriod: params.judgePeriod
+      }
+      caseDetailService.updateInstanceInfo(data).then(() => {
+        fetchMethod()
+        this.setState({ isEdit: false })
+      })
+    })
+  }
+  onDelete () {
+    const { params, localDelete, fetchMethod } = this.props
+    if (params.id) {
+      caseDetailService.deleteInstanceInfo(params.id).then(() => {
+        fetchMethod()
+      })
+    } else {
+      localDelete('firstInstanceInfo')
+    }
   }
   render () {
-    const { getFieldDecorator } = this.props.form
+    const { getFieldDecorator, getFieldValue } = this.props.form
     const { params, style } = this.props
     const { isEdit } = this.state
     return (
@@ -44,6 +82,7 @@ class FirstInstanceInfo extends React.PureComponent {
         onEdit={this.onEdit}
         onCancel={this.onCancel}
         onSave={this.onSave}
+        onDelete={this.onDelete}
         style={style}>
         <Form>
           <Row>
@@ -139,6 +178,8 @@ class FirstInstanceInfo extends React.PureComponent {
                       initialValue: moment(params.openCourtTime)
                     })(
                       <DatePicker
+                        showTime
+                        format="YYYY-MM-DD HH:mm:ss"
                         placeholder="请输入开庭时间" />
                     )
                     : <span>{params.openCourtTime}</span>
@@ -147,11 +188,93 @@ class FirstInstanceInfo extends React.PureComponent {
             </Col>
           </Row>
           <Row>
+            <Col span={24}>
+              <FormItem label="开庭结果">
+                {
+                  isEdit
+                    ? getFieldDecorator('openCourtResult', {
+                      initialValue: params.openCourtResult
+                    })(
+                      <TextArea
+                        autosize={{ minRows: 2, maxRows: 6 }}
+                        placeholder="请输入开庭结果" />
+                    )
+                    : <span>{params.openCourtResult}</span>
+                }
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={8}>
+              <FormItem label="是否公告" style={{ display: 'flex' }}>
+                {
+                  isEdit
+                    ? getFieldDecorator('isNotice', {
+                      initialValue: params.isNotice
+                    })(
+                      <RadioGroup>
+                        <Radio value={false}>是</Radio>
+                        <Radio value={true}>否</Radio>
+                      </RadioGroup>
+                    )
+                    : <span>{params.isNotice ? '是' : '否'}</span>
+                }
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem label="公告费" style={{ display: 'flex' }}>
+                {
+                  isEdit
+                    ? getFieldDecorator('noticeFee', {
+                      initialValue: params.noticeFee,
+                      validateTrigger: 'onBlur',
+                      rules: [{ pattern: REGEX.decimal2Reg, message: '请输入正确的公告费' }]
+                    })(
+                      <Input
+                        placeholder="请输入公告费"
+                        disabled={getFieldValue('isNotice')} />
+                    )
+                    : <span>{params.noticeFee}</span>
+                }
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem label="查封/冻结开始时间" style={{ display: 'flex' }}>
+                {
+                  isEdit
+                    ? getFieldDecorator('sealUpBeginDate', {
+                      initialValue: moment(params.sealUpBeginDate)
+                    })(
+                      <DatePicker
+                        placeholder="请输入查封/冻结开始时间" />
+                    )
+                    : <span>{params.sealUpBeginDate}</span>
+                }
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={8}>
+              <FormItem label="查封/冻结结束时间" style={{ display: 'flex' }}>
+                {
+                  isEdit
+                    ? getFieldDecorator('sealUpEndDate', {
+                      initialValue: moment(params.sealUpEndDate)
+                    })(
+                      <DatePicker
+                        placeholder="请输入查封/冻结结束时间" />
+                    )
+                    : <span>{params.sealUpEndDate}</span>
+                }
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
             <FormItem label="一审传票">
               {
-                getFieldDecorator('firstInstanceSummons', {
+                getFieldDecorator('firstInstanceCitation', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.filter(item => item.fileProperty === 2).map(item => item.filePath),
+                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.FIRST_INSTANCE_CITATION).map(item => item.filePath),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload
@@ -162,9 +285,9 @@ class FirstInstanceInfo extends React.PureComponent {
             </FormItem>
             <FormItem label="公告">
               {
-                getFieldDecorator('notice', {
+                getFieldDecorator('announcement', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.filter(item => item.fileProperty === 3).map(item => item.filePath),
+                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.ANNOUNCEMENT).map(item => item.filePath),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload
@@ -177,7 +300,7 @@ class FirstInstanceInfo extends React.PureComponent {
               {
                 getFieldDecorator('firstInstanceJudgement', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.filter(item => item.fileProperty === 4).map(item => item.filePath),
+                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.FIRST_INSTANCE_JUDGEMENT).map(item => item.filePath),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload

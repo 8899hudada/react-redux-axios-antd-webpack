@@ -45,6 +45,9 @@ class Search extends React.PureComponent {
             style={{ minWidth: 120 }}
             value={trustorId}
             onChange={value => onChange('trustorId', value)}
+            optionFilterProp="children"
+            showSearch
+            filterOption={(input, option) => option.props.children.toLowerCase().includes(input.toLowerCase())}
             placeholder="请选择委托方">
             {trustors.map(trustor => <Option value={trustor.id} key={trustor.id}>{trustor.name}</Option>)}
           </Select>

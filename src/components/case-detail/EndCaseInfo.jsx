@@ -11,7 +11,10 @@ class EndCaseInfo extends React.PureComponent {
   static propTypes = {
     form: PropTypes.object.isRequired,
     params: PropTypes.object,
-    style: PropTypes.object
+    style: PropTypes.object,
+    fetchMethod: PropTypes.func,
+    caseId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    localDelete: PropTypes.func
   }
   constructor (props) {
     super(props)
@@ -21,6 +24,7 @@ class EndCaseInfo extends React.PureComponent {
     this.onEdit = this.onEdit.bind(this)
     this.onCancel = this.onCancel.bind(this)
     this.onSave = this.onSave.bind(this)
+    this.onDelete = this.onDelete.bind(this)
   }
   onEdit () {
     this.setState({ isEdit: true })
@@ -30,6 +34,14 @@ class EndCaseInfo extends React.PureComponent {
   }
   onSave () {
     this.setState({ isEdit: false })
+  }
+  onDelete () {
+    const { params, localDelete } = this.props
+    if (params.id) {
+      console.log('删除')
+    } else {
+      localDelete('endCaseInfo')
+    }
   }
   render () {
     const { getFieldDecorator } = this.props.form
@@ -42,6 +54,7 @@ class EndCaseInfo extends React.PureComponent {
         onEdit={this.onEdit}
         onCancel={this.onCancel}
         onSave={this.onSave}
+        onDelete={this.onDelete}
         style={style}>
         <Form>
           <Row>
