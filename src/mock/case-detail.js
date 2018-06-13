@@ -41,7 +41,7 @@ Mock.mock(new RegExp(`^${HTTP_ROOT}/${FETCH_DETAIL()}\\d+$`), 'get', () => {
       registerCaseInfo: {
         id: '@increment(1)',
         lawCaseCode: '(@date(yyyy))川@integer(1000, 1500)民初@integer(1000, 1500)号',
-        acceptCourt: '@city(trur)人民法院',
+        acceptCourt: '@city(true)人民法院',
         judgeName: '@cname()',
         judgePhone: /^1(3|4|5|7|8)\d{9}$/,
         judgeAssistName: '@cname()',
