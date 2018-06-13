@@ -4,6 +4,8 @@ import { Form, Row, Col, Input, DatePicker } from 'antd'
 import { ImageListUpload } from '@components/common'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import { fileProperties } from './constant'
+import { caseDetailService } from '@services'
 
 const FormItem = Form.Item
 const TextArea = Input.TextArea
@@ -34,12 +36,33 @@ class ExecInfo extends React.PureComponent {
     this.setState({ isEdit: false })
   }
   onSave () {
-    this.setState({ isEdit: false })
+    const { form, params, caseId, fetchMethod } = this.props
+    form.validateFields((err, values) => {
+      if (err) return false
+      const data = {
+        ...values,
+        id: params.id ? params.id : null,
+        caseId,
+        attachments: [
+          ...values.executeCaseNotification.map(item => ({ filePath: item, fileProperty: fileProperties.EXECUTE_CASE_NOTIFICATION, caseId })),
+          ...values.finalWrittenVerdict.map(item => ({ filePath: item, fileProperty: fileProperties.FINAL_WRITTEN_VERDICT, caseId }))
+        ],
+        executeAcceptDate: values.executeAcceptDate ? values.executeAcceptDate.format('YYYY-MM-DD') : '',
+        executeEndDate: values.executeEndDate ? values.executeEndDate.format('YYYY-MM-DD') : '',
+        settleAccountDate: values.settleAccountDate ? values.settleAccountDate.format('YYYY-MM-DD') : '',
+      }
+      caseDetailService.updateExecInfo(data).then(() => {
+        fetchMethod()
+        this.setState({ isEdit: false })
+      })
+    })
   }
   onDelete () {
-    const { params, localDelete } = this.props
+    const { params, localDelete, fetchMethod } = this.props
     if (params.id) {
-      console.log('删除')
+      caseDetailService.deleteExecInfo(params.id).then(() => {
+        fetchMethod()
+      })
     } else {
       localDelete('execInfo')
     }
@@ -56,7 +79,8 @@ class ExecInfo extends React.PureComponent {
         onCancel={this.onCancel}
         onSave={this.onSave}
         onDelete={this.onDelete}
-        style={style}>
+        style={style}
+        id="execInfo">
         <Form>
           <Row>
             <Col span={8}>
@@ -78,7 +102,7 @@ class ExecInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('executeAcceptDate', {
-                      initialValue: moment(params.executeAcceptDate)
+                      initialValue: params.executeAcceptDate ? moment(params.executeAcceptDate) : null
                     })(
                       <DatePicker
                         placeholder="请输入执行受理时间" />
@@ -108,7 +132,7 @@ class ExecInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('executeEndDate', {
-                      initialValue: moment(params.executeEndDate)
+                      initialValue: params.executeEndDate ? moment(params.executeEndDate) : null
                     })(
                       <DatePicker
                         placeholder="请选择终结执行裁定时间" />
@@ -122,7 +146,7 @@ class ExecInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('settleAccountDate', {
-                      initialValue: moment(params.settleAccountDate)
+                      initialValue: params.settleAccountDate ? moment(params.settleAccountDate) : null
                     })(
                       <DatePicker
                         placeholder="请选择结清销户时间" />
@@ -166,9 +190,9 @@ class ExecInfo extends React.PureComponent {
           <Row>
             <FormItem label="执行案件受理通知书">
               {
-                getFieldDecorator('execNotice', {
+                getFieldDecorator('executeCaseNotification', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.filter(item => item.fileProperty === 7).map(item => item.filePath),
+                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.EXECUTE_CASE_NOTIFICATION).map(item => item.filePath),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload
@@ -179,9 +203,9 @@ class ExecInfo extends React.PureComponent {
             </FormItem>
             <FormItem label="终本裁定书">
               {
-                getFieldDecorator('lastJudgement', {
+                getFieldDecorator('finalWrittenVerdict', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.filter(item => item.fileProperty === 8).map(item => item.filePath),
+                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.FINAL_WRITTEN_VERDICT).map(item => item.filePath),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload

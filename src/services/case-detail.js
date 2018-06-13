@@ -7,7 +7,11 @@ const {
   UPDATE_REGISTER_CASE_INFO,
   DELETE_REGISTER_CASE_INFO,
   UPDATE_INSTANCE_INFO,
-  DELETE_INSTANCE_INFO
+  DELETE_INSTANCE_INFO,
+  UPDATE_EXEC_INFO,
+  DELETE_EXEC_INFO,
+  UPDATE_END_CASE_INFO,
+  DELETE_END_CASE_INFO
 } = API_URL.caseDetail
 
 // 获取案件详情数据
@@ -63,11 +67,49 @@ const deleteInstanceInfo = id => {
   })
 }
 
+// 更新执行信息
+const updateExecInfo = data => {
+  return axios({
+    url: UPDATE_EXEC_INFO,
+    method: 'POST',
+    data
+  })
+}
+
+// 删除执行信息
+const deleteExecInfo = id => {
+  return axios({
+    url: DELETE_EXEC_INFO(id),
+    method: 'DELETE'
+  })
+}
+
+// 更新结案信息
+const updateEndCaseInfo = data => {
+  return axios({
+    url: UPDATE_END_CASE_INFO,
+    method: 'POST',
+    data
+  })
+}
+
+// 删除结案信息
+const deleteEndCaseInfo = id => {
+  return axios({
+    url: DELETE_END_CASE_INFO(id),
+    method: 'DELETE'
+  })
+}
+
 export {
   fetchDetail,
   updateEntrustInfo,
   updateRegisterCaseInfo,
   deleteRegisterCaseInfo,
   updateInstanceInfo,
-  deleteInstanceInfo
+  deleteInstanceInfo,
+  updateExecInfo,
+  deleteExecInfo,
+  updateEndCaseInfo,
+  deleteEndCaseInfo
 }

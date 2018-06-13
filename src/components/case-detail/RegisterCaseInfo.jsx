@@ -78,7 +78,8 @@ class RegisterCaseInfo extends React.PureComponent {
         onCancel={this.onCancel}
         onSave={this.onSave}
         onDelete={this.onDelete}
-        style={style}>
+        style={style}
+        id="registerCaseInfo">
         <Form>
           <Row>
             <Col span={8}>

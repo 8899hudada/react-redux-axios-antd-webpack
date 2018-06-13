@@ -17,7 +17,7 @@ const initDataFactory = () => ({
     accountNumber: '',
     accountType: '',
     trustorName: '',
-    entrustDate: '',
+    entrustDate: null,
     productName: '',
     proxyLawyer: ''
   },
@@ -29,7 +29,7 @@ const initDataFactory = () => ({
     judgePhone: '',
     judgeAssistName: '',
     judgeAssistPhone: '',
-    registerTime: '',
+    registerTime: null,
     prosecutionAmount: '',
     legalCosts: '',
     lawyerFee: '',
@@ -43,34 +43,34 @@ const initDataFactory = () => ({
     guardFee: '',
     guardAmount: '',
     sealUpOrder: '',
-    openCourtTime: '',
+    openCourtTime: null,
     openCourtResult: '',
     isNotice: '',
     noticeFee: '',
-    sealUpBeginDate: '',
-    sealUpEndDate: '',
+    sealUpBeginDate: null,
+    sealUpEndDate: null,
     attachments: []
   },
   secondInstanceInfo: {
     id: '',
-    openCourtTime: '',
+    openCourtTime: null,
     openCourtResult: '',
     attachments: []
   },
   execInfo: {
     id: '',
     executeCaseCode: '',
-    executeAcceptDate: '',
+    executeAcceptDate: null,
     executePrescription: '',
-    executeEndDate: '',
-    settleAccountDate: '',
+    executeEndDate: null,
+    settleAccountDate: null,
     receivedPaymentAmount: '',
     remark: '',
     attachments: []
   },
   endCaseInfo: {
     id: '',
-    closeCaseDate: '',
+    closeCaseDate: null,
     attachments: []
   }
 })
@@ -136,7 +136,11 @@ class CaseDetail extends React.PureComponent {
         ...prevState.localMenuShowObj,
         [key]: true
       }
-    }))
+    }), () => {
+      const el = document.querySelector(`#${key}`)
+      el.scrollIntoView()
+      this[key].onEdit()
+    })
   }
   localDelete (key) {
     this.setState(prevState => ({
@@ -171,31 +175,36 @@ class CaseDetail extends React.PureComponent {
           caseId={caseId}
           localDelete={this.localDelete}
           fetchMethod={this.fetchDetail}
-          style={{ display: !registerCaseInfo.id && !localMenuShowObj.registerCaseInfo && 'none' }} />
+          style={{ display: !registerCaseInfo.id && !localMenuShowObj.registerCaseInfo && 'none' }}
+          wrappedComponentRef={dom => this.registerCaseInfo = dom} />
         <FirstInstanceInfo
           params={firstInstanceInfo}
           caseId={caseId}
           localDelete={this.localDelete}
           fetchMethod={this.fetchDetail}
-          style={{ display: !firstInstanceInfo.id && 'none' }} />
+          style={{ display: !firstInstanceInfo.id && !localMenuShowObj.firstInstanceInfo && 'none' }}
+          wrappedComponentRef={dom => this.firstInstanceInfo = dom} />
         <SecondInstanceInfo
           params={secondInstanceInfo}
           caseId={caseId}
           localDelete={this.localDelete}
           fetchMethod={this.fetchDetail}
-          style={{ display: !secondInstanceInfo.id && 'none' }} />
+          style={{ display: !secondInstanceInfo.id && !localMenuShowObj.secondInstanceInfo && 'none' }}
+          wrappedComponentRef={dom => this.secondInstanceInfo = dom} />
         <ExecInfo
           params={execInfo}
           caseId={caseId}
           localDelete={this.localDelete}
           fetchMethod={this.fetchDetail}
-          style={{ display: !execInfo.id && 'none' }} />
+          style={{ display: !execInfo.id && !localMenuShowObj.execInfo && 'none' }}
+          wrappedComponentRef={dom => this.execInfo = dom} />
         <EndCaseInfo
           params={endCaseInfo}
           caseId={caseId}
           localDelete={this.localDelete}
           fetchMethod={this.fetchDetail}
-          style={{ display: !endCaseInfo.id && 'none' }} />
+          style={{ display: !endCaseInfo.id && !localMenuShowObj.endCaseInfo && 'none' }}
+          wrappedComponentRef={dom => this.endCaseInfo = dom} />
       </div>
     )
   }

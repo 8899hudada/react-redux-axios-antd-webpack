@@ -8,7 +8,11 @@ const {
   UPDATE_REGISTER_CASE_INFO,
   DELETE_REGISTER_CASE_INFO,
   UPDATE_INSTANCE_INFO,
-  DELETE_INSTANCE_INFO
+  DELETE_INSTANCE_INFO,
+  UPDATE_EXEC_INFO,
+  DELETE_EXEC_INFO,
+  UPDATE_END_CASE_INFO,
+  DELETE_END_CASE_INFO
 } = API_URL.caseDetail
 const { Random } = Mock
 
@@ -139,6 +143,34 @@ Mock.mock(`${HTTP_ROOT}/${UPDATE_INSTANCE_INFO}`, 'post', () => {
 })
 
 Mock.mock(new RegExp(`^${HTTP_ROOT}/${DELETE_INSTANCE_INFO()}\\d+$`), 'delete', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true
+  })
+})
+
+Mock.mock(`${HTTP_ROOT}/${UPDATE_EXEC_INFO}`, 'post', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true
+  })
+})
+
+Mock.mock(new RegExp(`^${HTTP_ROOT}/${DELETE_EXEC_INFO()}\\d+$`), 'delete', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true
+  })
+})
+
+Mock.mock(`${HTTP_ROOT}/${UPDATE_END_CASE_INFO}`, 'post', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true
+  })
+})
+
+Mock.mock(new RegExp(`^${HTTP_ROOT}/${DELETE_END_CASE_INFO()}\\d+$`), 'delete', () => {
   return Mock.mock({
     code: 200,
     ok: true

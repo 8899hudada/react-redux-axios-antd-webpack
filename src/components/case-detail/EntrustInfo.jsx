@@ -187,7 +187,7 @@ class EntrustInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('entrustDate', {
-                      initialValue: moment(params.entrustDate)
+                      initialValue: params.entrustDate ? moment(params.entrustDate) : null
                     })(
                       <DatePicker
                         placeholder="请选择委案日期" />

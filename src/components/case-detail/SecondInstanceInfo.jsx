@@ -78,7 +78,8 @@ class SecondInstanceInfo extends React.PureComponent {
         onCancel={this.onCancel}
         onSave={this.onSave}
         onDelete={this.onDelete}
-        style={style}>
+        style={style}
+        id="secondInstanceInfo">
         <Form>
           <Row>
             <Col span={8}>
@@ -86,7 +87,7 @@ class SecondInstanceInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('openCourtTime', {
-                      initialValue: moment(params.openCourtTime)
+                      initialValue: params.openCourtTime ? moment(params.openCourtTime) : null
                     })(
                       <DatePicker
                         showTime

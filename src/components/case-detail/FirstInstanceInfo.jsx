@@ -83,7 +83,8 @@ class FirstInstanceInfo extends React.PureComponent {
         onCancel={this.onCancel}
         onSave={this.onSave}
         onDelete={this.onDelete}
-        style={style}>
+        style={style}
+        id="firstInstanceInfo">
         <Form>
           <Row>
             <Col span={24}>
@@ -175,7 +176,7 @@ class FirstInstanceInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('openCourtTime', {
-                      initialValue: moment(params.openCourtTime)
+                      initialValue: params.openCourtTime ? moment(params.openCourtTime) : null
                     })(
                       <DatePicker
                         showTime
@@ -243,7 +244,7 @@ class FirstInstanceInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('sealUpBeginDate', {
-                      initialValue: moment(params.sealUpBeginDate)
+                      initialValue: params.sealUpBeginDate ? moment(params.sealUpBeginDate) : null
                     })(
                       <DatePicker
                         placeholder="请输入查封/冻结开始时间" />
@@ -259,7 +260,7 @@ class FirstInstanceInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('sealUpEndDate', {
-                      initialValue: moment(params.sealUpEndDate)
+                      initialValue: params.sealUpEndDate ? moment(params.sealUpEndDate) : null
                     })(
                       <DatePicker
                         placeholder="请输入查封/冻结结束时间" />
