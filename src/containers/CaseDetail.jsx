@@ -2,6 +2,7 @@ import React from 'react'
 import { BaseInfo, EntrustInfo, RegisterCaseInfo, FirstInstanceInfo, SecondInstanceInfo, ExecInfo, EndCaseInfo } from '@components/case-detail'
 import PropTypes from 'prop-types'
 import { caseDetailService } from '@services'
+import { unique } from '@utils'
 
 const initDataFactory = () => ({
   caseInfo: {
@@ -160,12 +161,21 @@ class CaseDetail extends React.PureComponent {
       execInfo: Boolean(execInfo.id) || localMenuShowObj.execInfo,
       endCaseInfo: Boolean(endCaseInfo.id) || localMenuShowObj.endCaseInfo
     }
+    const attachments = unique([
+      ...registerCaseInfo.attachments,
+      ...firstInstanceInfo.attachments,
+      ...secondInstanceInfo.attachments,
+      ...execInfo.attachments,
+      ...endCaseInfo.attachments
+    ].map(item => item.fileProperty))
     return (
       <div style={{ padding: 20 }}>
         <BaseInfo
           params={caseInfo}
           extraDisableObj={extraDisableObj}
-          menuClick={this.menuClick} />
+          menuClick={this.menuClick}
+          caseId={caseId}
+          attachments={attachments} />
         <EntrustInfo
           params={caseInfo}
           caseId={caseId}

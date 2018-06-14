@@ -1,5 +1,6 @@
 import React from 'react'
 import { Card, Button, Menu, Dropdown, Row, Col, Form } from 'antd'
+import { AttachmentDownloadModal } from '@components/case-detail'
 import PropTypes from 'prop-types'
 import styles from './style'
 
@@ -10,10 +11,19 @@ class BaseInfo extends React.PureComponent {
   static propTypes = {
     params: PropTypes.object,
     extraDisableObj: PropTypes.object,
-    menuClick: PropTypes.func
+    menuClick: PropTypes.func,
+    attachments: PropTypes.array,
+    caseId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  }
+  constructor (props) {
+    super(props)
+    this.showAttachmentDownloadModal = this.showAttachmentDownloadModal.bind(this)
+  }
+  showAttachmentDownloadModal () {
+    this.attachmentDownloadModal.show()
   }
   render () {
-    const { params, extraDisableObj, menuClick } = this.props
+    const { params, extraDisableObj, menuClick, attachments, caseId } = this.props
     const menu = (
       <Menu onClick={menuClick}>
         <MenuItem key="registerCaseInfo" disabled={extraDisableObj.registerCaseInfo}>立案信息</MenuItem>
@@ -25,7 +35,10 @@ class BaseInfo extends React.PureComponent {
     )
     const extra = (
       <div>
-        <Button icon="download" style={{ marginRight: 10 }}>附件下载</Button>
+        <Button
+          icon="download"
+          style={{ marginRight: 10 }}
+          onClick={this.showAttachmentDownloadModal}>附件下载</Button>
         <Dropdown overlay={menu}>
           <Button icon="plus" type="primary">补充案件信息</Button>
         </Dropdown>
@@ -35,6 +48,10 @@ class BaseInfo extends React.PureComponent {
       <Card
         title={<h3>案件详情</h3>}
         extra={extra}>
+        <AttachmentDownloadModal
+          caseId={caseId}
+          attachments={attachments}
+          ref={dom => this.attachmentDownloadModal = dom} />
         <Row>
           <Col span={16}>
             <Row>
@@ -69,6 +86,8 @@ class BaseInfo extends React.PureComponent {
   }
 }
 
-BaseInfo.defaultProps = {}
+BaseInfo.defaultProps = {
+  attachments: []
+}
 
 export default BaseInfo

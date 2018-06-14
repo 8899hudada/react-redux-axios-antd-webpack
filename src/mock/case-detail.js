@@ -53,7 +53,8 @@ Mock.mock(new RegExp(`^${HTTP_ROOT}/${FETCH_DETAIL()}\\d+$`), 'get', () => {
         caseFee: '@float(0, 1000000, 0, 2)',
         'attachments|0-8': [{
           id: '@increment(1)',
-          filePath: `@pick(['https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4092268509,251462197&fm=27&gp=0.jpg','https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4164555870,3002820394&fm=27&gp=0.jpg'])`
+          filePath: Random.image(['200x300']),
+          fileProperty: 1
         }]
       },
       judgmentCaseInfo: [{
@@ -72,7 +73,7 @@ Mock.mock(new RegExp(`^${HTTP_ROOT}/${FETCH_DETAIL()}\\d+$`), 'get', () => {
         sealUpEndDate: '@date()',
         'attachments|4-8': [{
           id: '@increment(1)',
-          filePath: `@pick(['https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4092268509,251462197&fm=27&gp=0.jpg','https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4164555870,3002820394&fm=27&gp=0.jpg'])`,
+          filePath: Random.image(['200x300']),
           fileProperty: '@pick([2, 3, 4])'
         }]
       }, {
@@ -82,7 +83,7 @@ Mock.mock(new RegExp(`^${HTTP_ROOT}/${FETCH_DETAIL()}\\d+$`), 'get', () => {
         openCourtResult: '@csentence(20, 40)',
         'attachments|0-8': [{
           id: '@increment(1)',
-          filePath: `@pick(['https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4092268509,251462197&fm=27&gp=0.jpg','https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4164555870,3002820394&fm=27&gp=0.jpg'])`,
+          filePath: Random.image(['200x300']),
           fileProperty: '@pick([5, 6])'
         }]
       }],
@@ -97,7 +98,7 @@ Mock.mock(new RegExp(`^${HTTP_ROOT}/${FETCH_DETAIL()}\\d+$`), 'get', () => {
         remark: '@csentence(20, 40)',
         'attachments|0-8': [{
           id: '@increment(1)',
-          filePath: `@pick(['https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4092268509,251462197&fm=27&gp=0.jpg','https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4164555870,3002820394&fm=27&gp=0.jpg'])`,
+          filePath: Random.image(['200x300']),
           fileProperty: '@pick([7, 8])'
         }]
       },
@@ -106,7 +107,7 @@ Mock.mock(new RegExp(`^${HTTP_ROOT}/${FETCH_DETAIL()}\\d+$`), 'get', () => {
         closeCaseDate: '@date()',
         'attachments|0-8': [{
           id: '@increment(1)',
-          filePath: `@pick(['https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4092268509,251462197&fm=27&gp=0.jpg','https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4164555870,3002820394&fm=27&gp=0.jpg'])`,
+          filePath: Random.image(['200x300']),
           fileProperty: 9
         }]
       }
