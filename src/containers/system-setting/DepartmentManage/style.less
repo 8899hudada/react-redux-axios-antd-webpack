@@ -1,0 +1,21 @@
+.department-tree {
+  background: #fafafa;
+  :global(li) {
+    display: flex;
+    flex-wrap: wrap;
+
+    :global(.ant-tree-node-content-wrapper) {
+      flex: 1;
+      height: auto;
+    }
+  }
+
+  :global(.ant-tree-child-tree) {
+    width: 100%;
+  }
+
+  .tree-node-title {
+    display: flex;
+    justify-content: space-between;
+  }
+}

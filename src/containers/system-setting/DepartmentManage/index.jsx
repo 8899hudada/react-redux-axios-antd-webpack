@@ -1,8 +1,9 @@
 import React from 'react'
 import { departmentManageService } from '@services'
 import { Tree, Confirm, PageHeader } from '@components/common'
-import { Icon, Card } from 'antd'
-import { DepartmentModal } from '@components/system-setting/department-manage'
+import { Card, Button } from 'antd'
+import { DepartmentModal, Role } from '@components/system-setting/department-manage'
+import styles from './style'
 
 const treeOption = {
   labelKey: 'name',
@@ -61,19 +62,35 @@ class DepartmentManage extends React.PureComponent {
     const { departmentTree, selectedDepartmentKeys, visibleDepartmentModal, departmentModalAction, editDepartment } = this.state
     const NodeTitle = props => {
       return (
-        <div>
+        <div className={styles['tree-node-title']}>
           <span>{props.name}</span>
-          <Icon
-            onClick={() => this.createDepartment(props.id)}
-            className="margin-left-xs text-primary"
-            type="plus-circle" />
-          <Icon
-            onClick={() => this.updateDepartment(props)}
-            className="margin-left-xs text-primary"
-            type="edit" />
-          <Confirm options={{onOk: () => this.deleteDepartment(props.id)}}>
-            <Icon className="margin-left-xs text-error" type="minus-circle" />
-          </Confirm>
+          <div className={styles['action']}>
+            <Button
+              type="primary"
+              size="small"
+              className="margin-left-xs"
+              icon="plus-circle"
+              onClick={() => this.createDepartment(props.id)}>
+              添加子部门
+            </Button>
+            <Button
+              type="primary"
+              size="small"
+              className="margin-left-xs"
+              icon="edit"
+              onClick={() => this.updateDepartment(props)}>
+              编辑部门
+            </Button>
+            <Confirm options={{onOk: () => this.deleteDepartment(props.id)}}>
+              <Button
+                type="danger"
+                size="small"
+                className="margin-left-xs"
+                icon="minus-circle">
+                删除部门
+              </Button>
+            </Confirm>
+          </div>
         </div>
       )
     }
@@ -85,6 +102,7 @@ class DepartmentManage extends React.PureComponent {
           {
             departmentTree.length ? (
               <Tree
+                className={styles['department-tree']}
                 data={departmentTree}
                 selectedKeys={selectedDepartmentKeys}
                 onSelect={selectedKeys => this.handleTreeSelect('selectedDepartmentKeys', selectedKeys)}
@@ -95,9 +113,7 @@ class DepartmentManage extends React.PureComponent {
             ) : null
           }
         </Card>
-        <Card className="margin-top-xs" title="角色管理">
-          <div>ddd</div>
-        </Card>
+        <Role></Role>
         <DepartmentModal
           visible={visibleDepartmentModal}
           action={departmentModalAction}
