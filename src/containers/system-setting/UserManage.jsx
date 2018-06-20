@@ -180,6 +180,8 @@ class UserManage extends React.PureComponent {
         </UpdatePasswordModal>
         <PermissionModal
           visible={permissionModalVisible}
+          user={users[editUserIndex] || {}}
+          fetchUsers={this.fetchUsers}
           hideModal={() => this.togglePermissionModal(false)}>
         </PermissionModal>
       </div>

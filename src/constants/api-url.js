@@ -42,7 +42,9 @@ API_URL.systemSetting = {
     UPDATE_USER: 'system/account/mod',
     DELETE_USER: (id = '') => `system/account/del/${id}`,
     UPDATE_USER_STATUS: 'system/account/status',
-    UPDATE_USER_PASSWORD: 'system/account/uppwd'
+    UPDATE_USER_PASSWORD: 'system/account/uppwd',
+    FETCH_PERMISSION_TREE: 'system/account/perms/tree',
+    UPDATE_USER_PERMISSION: 'system/account/perms'
   },
   // 角色管理
   roleManage: {

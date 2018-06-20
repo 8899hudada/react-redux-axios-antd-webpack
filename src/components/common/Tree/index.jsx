@@ -141,8 +141,9 @@ class Tree extends React.PureComponent {
   }
   render () {
     const { searchValue, expandedKeys, autoExpandParent } = this.state
-    const { data, placeholder, isSearch } = this.props
+    let { data, placeholder, isSearch, onCheck, checkedKeys = [] } = this.props
 
+    checkedKeys = checkedKeys.map(key => String(key))
     return (
       <div>
         {
@@ -155,9 +156,11 @@ class Tree extends React.PureComponent {
         }
         <AntdTree
           {...this.props}
+          checkedKeys={checkedKeys}
           autoExpandParent={autoExpandParent}
           onExpand={this.onExpand}
-          expandedKeys={expandedKeys}>
+          expandedKeys={expandedKeys}
+          onCheck={(checkedKeys, e) => {e.checkedRealNodes = e.checkedNodes.map(item => item.props.dataRef); onCheck(checkedKeys, e)}}>
           {this.renderTreeNodes(data)}
         </AntdTree>
       </div>
