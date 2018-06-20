@@ -5,7 +5,6 @@ const {
   FETCH_DEPARTMENTS,
   FETCH_DEPARTMENT_TREE,
   FETCH_DEPARTMENT_USER_TREE,
-  FETCH_ROLES,
   DELETE_DEPARTMENT,
   CREATE_DEPARTMENT,
   UPDATE_DEPARTMENT
@@ -51,22 +50,6 @@ const fetchDepartmentUserTree = () => {
     showLoading: true,
     showMessage: true
   })
-}
-
-/**
- * 获取角色列表
- * @param  {Object} data 查询参数
- * @param  {Number} data.pageSize
- * @param  {String} data.name
- * @param  {Number} data.current
- * @return {Object} Promise
- */
-const fetchRoles = (data = {}) => {
-  return axios({
-    url: FETCH_ROLES,
-    method: 'POST',
-    data
-  }) 
 }
 
 /**
@@ -123,7 +106,6 @@ export {
   fetchDepartments,
   fetchDepartmentTree,
   fetchDepartmentUserTree,
-  fetchRoles,
   deleteDepartment,
   createDepartment,
   updateDepartment

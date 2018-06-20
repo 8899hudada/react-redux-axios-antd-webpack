@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, Button } from 'antd'
 import { Search, Table, UserModal, UpdatePasswordModal, PermissionModal } from '@components/system-setting/user-manage'
 import { PageHeader } from '@components/common'
-import { departmentManageService, userManageService } from '@services'
+import { departmentManageService, userManageService, roleManageService } from '@services'
 import config from '@config'
 
 class UserManage extends React.PureComponent {
@@ -49,7 +49,7 @@ class UserManage extends React.PureComponent {
     })
   }
   fetchRoles () {
-    departmentManageService.fetchRoles({
+    roleManageService.fetchRoles({
       current: 1,
       pageSize: 300
     }).then(res => {
