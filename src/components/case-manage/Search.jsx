@@ -3,7 +3,7 @@ import { Form, Button, Input, Select, DatePicker } from 'antd'
 import PropTypes from 'prop-types'
 import { trustorService, userManageService } from '@services'
 import moment from 'moment'
-import { CASE_PROCESSES, ASSIGN_STATUS } from '@constants'
+import { CASE_STATUS, ASSIGN_STATUS } from '@constants'
 
 const FormItem = Form.Item
 const Option = Select.Option
@@ -47,7 +47,7 @@ class Search extends React.PureComponent {
   render () {
     const { search, searchParams, onChange, reset } = this.props
     const { trustors, lawyers } = this.state
-    const { customerName, trustorId, entrustDate, lawCaseCode, caseProcess, assignStatus, proxyLawyer } = searchParams
+    const { customerName, trustorId, entrustDate, lawCaseCode, caseStatus, assignStatus, proxyLawyer, createTime } = searchParams
     return (
       <Form
         layout='inline'
@@ -84,10 +84,10 @@ class Search extends React.PureComponent {
         </FormItem>
         <FormItem label="案件进程">
           <Select
-            value={caseProcess}
-            onChange={value => onChange('caseProcess', value)}
+            value={caseStatus}
+            onChange={value => onChange('caseStatus', value)}
             placeholder="请选择案件进程">
-            {CASE_PROCESSES.map(item => <Option value={item.id} key={item.id}>{item.name}</Option>)}
+            {CASE_STATUS.map(item => <Option value={item.id} key={item.id}>{item.name}</Option>)}
           </Select>
         </FormItem>
         <FormItem label="分配状态">
@@ -95,8 +95,14 @@ class Search extends React.PureComponent {
             value={assignStatus}
             onChange={value => onChange('assignStatus', value)}
             placeholder="请选择分配状态">
-            {ASSIGN_STATUS.map(item => <Option value={item.id} key={item.id}>{item.name}</Option>)}
+            {ASSIGN_STATUS.map(item => <Option value={item.value} key={item.value}>{item.name}</Option>)}
           </Select>
+        </FormItem>
+        <FormItem label="创建日期">
+          <RangePicker
+            value={createTime}
+            onChange={value => onChange('createTime', value)}
+            disabledDate={current => current && current > moment()} />
         </FormItem>
         <FormItem label="律师">
           <Select

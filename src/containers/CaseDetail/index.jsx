@@ -3,78 +3,7 @@ import { BaseInfo, EntrustInfo, RegisterCaseInfo, FirstInstanceInfo, SecondInsta
 import PropTypes from 'prop-types'
 import { caseDetailService } from '@services'
 import { unique } from '@utils'
-
-const initDataFactory = () => ({
-  caseInfo: {
-    id: '',
-    createTime: '',
-    updateTime: '',
-    createByName: '',
-    caseProcess: "",
-    customName: '',
-    idCard: '',
-    entrustAmt: '',
-    principalBalance: '',
-    accountNumber: '',
-    accountType: '',
-    trustorName: '',
-    entrustDate: null,
-    productName: '',
-    proxyLawyer: ''
-  },
-  registerCaseInfo: {
-    id: '',
-    lawCaseCode: '',
-    acceptCourt: '',
-    judgeName: '',
-    judgePhone: '',
-    judgeAssistName: '',
-    judgeAssistPhone: '',
-    registerTime: null,
-    prosecutionAmount: '',
-    legalCosts: '',
-    lawyerFee: '',
-    caseFee: '',
-    attachments: []
-  },
-  firstInstanceInfo: {
-    id: '',
-    assetsKey: '',
-    guardAssets: '',
-    guardFee: '',
-    guardAmount: '',
-    sealUpOrder: '',
-    openCourtTime: null,
-    openCourtResult: '',
-    isNotice: '',
-    noticeFee: '',
-    sealUpBeginDate: null,
-    sealUpEndDate: null,
-    attachments: []
-  },
-  secondInstanceInfo: {
-    id: '',
-    openCourtTime: null,
-    openCourtResult: '',
-    attachments: []
-  },
-  execInfo: {
-    id: '',
-    executeCaseCode: '',
-    executeAcceptDate: null,
-    executePrescription: '',
-    executeEndDate: null,
-    settleAccountDate: null,
-    receivedPaymentAmount: '',
-    remark: '',
-    attachments: []
-  },
-  endCaseInfo: {
-    id: '',
-    closeCaseDate: null,
-    attachments: []
-  }
-})
+import { initDataFactory, initLocalMenuShowObjFactory, formatData } from './utils'
 
 class CaseDetail extends React.PureComponent {
   static propTypes = {
@@ -84,13 +13,7 @@ class CaseDetail extends React.PureComponent {
     super(props)
     this.state = {
       ...initDataFactory(),
-      localMenuShowObj: {
-        registerCaseInfo: false,
-        firstInstanceInfo: false,
-        secondInstanceInfo: false,
-        execInfo: false,
-        endCaseInfo: false
-      }
+      localMenuShowObj: initLocalMenuShowObjFactory()
     }
     this.fetchDetail = this.fetchDetail.bind(this)
     this.menuClick = this.menuClick.bind(this)
@@ -121,12 +44,12 @@ class CaseDetail extends React.PureComponent {
       const endCaseInfo = data.closedCaseInfo
       this.setState(() => {
         return {
-          caseInfo: caseInfo ? caseInfo : initDataFactory().caseInfo,
-          registerCaseInfo: registerCaseInfo ? registerCaseInfo : initDataFactory().registerCaseInfo,
-          firstInstanceInfo: firstInstanceInfo ? firstInstanceInfo : initDataFactory().firstInstanceInfo,
-          secondInstanceInfo: secondInstanceInfo ? secondInstanceInfo : initDataFactory().secondInstanceInfo,
-          execInfo: execInfo ? execInfo : initDataFactory().execInfo,
-          endCaseInfo: endCaseInfo ? endCaseInfo : initDataFactory().endCaseInfo
+          caseInfo: formatData(caseInfo, 'caseInfo'),
+          registerCaseInfo: formatData(registerCaseInfo, 'registerCaseInfo'),
+          firstInstanceInfo: formatData(firstInstanceInfo, 'firstInstanceInfo'),
+          secondInstanceInfo: formatData(secondInstanceInfo, 'secondInstanceInfo'),
+          execInfo: formatData(execInfo, 'execInfo'),
+          endCaseInfo: formatData(endCaseInfo, 'endCaseInfo')
         }
       })
     })

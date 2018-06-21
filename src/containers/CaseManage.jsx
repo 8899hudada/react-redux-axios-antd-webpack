@@ -11,7 +11,7 @@ const columns = [
   { title: '委案日期', dataIndex: 'entrustDate', key: 'entrustDate' },
   { title: '委案金额', dataIndex: 'entrustAmt', key: 'entrustAmt' },
   { title: '诉讼案号', dataIndex: 'lawCaseCode', key: 'lawCaseCode' },
-  { title: '分配状态', dataIndex: 'assignStatus', key: 'assignStatus' },
+  { title: '分配状态', dataIndex: 'assignStatus', key: 'assignStatus', render: text => <div>{ text ? '已分配' : '未分配' }</div> },
   { title: '代理律师', dataIndex: 'proxyLawyer', key: 'proxyLawyer' },
   { title: '案件进程', dataIndex: 'caseProcess', key: 'caseProcess' }
 ]
@@ -19,10 +19,11 @@ const columns = [
 const searchParamsFactory = () => ({
   customerName: '',
   entrustDate: [],
+  createTime: [],
   trustorId: -1,
   lawCaseCode: '',
   caseProcess: -1,
-  assignStatus: -1,
+  caseStatus: -1,
   proxyLawyer: -1
 })
 
@@ -82,12 +83,15 @@ class CaseManage extends React.PureComponent {
     const data = {
       ...searchParams,
       trustorId: searchParams.trustorId === -1 ? '' : searchParams.trustorId,
-      caseProcess: searchParams.caseProcess === -1 ? '' : searchParams.caseProcess,
-      assignStatus: searchParams.assignStatus === -1 ? '' : searchParams.assignStatus,
+      caseStatus: searchParams.caseStatus === -1 ? '' : searchParams.caseStatus,
+      assignStatus: searchParams.assignStatus === -1 ? '' : Boolean(searchParams.assignStatus),
       proxyLawyer: searchParams.proxyLawyer === -1 ? '' : searchParams.proxyLawyer,
       entrustDateBegin: searchParams.entrustDate.length ? searchParams.entrustDate[0].format('YYYY-MM-DD'): '',
-      entrustDateEnd: searchParams.entrustDate.length ? searchParams.entrustDate[1].format('YYYY-MM-DD'): ''
+      entrustDateEnd: searchParams.entrustDate.length ? searchParams.entrustDate[1].format('YYYY-MM-DD'): '',
+      createTimeBegin: searchParams.createTime.length ? searchParams.createTime[0].format('YYYY-MM-DD'): '',
+      createTimeEnd: searchParams.createTime.length ? searchParams.createTime[1].format('YYYY-MM-DD'): ''
     }
+    console.log(data)
     this.setState({ loading: true })
     caseManageService.fetchList(data).then(({ data }) => {
       this.setState(prevState => ({
