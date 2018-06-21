@@ -24,6 +24,14 @@ const {
  * @return {Promise} Promise
  */
 const fetchUsers = (data = {}) => {
+  if (data.deptId === -1) {
+    data.deptId = ''
+  }
+  
+  if (data.roleId === -1) {
+    data.roleId = ''
+  }
+
   return axios({
     url: FETCH_USERS,
     method: 'POST',
@@ -154,7 +162,6 @@ const fetchPermissionTree = () => {
  * @return {Promise} Promise
  */
 const updateUserPermission = (data = {}) => {
-  console.log(data)
   return axios({
     url: UPDATE_USER_PERMISSION,
     method: 'PUT',

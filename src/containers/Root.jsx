@@ -32,7 +32,7 @@ class Root extends Component {
   }
   updateRouterMenu () {
     const selectedKeys = [window.$history && window.$history.location.pathname]
-    const openKeys = findParentsByKey(window.$history && window.$history.location.pathname, router, 'path')
+    const openKeys = findParentsByKey(window.$history && window.$history.location.pathname, router, 'path') || []
     
     this.props.updateRouterMenuAction({
       openKeys,
@@ -40,6 +40,7 @@ class Root extends Component {
     })
   }
   handleRouterChange ({ pathname }) {
+    console.log(pathname)
     if (!this.props.selectedKeys.includes(pathname)) {
       this.props.updateRouterMenuAction({
         selectedKeys: [pathname]
@@ -51,7 +52,7 @@ class Root extends Component {
       if (!getLocalStorage('token')) {
         window.$history && window.$history.push('/login')
       }
-
+      
       this.updateRouterMenu()
       window.$history && window.$history.listen(this.handleRouterChange)
     }, 0)

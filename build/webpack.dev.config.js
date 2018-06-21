@@ -1,10 +1,11 @@
 const webpack = require('webpack')
 const path = require('path')
 const happypackFactory = require('./happypack')
+const DEV_API_ROOT = require('../config/dev-api-root')
 
 const ROOT_PATH = path.resolve(__dirname, '../')
 const GLOBAL_CONFIG = require(`../config/${process.env.ENV}.env.js`)
-
+console.log( `${DEV_API_ROOT}/admin/login`)
 module.exports = {
   output: {
     filename: '[name].[hash].bundle.js'
@@ -19,7 +20,16 @@ module.exports = {
     disableHostCheck: true,
     compress: true,
     open: true,
-    overlay: true
+    overlay: true,
+    proxy: { // 处理跨域问题
+      '/proxy': {
+        target: DEV_API_ROOT,
+        pathRewrite: {
+          '^/proxy': ''
+        },
+        secure: false
+      }
+    }
   },
   devtool: false,
   module: {

@@ -46,10 +46,10 @@ function updateToken (state, action) {
 // saga
 function* login(option) {
   try {
-    const { data } = yield call(loginService.login, { data: option.payload })
-    setLocalStorage('token', data)
-    yield put(updateTokenAction(data))
-    window.$history.push('/home')
+    const {data: {token: token}} = yield call(loginService.login, { data: option.payload })
+    setLocalStorage('token', token)
+    yield put(updateTokenAction(token))
+    window.$history.push('/my-case')
   } catch (error) {
     console.log(error)
   }

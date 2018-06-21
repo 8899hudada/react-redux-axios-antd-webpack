@@ -6,10 +6,12 @@ const HTTP_ROOT = API_ROOT[process.env.ENV]
 Mock.mock(`${HTTP_ROOT}/${API_URL.admin.LOGIN}`, 'post', {
   code: 200,
   ok: true,
-  data: '432fewfewffewgregregegr'
+  data: {
+    token: '432fewfewffewgregregegr'
+  }
 })
 
-Mock.mock(`${HTTP_ROOT}/${API_URL.admin.LOGOUT}`, 'get', {
+Mock.mock(`${HTTP_ROOT}/${API_URL.admin.LOGOUT}`, 'post', {
   code: 200,
   ok: true
 })

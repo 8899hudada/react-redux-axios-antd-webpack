@@ -29,7 +29,7 @@ class LoginForm extends PureComponent {
         hideRequiredMark>
         <FormItem>
           {
-            getFieldDecorator('userName', {
+            getFieldDecorator('loginName', {
               rules: [{ required: true, message: '请输入用户名' }]
             })(
               <Input

@@ -2,8 +2,8 @@ let API_URL = {}
 
 // 登录注销
 API_URL.admin = {
-  LOGIN: 'admin/login',
-  LOGOUT: 'admin/logout'
+  LOGIN: 'account/login',
+  LOGOUT: 'account/logout'
 }
 
 // 公共
