@@ -117,7 +117,7 @@ class Tree extends React.PureComponent {
         }
         return <TreeNode title={title} key={item[valueKey]} dataRef={item} selectable={false} />
       } else {
-        if (item[childrenKey] && item[childrenKey].length) {
+        if (item[childrenKey]) {
           return (
             <TreeNode
               className={`${style['tree-select']} ${NodeTitle ? style['customer-node'] : ''}`}
@@ -125,7 +125,11 @@ class Tree extends React.PureComponent {
               key={item[valueKey]}
               dataRef={item}
               selectable={false}>
-              {this.renderTreeNodes(item[childrenKey])}
+              { 
+                item[childrenKey].length
+                  ? this.renderTreeNodes(item[childrenKey])
+                  : <TreeNode title='hide' key='hide' className={style['hide-node']} /> // antd的tree组件当children为空时，会自动变为可选样式
+              }
             </TreeNode>
           ) 
         }

@@ -76,11 +76,11 @@ class MyCase extends React.PureComponent {
   search () {
     const { searchParams } = this.state
     const data = {
-      ...searchParams,
-      trustorId: searchParams.trustorId === -1 ? '' : searchParams.trustorId,
-      caseStatus: searchParams.caseStatus === -1 ? '' : searchParams.caseStatus,
-      entrustDateBegin: searchParams.entrustDate.length ? searchParams.entrustDate[0].format('YYYY-MM-DD'): '',
-      entrustDateEnd: searchParams.entrustDate.length ? searchParams.entrustDate[1].format('YYYY-MM-DD'): ''
+      lawCaseCode: searchParams.lawCaseCode ? searchParams.lawCaseCode : null,
+      trustorId: searchParams.trustorId === -1 ? null : searchParams.trustorId,
+      caseStatus: searchParams.caseStatus === -1 ? null : searchParams.caseStatus,
+      entrustDateBegin: searchParams.entrustDate.length ? searchParams.entrustDate[0].format('YYYY-MM-DD'): null,
+      entrustDateEnd: searchParams.entrustDate.length ? searchParams.entrustDate[1].format('YYYY-MM-DD'): null
     }
     this.setState({ loading: true })
     myCaseService.fetchList(data).then(({ data }) => {
