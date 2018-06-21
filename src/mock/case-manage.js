@@ -18,7 +18,7 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_LIST}`, 'post', () => {
         entrustDate: '@date()',
         entrustAmt: '@float(0, 1000000, 0, 2)',
         lawCaseCode: '(@date(yyyy))川@integer(1000, 1500)民初@integer(1000, 1500)号',
-        assignStatus: "@pick(['已分配', '未分配'])",
+        assignStatus: '@boolean()',
         proxyLawyer: '@cname',
         caseProcess: "@pick(['新案', '一审', '二审', '结案'])"
       }]

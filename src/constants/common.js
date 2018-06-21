@@ -3,7 +3,7 @@
  */
 
 // 案件进程
-const CASE_PROCESSES = [
+const CASE_STATUS = [
   { id: -1, name: '全部' },
   { id: 1, name: '新案' },
   { id: 2, name: '一审中' },
@@ -14,9 +14,9 @@ const CASE_PROCESSES = [
 
 // 分配状态
 const ASSIGN_STATUS = [
-  { id: -1, name: '全部' },
-  { id: 1, name: '已分配' },
-  { id: 2, name: '未分配' }
+  { value: -1, name: '全部' },
+  { value: 1, name: '已分配' },
+  { value: 0, name: '未分配' }
 ]
 
 // 账号类型
@@ -28,7 +28,7 @@ const ACCOUNT_TYPES = {
 }
 
 export {
-  CASE_PROCESSES,
+  CASE_STATUS,
   ASSIGN_STATUS,
   ACCOUNT_TYPES
 }

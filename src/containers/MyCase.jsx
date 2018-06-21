@@ -19,7 +19,7 @@ const searchParamsFactory = () => ({
   entrustDate: [],
   trustorId: -1,
   lawCaseCode: '',
-  caseProcess: -1
+  caseStatus: -1
 })
 
 class MyCase extends React.PureComponent {
@@ -78,7 +78,7 @@ class MyCase extends React.PureComponent {
     const data = {
       ...searchParams,
       trustorId: searchParams.trustorId === -1 ? '' : searchParams.trustorId,
-      caseProcess: searchParams.caseProcess === -1 ? '' : searchParams.caseProcess,
+      caseStatus: searchParams.caseStatus === -1 ? '' : searchParams.caseStatus,
       entrustDateBegin: searchParams.entrustDate.length ? searchParams.entrustDate[0].format('YYYY-MM-DD'): '',
       entrustDateEnd: searchParams.entrustDate.length ? searchParams.entrustDate[1].format('YYYY-MM-DD'): ''
     }
