@@ -7,7 +7,9 @@ const {
   UPDATE_USER,
   DELETE_USER,
   UPDATE_USER_STATUS,
-  UPDATE_USER_PASSWORD
+  UPDATE_USER_PASSWORD,
+  FETCH_PERMISSION_TREE,
+  UPDATE_USER_PERMISSION
 } = API_URL.systemSetting.userManage
 
 /**
@@ -130,11 +132,45 @@ const updateUserPassword = (userId, password) => {
   })
 }
 
+/**
+ * 获取权限树
+ * @return {Promise} Promise
+ */
+const fetchPermissionTree = () => {
+  return axios({
+    url: FETCH_PERMISSION_TREE,
+    method: 'GET',
+    showLoading: true
+  })
+}
+
+/**
+ * 更新人员权限
+ * @param  {Object} data 更新人员权限参数
+ * @param  {Number} data.userId 人员ID
+ * @param  {Object} data.roleId 人员角色ID
+ * @param  {Boolean} data.havePerm 默认下次添加该角色的权限
+ * @param  {Array} data.perms 所选权限
+ * @return {Promise} Promise
+ */
+const updateUserPermission = (data = {}) => {
+  console.log(data)
+  return axios({
+    url: UPDATE_USER_PERMISSION,
+    method: 'PUT',
+    data,
+    showLoading: true,
+    showMessage: true
+  })
+}
+
 export {
   fetchUsers,
   createUser,
   updateUser,
   deleteUser,
   updateUserStatus,
-  updateUserPassword
+  updateUserPassword,
+  fetchPermissionTree,
+  updateUserPermission
 }

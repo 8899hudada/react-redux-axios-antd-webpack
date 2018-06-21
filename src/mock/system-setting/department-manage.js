@@ -6,7 +6,10 @@ const {
   FETCH_DEPARTMENTS,
   FETCH_DEPARTMENT_TREE,
   FETCH_DEPARTMENT_USER_TREE,
-  FETCH_ROLES
+  FETCH_ROLES,
+  DELETE_DEPARTMENT,
+  CREATE_DEPARTMENT,
+  UPDATE_DEPARTMENT
 } = API_URL.systemSetting.departmentManage
 
 Mock.mock(`${HTTP_ROOT}/${FETCH_DEPARTMENTS}`, 'post', () => {
@@ -16,7 +19,8 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_DEPARTMENTS}`, 'post', () => {
     data: {
       'pageData|10': [{
         id: '@increment(1)',
-        name: '@csentence(2, 6)'
+        name: '@csentence(2, 6)',
+        parentId: '@increment(1)'
       }]
     }
   })
@@ -29,20 +33,25 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_DEPARTMENT_TREE}`, 'get', () => {
     data: [{
       id: '@increment(1)',
       name: '睿码科技',
+      parentId: 1,
       children: [{
         id: '@increment(1)',
         name: '开发部',
+        parentId: 1,
         children: [{
           id: '@increment(1)',
           name: '金融科技组',
-          children: []
+          children: [],
+          parentId: 1,
         }]
       }]
     }, {
       id: '@increment(1)',
+      parentId: 1,
       name: '睿码金融',
       children: [{
         id: '@increment(1)',
+        parentId: 1,
         name: '催收部',
         children: []
       }]
@@ -108,5 +117,27 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_ROLES}`, 'post', () => {
         name: '@csentence(2, 6)'
       }]
     }
+  })
+})
+
+Mock.mock(new RegExp(`^${HTTP_ROOT}/${DELETE_DEPARTMENT()}\\d+$`), 'delete', () => Mock.mock({
+  code: 200,
+  ok: true,
+  data: null
+}))
+
+Mock.mock(`${HTTP_ROOT}/${CREATE_DEPARTMENT}`, 'post', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true,
+    data: null
+  })
+})
+
+Mock.mock(`${HTTP_ROOT}/${UPDATE_DEPARTMENT}`, 'put', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true,
+    data: null
   })
 })

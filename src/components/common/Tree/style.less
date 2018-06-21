@@ -1,4 +1,4 @@
-.tree-select :global(.ant-tree-node-content-wrapper-normal) {
+.tree-select:not(.customer-node) :global(.ant-tree-node-content-wrapper-normal) {
   background-color: #fff !important;
   &:before {
     position: absolute;
@@ -23,14 +23,14 @@
   }
 }
 
-.tree-select :global(.notSelectedNode .ant-tree-node-content-wrapper-normal) {
+.tree-select:not(.customer-node) :global(.notSelectedNode .ant-tree-node-content-wrapper-normal) {
   &:before,
   &:after {
     display: none;
   }
 }
 
-.tree-select :global(.ant-tree-node-selected) {
+.tree-select:not(.customer-node) :global(.ant-tree-node-selected) {
   &:before {
     border-color: #1890ff;
   }

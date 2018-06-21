@@ -20,3 +20,4 @@ export * as passwordSettingService from './system-setting/password-setting'
 export * as departmentManageService from './system-setting/department-manage'
 // 人员管理
 export * as userManageService from './system-setting/user-manage'
+export * as roleManageService from './system-setting/role-manage'

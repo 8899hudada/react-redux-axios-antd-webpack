@@ -31,7 +31,9 @@ API_URL.systemSetting = {
     FETCH_DEPARTMENTS: 'system/dept/get',
     FETCH_DEPARTMENT_TREE: 'system/dept/tree',
     FETCH_DEPARTMENT_USER_TREE: 'system/dept/tree/user',
-    FETCH_ROLES: 'system/role/get'
+    DELETE_DEPARTMENT: (id = '') => `system/dept/del/${id}`,
+    CREATE_DEPARTMENT: 'system/dept/save',
+    UPDATE_DEPARTMENT: 'system/dept/mod'
   },
   // 人员管理
   userManage: {
@@ -40,7 +42,16 @@ API_URL.systemSetting = {
     UPDATE_USER: 'system/account/mod',
     DELETE_USER: (id = '') => `system/account/del/${id}`,
     UPDATE_USER_STATUS: 'system/account/status',
-    UPDATE_USER_PASSWORD: 'system/account/uppwd'
+    UPDATE_USER_PASSWORD: 'system/account/uppwd',
+    FETCH_PERMISSION_TREE: 'system/account/perms/tree',
+    UPDATE_USER_PERMISSION: 'system/account/perms'
+  },
+  // 角色管理
+  roleManage: {
+    FETCH_ROLES: 'system/role/get',
+    DELETE_ROLE: (id = '') => `system/role/del/${id}`,
+    CREATE_ROLE: 'system/role/save',
+    UPDATE_ROLE: 'system/role/mod'
   }
 }
 
