@@ -1,8 +1,9 @@
 import React from 'react'
 import { PageHeader, CaseImport, CaseCreate, LawerTreeSelectModal } from '@components/common'
-import { Actions, Table, TableActions, Search } from '@components/my-case'
+import { Actions, Table, TableActions, Search } from '@components/case-manage'
 import { Card, message } from 'antd'
-import { myCaseService } from '@services'
+import { caseManageService } from '@services'
+import { formatSearchParams, searchParamsFactory } from './utils'
 
 const columns = [
   { title: '姓名', dataIndex: 'customName', key: 'customName', render: (text, record) => <a href={`/case-detail/${record.id}`} target="_blank">{text}</a> },
@@ -11,18 +12,12 @@ const columns = [
   { title: '委案日期', dataIndex: 'entrustDate', key: 'entrustDate' },
   { title: '委案金额', dataIndex: 'entrustAmt', key: 'entrustAmt' },
   { title: '诉讼案号', dataIndex: 'lawCaseCode', key: 'lawCaseCode' },
+  { title: '分配状态', dataIndex: 'assignStatus', key: 'assignStatus', render: text => <div>{ text ? '已分配' : '未分配' }</div> },
+  { title: '代理律师', dataIndex: 'proxyLawyer', key: 'proxyLawyer' },
   { title: '案件进程', dataIndex: 'caseProcess', key: 'caseProcess' }
 ]
 
-const searchParamsFactory = () => ({
-  customerName: '',
-  entrustDate: [],
-  trustorId: -1,
-  lawCaseCode: '',
-  caseStatus: -1
-})
-
-class MyCase extends React.PureComponent {
+class CaseManage extends React.PureComponent {
   constructor (props) {
     super(props)
     this.state = {
@@ -62,7 +57,7 @@ class MyCase extends React.PureComponent {
   }
   tableActionsClick (action) {
     switch (action) {
-    case 'caseTransfer':
+    case 'caseDistribution':
       if (this.state.selectedRowKeys.length === 0 ) return message.warning('请选择案件')
       this.setState({ treeSelectVisible: true })
       break
@@ -75,15 +70,9 @@ class MyCase extends React.PureComponent {
   }
   search () {
     const { searchParams } = this.state
-    const data = {
-      lawCaseCode: searchParams.lawCaseCode ? searchParams.lawCaseCode : null,
-      trustorId: searchParams.trustorId === -1 ? null : searchParams.trustorId,
-      caseStatus: searchParams.caseStatus === -1 ? null : searchParams.caseStatus,
-      entrustDateBegin: searchParams.entrustDate.length ? searchParams.entrustDate[0].format('YYYY-MM-DD'): null,
-      entrustDateEnd: searchParams.entrustDate.length ? searchParams.entrustDate[1].format('YYYY-MM-DD'): null
-    }
+    const data = formatSearchParams(searchParams)
     this.setState({ loading: true })
-    myCaseService.fetchList(data).then(({ data }) => {
+    caseManageService.fetchList(data).then(({ data }) => {
       this.setState(prevState => ({
         data: data.pageData,
         pagination: {
@@ -135,7 +124,7 @@ class MyCase extends React.PureComponent {
     }
     return (
       <div>
-        <PageHeader title="我的案件" />
+        <PageHeader title="案件管理" />
         <Card>
           <Actions onClick={this.actionClick} />
           <Search
@@ -155,12 +144,12 @@ class MyCase extends React.PureComponent {
         <LawerTreeSelectModal
           visible={treeSelectVisible}
           onCancel={() => this.setState({ treeSelectVisible: false })}
-          title="案件转交"
-          unselectedTips="请选择转交对象"
-          confrimContent="确定将案件转交给" />
+          title="案件分配"
+          unselectedTips="请选择分配对象"
+          confrimContent="确定将案件分配给" />
       </div>
     )
   }
 }
 
-export default MyCase
+export default CaseManage

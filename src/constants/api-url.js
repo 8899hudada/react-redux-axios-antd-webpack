@@ -68,7 +68,7 @@ API_URL.caseManage = {
 
 // 我的案件
 API_URL.myCase = {
-  FETCH_LIST: 'my-case/list'
+  FETCH_LIST: 'case/manage/my-case/list'
 }
 
 // 案件详情
