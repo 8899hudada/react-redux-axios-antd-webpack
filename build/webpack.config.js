@@ -114,7 +114,7 @@ let commonConfig = {
 
 // 如果沒有dev-api-root.js，则新建该文件
 if (!devApiRootFileExist) {
-	const devApiRootContent = `const DEV_API_ROOT = 'http://127.0.0.1:8080'\n\nexport default DEV_API_ROOT`
+	const devApiRootContent = `const DEV_API_ROOT = 'http://127.0.0.1:8080'\n\nmodule.exports = DEV_API_ROOT`
 	fs.writeFileSync(DEV_API_ROOT_PATH, devApiRootContent, {encoding:'utf-8'})
 }
 
