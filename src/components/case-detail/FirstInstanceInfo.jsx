@@ -12,6 +12,7 @@ const FormItem = Form.Item
 const TextArea = Input.TextArea
 const RadioGroup = Radio.Group
 
+@Form.create()
 class FirstInstanceInfo extends React.PureComponent {
   static propTypes = {
     form: PropTypes.object.isRequired,
@@ -56,16 +57,16 @@ class FirstInstanceInfo extends React.PureComponent {
         judgePeriod: params.judgePeriod
       }
       caseDetailService.updateInstanceInfo(data).then(() => {
-        fetchMethod()
-        this.setState({ isEdit: false })
+        fetchMethod().finally(() => this.setState({ isEdit: false }))
       })
     })
   }
   onDelete () {
     const { params, localDelete, fetchMethod } = this.props
     if (params.id) {
-      caseDetailService.deleteInstanceInfo(params.id).then(() => {
+      caseDetailService.deleteInstanceInfo(params.id, params.judgePeriod).then(() => {
         fetchMethod()
+        localDelete('firstInstanceInfo')
       })
     } else {
       localDelete('firstInstanceInfo')
@@ -321,6 +322,4 @@ FirstInstanceInfo.defaultProps = {
   style: {}
 }
 
-const WrappedFirstInstanceInfo = Form.create()(FirstInstanceInfo)
-
-export default WrappedFirstInstanceInfo
+export default FirstInstanceInfo

@@ -1,8 +1,9 @@
 {
 	"presets": ["env", "react", "stage-0"],
 	"plugins":[
-		'transform-class-properties',
-		'syntax-dynamic-import' // 允许babel动态imports
+		"transform-class-properties",
+		"syntax-dynamic-import", // 允许babel动态imports
+		"transform-decorators-legacy"
 	],
   "env": {
 		"development": {

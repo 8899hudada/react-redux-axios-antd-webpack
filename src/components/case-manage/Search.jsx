@@ -35,19 +35,16 @@ class Search extends React.PureComponent {
     })
   }
   fetchLawyers () {
-    userManageService.fetchUsers({
-      current: 1,
-      pageSize: 200
-    }).then(({ data }) => {
+    userManageService.fetchAllLawyers().then(({ data }) => {
       this.setState({
-        lawyers: [{ id: -1, name: '全部' }, ...data.pageData]
+        lawyers: [{ id: -1, name: '全部' }, ...data]
       })
     })
   }
   render () {
     const { search, searchParams, onChange, reset } = this.props
     const { trustors, lawyers } = this.state
-    const { customerName, trustorId, entrustDate, lawCaseCode, caseStatus, assignStatus, proxyLawyer, createTime } = searchParams
+    const { customerName, trustorId, entrustDate, lawCaseCode, caseStatus, assignStatus, proxyLawyerId, createTime } = searchParams
     return (
       <Form
         layout='inline'
@@ -107,8 +104,8 @@ class Search extends React.PureComponent {
         <FormItem label="律师">
           <Select
             style={{ minWidth: 120 }}
-            value={proxyLawyer}
-            onChange={value => onChange('proxyLawyer', value)}
+            value={proxyLawyerId}
+            onChange={value => onChange('proxyLawyerId', value)}
             optionFilterProp="children"
             showSearch
             filterOption={(input, option) => option.props.children.toLowerCase().includes(input.toLowerCase())}

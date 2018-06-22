@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Upload, Icon, message } from 'antd'
 import { API_URL, API_ROOT } from '@constants'
+import { getLocalStorage } from '@utils'
 
 const Dragger = Upload.Dragger
 
@@ -48,7 +49,7 @@ class DraggerUpload extends React.PureComponent {
         fileList={fileList}
         onChange={this.onChange}
         beforeUpload={beforeUpload}
-        headers={{ 'X-Requested-With': null }}>
+        headers={{ 'X-Requested-With': null, token: getLocalStorage('token') }}>
         <p className="ant-upload-drag-icon">
           <Icon type="inbox" />
         </p>

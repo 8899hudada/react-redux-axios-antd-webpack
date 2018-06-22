@@ -10,7 +10,8 @@ const {
   UPDATE_USER_STATUS,
   UPDATE_USER_PASSWORD,
   FETCH_PERMISSION_TREE,
-  UPDATE_USER_PERMISSION
+  UPDATE_USER_PERMISSION,
+  FETCH_ALL_LAWYERS
 } = API_URL.systemSetting.userManage
 
 Mock.mock(`${HTTP_ROOT}/${FETCH_USERS}`, 'post', options => {
@@ -241,4 +242,13 @@ Mock.mock(`${HTTP_ROOT}/${UPDATE_USER_PERMISSION}`, 'put', () => Mock.mock({
   code: 200,
   ok: true,
   data: null
+}))
+
+Mock.mock(`${HTTP_ROOT}/${FETCH_ALL_LAWYERS}`, 'get', () => Mock.mock({
+  code: 200,
+  ok: true,
+  'data|10-20': [{
+    id: '@increment()',
+    name: '@cname(2, 3)'
+  }]
 }))

@@ -24,7 +24,7 @@ class CaseDetail extends React.PureComponent {
   }
   fetchDetail () {
     const caseId = this.props.match.params.id
-    caseDetailService.fetchDetail(caseId).then(({ data }) => {
+    return caseDetailService.fetchDetail(caseId).then(({ data }) => {
       const caseInfo = data.caseInfo
       const registerCaseInfo = data.registerCaseInfo
       const judgmentCaseInfo = data.judgmentCaseInfo
@@ -78,11 +78,11 @@ class CaseDetail extends React.PureComponent {
     const { caseInfo, registerCaseInfo, firstInstanceInfo, secondInstanceInfo, execInfo, endCaseInfo, localMenuShowObj } = this.state
     const caseId = this.props.match.params.id
     const extraDisableObj = {
-      registerCaseInfo: Boolean(registerCaseInfo.id) || localMenuShowObj.registerCaseInfo,
-      firstInstanceInfo: Boolean(firstInstanceInfo.id) || localMenuShowObj.firstInstanceInfo,
-      secondInstanceInfo: Boolean(secondInstanceInfo.id) || localMenuShowObj.secondInstanceInfo,
-      execInfo: Boolean(execInfo.id) || localMenuShowObj.execInfo,
-      endCaseInfo: Boolean(endCaseInfo.id) || localMenuShowObj.endCaseInfo
+      registerCaseInfo: Boolean(registerCaseInfo.id || localMenuShowObj.registerCaseInfo),
+      firstInstanceInfo: Boolean(firstInstanceInfo.id || localMenuShowObj.firstInstanceInfo),
+      secondInstanceInfo: Boolean(secondInstanceInfo.id || localMenuShowObj.secondInstanceInfo),
+      execInfo: Boolean(execInfo.id || localMenuShowObj.execInfo),
+      endCaseInfo: Boolean(endCaseInfo.id || localMenuShowObj.endCaseInfo)
     }
     const attachments = unique([
       ...registerCaseInfo.attachments,

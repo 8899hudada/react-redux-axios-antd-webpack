@@ -8,9 +8,10 @@ import { trustorService, commonService } from '@services'
 const FormItem = Form.Item
 const Option = Select.Option
 
+@Form.create()
 class CaseImport extends React.PureComponent {
   static propTypes = {
-    form: PropTypes.object.isRequired,
+    form: PropTypes.object,
     onBack: PropTypes.func
   }
   constructor (props) {
@@ -102,6 +103,4 @@ CaseImport.defaultProps = {
   onBack: () => {}
 }
 
-const WrappedCaseImport = Form.create()(CaseImport)
-
-export default WrappedCaseImport
+export default CaseImport

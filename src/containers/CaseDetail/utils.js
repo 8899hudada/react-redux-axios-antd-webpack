@@ -14,7 +14,8 @@ const initDataFactory = () => ({
     trustorName: '',
     entrustDate: null,
     productName: '',
-    proxyLawyer: ''
+    proxyLawyer: '',
+    proxyLawyerId: ''
   },
   registerCaseInfo: {
     id: '',
@@ -44,13 +45,15 @@ const initDataFactory = () => ({
     noticeFee: '',
     sealUpBeginDate: null,
     sealUpEndDate: null,
-    attachments: []
+    attachments: [],
+    judgePeriod: 1
   },
   secondInstanceInfo: {
     id: '',
     openCourtTime: null,
     openCourtResult: '',
-    attachments: []
+    attachments: [],
+    judgePeriod: 2
   },
   execInfo: {
     id: '',

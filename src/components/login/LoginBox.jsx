@@ -7,6 +7,20 @@ import { loginAction } from '@/redux/login'
 
 const FormItem = Form.Item
 
+const mapDispatchToProps = dispatch => {
+  return {
+    loginAction: option => {
+      dispatch(loginAction(option))
+    }
+  }
+}
+
+const mapStateToProps = () => {
+  return {}
+}
+
+@Form.create()
+@connect(mapStateToProps, mapDispatchToProps)
 class LoginForm extends PureComponent {
   static propTypes = {
     form: PropTypes.object.isRequired,
@@ -60,25 +74,6 @@ class LoginForm extends PureComponent {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    loginAction: option => {
-      dispatch(loginAction(option))
-    }
-  }
-}
-
-const mapStateToProps = () => {
-  return {}
-}
-
-const WrappedLoginForm = Form.create()(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(LoginForm)
-)
-
 class LoginBox extends PureComponent {
   constructor (props) {
     super(props)
@@ -87,7 +82,7 @@ class LoginBox extends PureComponent {
     return (
       <div className={style.loginBox}>
         <h1 className={style.loginBoxTitle}>登录</h1>
-        <WrappedLoginForm />
+        <LoginForm />
       </div>
     )
   }

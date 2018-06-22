@@ -4,7 +4,7 @@ import { API_ROOT, API_URL } from '@constants'
 const HTTP_ROOT = API_ROOT[process.env.ENV]
 const { FETCH_LIST } = API_URL.task
 
-Mock.mock(`${HTTP_ROOT}/${FETCH_LIST}`, 'get', () => {
+Mock.mock(new RegExp(`^(${HTTP_ROOT}/${FETCH_LIST})`), 'get', () => {
   return Mock.mock({
     code: 200,
     ok: true,

@@ -36,8 +36,12 @@ class TaskManage extends React.PureComponent {
     this.fetchList()
   }
   fetchList () {
+    const { current, pageSize } = this.state.pagination
     this.setState({ loading: true })
-    taskService.fetchList().then(({ data }) => {
+    taskService.fetchList({
+      current,
+      pageSize
+    }).then(({ data }) => {
       this.setState(prevState => ({
         data: data.pageData,
         pagination: {

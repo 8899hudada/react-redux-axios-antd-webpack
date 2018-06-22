@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Upload, Icon, message, Popconfirm } from 'antd'
 import { API_URL, API_ROOT } from '@constants'
 import styles from './style'
-import { deepCopy } from '@utils'
+import { deepCopy, getLocalStorage } from '@utils'
 import Viewer from 'viewerjs'
 import 'viewerjs/dist/viewer.min.css'
 
@@ -67,7 +67,7 @@ class ImageListUpload extends React.PureComponent {
                   <Icon
                     type="delete"
                     className={styles['del-btn']}
-                    style={{ color: '#fff', fontSize: 20, display: !allowDelete && 'none' }} />
+                    style={{ color: '#fa5151', fontSize: 20, display: !allowDelete && 'none' }} />
                 </Popconfirm>
               </li>
             ))
@@ -79,7 +79,7 @@ class ImageListUpload extends React.PureComponent {
             action={`${API_ROOT[process.env.ENV]}/${API_URL.common.UPLOAD}`}
             onChange={this.onChange}
             beforeUpload={beforeUpload}
-            headers={{ 'X-Requested-With': null }}
+            headers={{ 'X-Requested-With': null, token: getLocalStorage('token') }}
             showUploadList={false}
             multiple={multiple}
             style={{ display: (imgList.length >= maxCount || !allowUpload) && 'none' }}>

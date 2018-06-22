@@ -10,6 +10,7 @@ import { caseDetailService } from '@services'
 const FormItem = Form.Item
 const TextArea = Input.TextArea
 
+@Form.create()
 class ExecInfo extends React.PureComponent {
   static propTypes = {
     form: PropTypes.object.isRequired,
@@ -49,11 +50,10 @@ class ExecInfo extends React.PureComponent {
         ],
         executeAcceptDate: values.executeAcceptDate ? values.executeAcceptDate.format('YYYY-MM-DD') : '',
         executeEndDate: values.executeEndDate ? values.executeEndDate.format('YYYY-MM-DD') : '',
-        settleAccountDate: values.settleAccountDate ? values.settleAccountDate.format('YYYY-MM-DD') : '',
+        settleAccountDate: values.settleAccountDate ? values.settleAccountDate.format('YYYY-MM-DD') : ''
       }
       caseDetailService.updateExecInfo(data).then(() => {
-        fetchMethod()
-        this.setState({ isEdit: false })
+        fetchMethod().finally(() => this.setState({ isEdit: false }))
       })
     })
   }
@@ -62,6 +62,7 @@ class ExecInfo extends React.PureComponent {
     if (params.id) {
       caseDetailService.deleteExecInfo(params.id).then(() => {
         fetchMethod()
+        localDelete('execInfo')
       })
     } else {
       localDelete('execInfo')
@@ -225,6 +226,4 @@ ExecInfo.defaultProps = {
   style: {}
 }
 
-const WrappedExecInfo = Form.create()(ExecInfo)
-
-export default WrappedExecInfo
+export default ExecInfo

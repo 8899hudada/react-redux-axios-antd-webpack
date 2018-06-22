@@ -29,7 +29,9 @@ const updateEntrustInfo = data => {
   return axios({
     url: UPDATE_ENTRUST_INFO,
     method: 'PUT',
-    data
+    data,
+    showLoading: true,
+    loadingMsg: '保存中...'
   })
 }
 
@@ -38,7 +40,9 @@ const updateRegisterCaseInfo = data => {
   return axios({
     url: UPDATE_REGISTER_CASE_INFO,
     method: 'POST',
-    data
+    data,
+    showLoading: true,
+    loadingMsg: '保存中...'
   })
 }
 
@@ -46,7 +50,9 @@ const updateRegisterCaseInfo = data => {
 const deleteRegisterCaseInfo = id => {
   return axios({
     url: DELETE_REGISTER_CASE_INFO(id),
-    method: 'DELETE'
+    method: 'DELETE',
+    showLoading: true,
+    loadingMsg: '删除中...'
   })
 }
 
@@ -55,15 +61,19 @@ const updateInstanceInfo = data => {
   return axios({
     url: UPDATE_INSTANCE_INFO,
     method: 'POST',
-    data
+    data,
+    showLoading: true,
+    loadingMsg: '保存中...'
   })
 }
 
 // 删除审判信息
-const deleteInstanceInfo = id => {
+const deleteInstanceInfo = (id, judgePeriod) => {
   return axios({
-    url: DELETE_INSTANCE_INFO(id),
-    method: 'DELETE'
+    url: DELETE_INSTANCE_INFO(id, judgePeriod),
+    method: 'DELETE',
+    showLoading: true,
+    loadingMsg: '删除中...'
   })
 }
 
@@ -72,7 +82,9 @@ const updateExecInfo = data => {
   return axios({
     url: UPDATE_EXEC_INFO,
     method: 'POST',
-    data
+    data,
+    showLoading: true,
+    loadingMsg: '保存中...'
   })
 }
 
@@ -80,7 +92,9 @@ const updateExecInfo = data => {
 const deleteExecInfo = id => {
   return axios({
     url: DELETE_EXEC_INFO(id),
-    method: 'DELETE'
+    method: 'DELETE',
+    showLoading: true,
+    loadingMsg: '删除中...'
   })
 }
 
@@ -89,7 +103,9 @@ const updateEndCaseInfo = data => {
   return axios({
     url: UPDATE_END_CASE_INFO,
     method: 'POST',
-    data
+    data,
+    showLoading: true,
+    loadingMsg: '保存中...'
   })
 }
 
@@ -97,7 +113,9 @@ const updateEndCaseInfo = data => {
 const deleteEndCaseInfo = id => {
   return axios({
     url: DELETE_END_CASE_INFO(id),
-    method: 'DELETE'
+    method: 'DELETE',
+    showLoading: true,
+    loadingMsg: '删除中...'
   })
 }
 

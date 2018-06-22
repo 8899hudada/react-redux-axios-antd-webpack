@@ -10,6 +10,7 @@ import { caseDetailService } from '@services'
 const FormItem = Form.Item
 const TextArea = Input.TextArea
 
+@Form.create()
 class SecondInstanceInfo extends React.PureComponent {
   static propTypes = {
     form: PropTypes.object.isRequired,
@@ -51,16 +52,16 @@ class SecondInstanceInfo extends React.PureComponent {
         judgePeriod: params.judgePeriod
       }
       caseDetailService.updateInstanceInfo(data).then(() => {
-        fetchMethod()
-        this.setState({ isEdit: false })
+        fetchMethod().finally(() => this.setState({ isEdit: false }))
       })
     })
   }
   onDelete () {
     const { params, localDelete, fetchMethod } = this.props
     if (params.id) {
-      caseDetailService.deleteInstanceInfo(params.id).then(() => {
+      caseDetailService.deleteInstanceInfo(params.id, params.judgePeriod).then(() => {
         fetchMethod()
+        localDelete('secondInstanceInfo')
       })
     } else {
       localDelete('secondInstanceInfo')
@@ -153,6 +154,4 @@ SecondInstanceInfo.defaultProps = {
   style: {}
 }
 
-const WrappedSecondInstanceInfo = Form.create()(SecondInstanceInfo)
-
-export default WrappedSecondInstanceInfo
+export default SecondInstanceInfo

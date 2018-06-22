@@ -9,7 +9,8 @@ const {
   UPDATE_USER_STATUS,
   UPDATE_USER_PASSWORD,
   FETCH_PERMISSION_TREE,
-  UPDATE_USER_PERMISSION
+  UPDATE_USER_PERMISSION,
+  FETCH_ALL_LAWYERS
 } = API_URL.systemSetting.userManage
 
 /**
@@ -171,6 +172,17 @@ const updateUserPermission = (data = {}) => {
   })
 }
 
+/**
+ * 获取所有律师
+ * @return {Promise} Promise
+ */
+const fetchAllLawyers = () => {
+  return axios({
+    url: FETCH_ALL_LAWYERS,
+    method: 'GET'
+  })
+}
+
 export {
   fetchUsers,
   createUser,
@@ -179,5 +191,6 @@ export {
   updateUserStatus,
   updateUserPassword,
   fetchPermissionTree,
-  updateUserPermission
+  updateUserPermission,
+  fetchAllLawyers
 }

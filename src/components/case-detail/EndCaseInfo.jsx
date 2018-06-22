@@ -9,6 +9,7 @@ import { caseDetailService } from '@services'
 
 const FormItem = Form.Item
 
+@Form.create()
 class EndCaseInfo extends React.PureComponent {
   static propTypes = {
     form: PropTypes.object.isRequired,
@@ -48,8 +49,7 @@ class EndCaseInfo extends React.PureComponent {
         closeCaseDate: values.executeAcceptDate ? values.executeAcceptDate.format('YYYY-MM-DD') : ''
       }
       caseDetailService.updateEndCaseInfo(data).then(() => {
-        fetchMethod()
-        this.setState({ isEdit: false })
+        fetchMethod().finally(() => this.setState({ isEdit: false }))
       })
     })
   }
@@ -58,6 +58,7 @@ class EndCaseInfo extends React.PureComponent {
     if (params.id) {
       caseDetailService.deleteEndCaseInfo(params.id).then(() => {
         fetchMethod()
+        localDelete('endCaseInfo')
       })
     } else {
       localDelete('endCaseInfo')
@@ -119,6 +120,4 @@ EndCaseInfo.defaultProps = {
   style: {}
 }
 
-const WrappedEndCaseInfo = Form.create()(EndCaseInfo)
-
-export default WrappedEndCaseInfo
+export default EndCaseInfo

@@ -44,7 +44,8 @@ API_URL.systemSetting = {
     UPDATE_USER_STATUS: 'system/account/status',
     UPDATE_USER_PASSWORD: 'system/account/uppwd',
     FETCH_PERMISSION_TREE: 'system/account/perms/tree',
-    UPDATE_USER_PERMISSION: 'system/account/perms'
+    UPDATE_USER_PERMISSION: 'system/account/perms',
+    FETCH_ALL_LAWYERS: 'system/account/lawyers'
   },
   // 角色管理
   roleManage: {
@@ -78,7 +79,7 @@ API_URL.caseDetail = {
   UPDATE_REGISTER_CASE_INFO: 'case/detail/register',
   DELETE_REGISTER_CASE_INFO: (id = '') => `case/detail/register/${id}`,
   UPDATE_INSTANCE_INFO: 'case/detail/judgment',
-  DELETE_INSTANCE_INFO: (id = '') => `case/detail/judgment/${id}`,
+  DELETE_INSTANCE_INFO: (id = '', judgePeriod = '') => `case/detail/judgment/${id}?judgePeriod=${judgePeriod}`,
   UPDATE_EXEC_INFO: 'case/detail/execute',
   DELETE_EXEC_INFO: (id = '') => `case/detail/execute/${id}`,
   UPDATE_END_CASE_INFO: 'case/detail/closed',

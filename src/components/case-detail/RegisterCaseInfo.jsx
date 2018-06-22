@@ -10,6 +10,7 @@ import { caseDetailService } from '@services'
 
 const FormItem = Form.Item
 
+@Form.create()
 class RegisterCaseInfo extends React.PureComponent {
   static propTypes = {
     form: PropTypes.object.isRequired,
@@ -43,7 +44,7 @@ class RegisterCaseInfo extends React.PureComponent {
         ...values,
         id: params.id ? params.id : null,
         caseId,
-        registerTime: values.registerTime.format('YYYY-MM-DD'),
+        registerTime: values.registerTime ? values.registerTime.format('YYYY-MM-DD') : '',
         attachments: values.acceptanceNotification.map(item => ({
           filePath: item,
           fileProperty: fileProperties.ACCEPTED_NOTICE,
@@ -51,8 +52,7 @@ class RegisterCaseInfo extends React.PureComponent {
         }))
       }
       caseDetailService.updateRegisterCaseInfo(data).then(() => {
-        fetchMethod()
-        this.setState({ isEdit: false })
+        fetchMethod().finally(() => this.setState({ isEdit: false }))
       })
     })
   }
@@ -61,6 +61,7 @@ class RegisterCaseInfo extends React.PureComponent {
     if (params.id) {
       caseDetailService.deleteRegisterCaseInfo(params.id).then(() => {
         fetchMethod()
+        localDelete('registerCaseInfo')
       })
     } else {
       localDelete('registerCaseInfo')
@@ -175,7 +176,7 @@ class RegisterCaseInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('registerTime', {
-                      initialValue: moment(params.registerTime)
+                      initialValue: params.registerTime ? moment(params.registerTime) : null
                     })(
                       <DatePicker
                         placeholder="请输入立案时间" />
@@ -277,6 +278,4 @@ RegisterCaseInfo.defaultProps = {
   style: {}
 }
 
-const WrappedRegisterCaseInfo = Form.create()(RegisterCaseInfo)
-
-export default WrappedRegisterCaseInfo
+export default RegisterCaseInfo

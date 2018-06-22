@@ -2,16 +2,17 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { PageHeader } from '@components/common'
 import { Card, Form, Button, Select, Input, DatePicker, Row, Col } from 'antd'
-import { trustorService, caseManageService } from '@services'
+import { trustorService, caseManageService, userManageService } from '@services'
 import { REGEX, ACCOUNT_TYPES } from '@constants'
 import { TrustorModal } from '@components/system-setting/trustor-manage'
 
 const FormItem = Form.Item
 const Option = Select.Option
 
+@Form.create()
 class CaseCreate extends React.PureComponent {
   static propTypes = {
-    form: PropTypes.object.isRequired,
+    form: PropTypes.object,
     onBack: PropTypes.func
   }
   constructor (props) {
@@ -19,6 +20,7 @@ class CaseCreate extends React.PureComponent {
     this.state = {
       loading: false,
       trustors: [],
+      lawyers: [],
       trustorModalVisible: false
     }
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -36,6 +38,13 @@ class CaseCreate extends React.PureComponent {
       })
     })
   }
+  fetchLawyers () {
+    userManageService.fetchAllLawyers().then(({ data }) => {
+      this.setState({
+        lawyers: data
+      })
+    })
+  }
   hideTrustorModal () {
     this.setState({ trustorModalVisible: false })
   }
@@ -49,7 +58,8 @@ class CaseCreate extends React.PureComponent {
       const data = {
         ...values,
         entrustDate: values.entrustDate ? values.entrustDate.format('YYYY-MM-DD') : '',
-        trustorId: values.trustorId ? values.trustorId : ''
+        trustorId: values.trustorId ? values.trustorId : '',
+        proxyLawyerId: values.proxyLawyerId ? values.proxyLawyerId : ''
       }
       caseManageService.createCase(data).then(() => {
         onBack()
@@ -59,7 +69,7 @@ class CaseCreate extends React.PureComponent {
   render () {
     const { getFieldDecorator, getFieldValue } = this.props.form
     const { onBack } = this.props
-    const { loading, trustors, trustorModalVisible } = this.state
+    const { loading, trustors, lawyers, trustorModalVisible } = this.state
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -123,22 +133,6 @@ class CaseCreate extends React.PureComponent {
               }
             </FormItem>
             <FormItem
-              label="起诉金额"
-              {...formItemLayout}>
-              {
-                getFieldDecorator('prosecutionAmount', {
-                  initialValue: '',
-                  validateTrigger: 'onBlur',
-                  rules: [
-                    { required: true, message: '请输入起诉金额' },
-                    { pattern: REGEX.decimal2Reg, message: '请输入正确的起诉金额' }
-                  ]
-                })(
-                  <Input placeholder="请输入起诉金额" />
-                )
-              }
-            </FormItem>
-            <FormItem
               label="委案金额"
               {...formItemLayout}>
               {
@@ -182,7 +176,10 @@ class CaseCreate extends React.PureComponent {
               {
                 getFieldDecorator('accountNumber', {
                   initialValue: '',
-                  validateTrigger: 'onBlur'
+                  validateTrigger: 'onBlur',
+                  rules: [
+                    { required: true, message: `请输入${ACCOUNT_TYPES[getFieldValue('accountType')]}`, whitespace: true }
+                  ]
                 })(
                   <Input placeholder={`请输入${ACCOUNT_TYPES[getFieldValue('accountType')]}`} />
                 )
@@ -232,6 +229,30 @@ class CaseCreate extends React.PureComponent {
                 )
               }
             </FormItem>
+            <FormItem
+              label="律师"
+              {...formItemLayout}>
+              <Row gutter={8}>
+                <Col span={20}>
+                  {
+                    getFieldDecorator('proxyLawyerId')(
+                      <Select
+                        optionFilterProp="children"
+                        showSearch
+                        filterOption={(input, option) => option.props.children.toLowerCase().includes(input.toLowerCase())}
+                        placeholder="请选择律师">
+                        {lawyers.map(lawyer => <Option key={lawyer.id}>{lawyer.name}</Option>)}
+                      </Select>
+                    )
+                  }
+                </Col>
+                <Col span={4}>
+                  <Button
+                    icon="plus"
+                    onClick={this.showTrustorModal}></Button>
+                </Col>
+              </Row>
+            </FormItem>
             <FormItem {...tailFormItemLayout}>
               <Button
                 type="primary"
@@ -254,6 +275,4 @@ CaseCreate.defaultProps = {
   onBack: () => {}
 }
 
-const WrappedCaseCreate = Form.create()(CaseCreate)
-
-export default WrappedCaseCreate
+export default CaseCreate

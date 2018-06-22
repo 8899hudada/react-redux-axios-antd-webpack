@@ -67,10 +67,15 @@ class MyCase extends React.PureComponent {
     }
   }
   search () {
-    const { searchParams } = this.state
+    const { searchParams, pagination } = this.state
+    const { current, pageSize } = pagination
     const data = formatSearchParams(searchParams)
     this.setState({ loading: true })
-    myCaseService.fetchList(data).then(({ data }) => {
+    myCaseService.fetchList({
+      ...data,
+      current,
+      pageSize
+    }).then(({ data }) => {
       this.setState(prevState => ({
         data: data.pageData,
         pagination: {
