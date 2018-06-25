@@ -7,6 +7,7 @@ import moment from 'moment'
 import { REGEX } from '@constants'
 import { fileProperties } from './constant'
 import { caseDetailService } from '@services'
+import { getPathFromUrl } from '@utils'
 
 const FormItem = Form.Item
 const TextArea = Input.TextArea
@@ -47,9 +48,9 @@ class FirstInstanceInfo extends React.PureComponent {
         id: params.id ? params.id : null,
         caseId,
         attachments: [
-          ...values.firstInstanceCitation.map(item => ({ filePath: item, fileProperty: fileProperties.FIRST_INSTANCE_JUDGEMENT, caseId })),
-          ...values.announcement.map(item => ({ filePath: item, fileProperty: fileProperties.ANNOUNCEMENT, caseId })),
-          ...values.firstInstanceJudgement.map(item => ({ filePath: item, fileProperty: fileProperties.FIRST_INSTANCE_JUDGEMENT, caseId }))
+          ...values.firstInstanceCitation.map(item => ({ filePath: getPathFromUrl(item), fileProperty: fileProperties.FIRST_INSTANCE_JUDGEMENT, caseId })),
+          ...values.announcement.map(item => ({ filePath: getPathFromUrl(item), fileProperty: fileProperties.ANNOUNCEMENT, caseId })),
+          ...values.firstInstanceJudgement.map(item => ({ filePath: getPathFromUrl(item), fileProperty: fileProperties.FIRST_INSTANCE_JUDGEMENT, caseId }))
         ],
         openCourtTime: values.openCourtTime ? values.openCourtTime.format('YYYY-MM-DD hh:mm') : '',
         sealUpBeginDate: values.sealUpBeginDate ? values.sealUpBeginDate.format('YYYY-MM-DD') : '',
@@ -279,7 +280,7 @@ class FirstInstanceInfo extends React.PureComponent {
               {
                 getFieldDecorator('firstInstanceCitation', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.FIRST_INSTANCE_CITATION).map(item => item.filePath),
+                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.FIRST_INSTANCE_CITATION).map(item => item.fileUrl),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload
@@ -292,7 +293,7 @@ class FirstInstanceInfo extends React.PureComponent {
               {
                 getFieldDecorator('announcement', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.ANNOUNCEMENT).map(item => item.filePath),
+                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.ANNOUNCEMENT).map(item => item.fileUrl),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload
@@ -305,7 +306,7 @@ class FirstInstanceInfo extends React.PureComponent {
               {
                 getFieldDecorator('firstInstanceJudgement', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.FIRST_INSTANCE_JUDGEMENT).map(item => item.filePath),
+                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.FIRST_INSTANCE_JUDGEMENT).map(item => item.fileUrl),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload

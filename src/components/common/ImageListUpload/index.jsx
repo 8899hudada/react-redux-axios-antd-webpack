@@ -45,6 +45,7 @@ class ImageListUpload extends React.PureComponent {
       onChange([...imgList, response.data.filePath])
       break
     }
+    this.viewer.update()
   }
   handleDelete (index) {
     const { onChange, imgList } = this.props

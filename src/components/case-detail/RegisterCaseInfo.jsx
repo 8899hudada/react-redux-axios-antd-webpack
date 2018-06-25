@@ -7,6 +7,7 @@ import moment from 'moment'
 import { REGEX } from '@constants'
 import { fileProperties } from './constant'
 import { caseDetailService } from '@services'
+import { getPathFromUrl } from '@utils'
 
 const FormItem = Form.Item
 
@@ -46,7 +47,7 @@ class RegisterCaseInfo extends React.PureComponent {
         caseId,
         registerTime: values.registerTime ? values.registerTime.format('YYYY-MM-DD') : '',
         attachments: values.acceptanceNotification.map(item => ({
-          filePath: item,
+          filePath: getPathFromUrl(item),
           fileProperty: fileProperties.ACCEPTED_NOTICE,
           caseId
         }))
@@ -258,7 +259,7 @@ class RegisterCaseInfo extends React.PureComponent {
               {
                 getFieldDecorator('acceptanceNotification', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.map(img => img.filePath),
+                  initialValue: params.attachments.map(img => img.fileUrl),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload

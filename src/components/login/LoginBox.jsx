@@ -23,7 +23,7 @@ const mapStateToProps = () => {
 @connect(mapStateToProps, mapDispatchToProps)
 class LoginForm extends PureComponent {
   static propTypes = {
-    form: PropTypes.object.isRequired,
+    form: PropTypes.object,
     loginAction: PropTypes.func.isRequired
   }
   constructor (props) {

@@ -27,8 +27,16 @@ const ACCOUNT_TYPES = {
   3: '信用卡号'
 }
 
+// 导入状态
+const IMPORT_STATES = {
+  0: '导入中',
+  1: '导入成功',
+  2: '导入失败'
+}
+
 export {
   CASE_STATUS,
   ASSIGN_STATUS,
-  ACCOUNT_TYPES
+  ACCOUNT_TYPES,
+  IMPORT_STATES
 }

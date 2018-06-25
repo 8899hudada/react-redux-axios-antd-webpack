@@ -13,10 +13,11 @@ Mock.mock(new RegExp(`^(${HTTP_ROOT}/${FETCH_LIST})`), 'get', () => {
       'pageData|10-15': [{
         id: '@id()',
         fileName: `@csentence(2, 6)`,
-        taskState: `@csentence(2, 6)`,
+        taskState: `@pick([0, 1, 2])`,
         trustorName: `@csentence(2, 6)`,
         createBy: `@csentence(2, 6)`,
-        createTime: `@date()`
+        createTime: `@date()`,
+        filePath: '@url()'
       }]
     }
   })

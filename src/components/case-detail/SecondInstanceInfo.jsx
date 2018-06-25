@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { fileProperties } from './constant'
 import { caseDetailService } from '@services'
+import { getPathFromUrl } from '@utils'
 
 const FormItem = Form.Item
 const TextArea = Input.TextArea
@@ -45,8 +46,8 @@ class SecondInstanceInfo extends React.PureComponent {
         id: params.id ? params.id : null,
         caseId,
         attachments: [
-          ...values.secondInstanceCitation.map(item => ({ filePath: item, fileProperty: fileProperties.SECOND_INSTANCE_CITATION, caseId })),
-          ...values.secondInstanceJudgement.map(item => ({ filePath: item, fileProperty: fileProperties.SECOND_INSTANCE_JUDGEMENT, caseId }))
+          ...values.secondInstanceCitation.map(item => ({ filePath: getPathFromUrl(item), fileProperty: fileProperties.SECOND_INSTANCE_CITATION, caseId })),
+          ...values.secondInstanceJudgement.map(item => ({ filePath: getPathFromUrl(item), fileProperty: fileProperties.SECOND_INSTANCE_JUDGEMENT, caseId }))
         ],
         openCourtTime: values.openCourtTime ? values.openCourtTime.format('YYYY-MM-DD hh:mm') : '',
         judgePeriod: params.judgePeriod
@@ -124,7 +125,7 @@ class SecondInstanceInfo extends React.PureComponent {
               {
                 getFieldDecorator('secondInstanceCitation', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.SECOND_INSTANCE_CITATION).map(item => item.filePath),
+                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.SECOND_INSTANCE_CITATION).map(item => item.fileUrl),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload
@@ -137,7 +138,7 @@ class SecondInstanceInfo extends React.PureComponent {
               {
                 getFieldDecorator('secondInstanceJudgement', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.SECOND_INSTANCE_JUDGEMENT).map(item => item.filePath),
+                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.SECOND_INSTANCE_JUDGEMENT).map(item => item.fileUrl),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload

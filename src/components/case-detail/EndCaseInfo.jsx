@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { fileProperties } from './constant'
 import { caseDetailService } from '@services'
+import { getPathFromUrl } from '@utils'
 
 const FormItem = Form.Item
 
@@ -44,7 +45,7 @@ class EndCaseInfo extends React.PureComponent {
         id: params.id ? params.id : null,
         caseId,
         attachments: [
-          ...values.mediationAgreement.map(item => ({ filePath: item, fileProperty: fileProperties.MEDIATION_AGREEMENT, caseId }))
+          ...values.mediationAgreement.map(item => ({ filePath: getPathFromUrl(item), fileProperty: fileProperties.MEDIATION_AGREEMENT, caseId }))
         ],
         closeCaseDate: values.executeAcceptDate ? values.executeAcceptDate.format('YYYY-MM-DD') : ''
       }
@@ -100,7 +101,7 @@ class EndCaseInfo extends React.PureComponent {
               {
                 getFieldDecorator('mediationAgreement', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.MEDIATION_AGREEMENT).map(item => item.filePath),
+                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.MEDIATION_AGREEMENT).map(item => item.fileUrl),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload

@@ -61,9 +61,10 @@ class CaseCreate extends React.PureComponent {
         trustorId: values.trustorId ? values.trustorId : '',
         proxyLawyerId: values.proxyLawyerId ? values.proxyLawyerId : ''
       }
+      this.setState({ loading: true })
       caseManageService.createCase(data).then(() => {
         onBack()
-      })
+      }).finally(() => this.setState({ loading: false }))
     })
   }
   render () {
@@ -232,26 +233,17 @@ class CaseCreate extends React.PureComponent {
             <FormItem
               label="律师"
               {...formItemLayout}>
-              <Row gutter={8}>
-                <Col span={20}>
-                  {
-                    getFieldDecorator('proxyLawyerId')(
-                      <Select
-                        optionFilterProp="children"
-                        showSearch
-                        filterOption={(input, option) => option.props.children.toLowerCase().includes(input.toLowerCase())}
-                        placeholder="请选择律师">
-                        {lawyers.map(lawyer => <Option key={lawyer.id}>{lawyer.name}</Option>)}
-                      </Select>
-                    )
-                  }
-                </Col>
-                <Col span={4}>
-                  <Button
-                    icon="plus"
-                    onClick={this.showTrustorModal}></Button>
-                </Col>
-              </Row>
+              {
+                getFieldDecorator('proxyLawyerId')(
+                  <Select
+                    optionFilterProp="children"
+                    showSearch
+                    filterOption={(input, option) => option.props.children.toLowerCase().includes(input.toLowerCase())}
+                    placeholder="请选择律师">
+                    {lawyers.map(lawyer => <Option key={lawyer.id}>{lawyer.name}</Option>)}
+                  </Select>
+                )
+              }
             </FormItem>
             <FormItem {...tailFormItemLayout}>
               <Button

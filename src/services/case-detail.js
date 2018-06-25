@@ -11,7 +11,8 @@ const {
   UPDATE_EXEC_INFO,
   DELETE_EXEC_INFO,
   UPDATE_END_CASE_INFO,
-  DELETE_END_CASE_INFO
+  DELETE_END_CASE_INFO,
+  DOWNLOAD_ATTACHMENTS
 } = API_URL.caseDetail
 
 // 获取案件详情数据
@@ -123,6 +124,14 @@ const deleteEndCaseInfo = (id, params = {}) => {
   })
 }
 
+// 下载附件
+const downloadAttachments = (caseId, property) => {
+  return axios({
+    url: DOWNLOAD_ATTACHMENTS(caseId, property),
+    method: 'POST'
+  })
+}
+
 export {
   fetchDetail,
   updateEntrustInfo,
@@ -133,5 +142,6 @@ export {
   updateExecInfo,
   deleteExecInfo,
   updateEndCaseInfo,
-  deleteEndCaseInfo
+  deleteEndCaseInfo,
+  downloadAttachments
 }
