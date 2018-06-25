@@ -13,7 +13,7 @@ const FormItem = Form.Item
 @Form.create()
 class RegisterCaseInfo extends React.PureComponent {
   static propTypes = {
-    form: PropTypes.object.isRequired,
+    form: PropTypes.object,
     params: PropTypes.object,
     style: PropTypes.object,
     fetchMethod: PropTypes.func,

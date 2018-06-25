@@ -36,7 +36,7 @@ class CaseImport extends React.PureComponent {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const data = {
-          filePath: values.fileList[0].response.filePath,
+          filePath: values.fileList[0].response.data.filePath,
           trustorId: values.trustorId
         }
         this.setState({ loading: true })

@@ -20,10 +20,10 @@ class DraggerUpload extends React.PureComponent {
     this.onChange = this.onChange.bind(this)
   }
   onChange (info) {
-    const { file, fileList } = info
+    const { file } = info
     const { status, response } = file
     const { errMsg, onChange } = this.props
-    onChange(fileList)
+    onChange([file])
     switch (status) {
     case 'error':
       onChange([])

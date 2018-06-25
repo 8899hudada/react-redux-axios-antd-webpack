@@ -13,7 +13,7 @@ const TextArea = Input.TextArea
 @Form.create()
 class SecondInstanceInfo extends React.PureComponent {
   static propTypes = {
-    form: PropTypes.object.isRequired,
+    form: PropTypes.object,
     params: PropTypes.object,
     style: PropTypes.object,
     fetchMethod: PropTypes.func,

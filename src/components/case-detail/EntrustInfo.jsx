@@ -13,7 +13,7 @@ const Option = Select.Option
 @Form.create()
 class EntrustInfo extends React.PureComponent {
   static propTypes = {
-    form: PropTypes.object.isRequired,
+    form: PropTypes.object,
     params: PropTypes.object,
     fetchMethod: PropTypes.func,
     caseId: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
@@ -174,7 +174,7 @@ class EntrustInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('trustorId', {
-                      initialValue: String(params.trustorId)
+                      initialValue: params.trustorId ? String(params.trustorId) : ''
                     })(
                       <Select
                         style={{ minWidth: 150 }}
@@ -224,7 +224,7 @@ class EntrustInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('proxyLawyerId', {
-                      initialValue: String(params.proxyLawyerId)
+                      initialValue: params.proxyLawyerId ? String(params.proxyLawyerId) : ''
                     })(
                       <Select
                         style={{ minWidth: 150 }}
