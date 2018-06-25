@@ -47,10 +47,11 @@ const updateRegisterCaseInfo = data => {
 }
 
 // 删除立案信息
-const deleteRegisterCaseInfo = id => {
+const deleteRegisterCaseInfo = (id, params = {}) => {
   return axios({
     url: DELETE_REGISTER_CASE_INFO(id),
     method: 'DELETE',
+    params,
     showLoading: true,
     loadingMsg: '删除中...'
   })
@@ -68,10 +69,11 @@ const updateInstanceInfo = data => {
 }
 
 // 删除审判信息
-const deleteInstanceInfo = (id, judgePeriod) => {
+const deleteInstanceInfo = (id, params = {}) => {
   return axios({
-    url: DELETE_INSTANCE_INFO(id, judgePeriod),
+    url: DELETE_INSTANCE_INFO(id),
     method: 'DELETE',
+    params,
     showLoading: true,
     loadingMsg: '删除中...'
   })
@@ -89,10 +91,11 @@ const updateExecInfo = data => {
 }
 
 // 删除执行信息
-const deleteExecInfo = id => {
+const deleteExecInfo = (id, params = {}) => {
   return axios({
     url: DELETE_EXEC_INFO(id),
     method: 'DELETE',
+    params,
     showLoading: true,
     loadingMsg: '删除中...'
   })
@@ -110,10 +113,11 @@ const updateEndCaseInfo = data => {
 }
 
 // 删除结案信息
-const deleteEndCaseInfo = id => {
+const deleteEndCaseInfo = (id, params = {}) => {
   return axios({
     url: DELETE_END_CASE_INFO(id),
     method: 'DELETE',
+    params,
     showLoading: true,
     loadingMsg: '删除中...'
   })

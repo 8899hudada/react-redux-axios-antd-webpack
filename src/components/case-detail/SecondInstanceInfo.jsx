@@ -57,9 +57,12 @@ class SecondInstanceInfo extends React.PureComponent {
     })
   }
   onDelete () {
-    const { params, localDelete, fetchMethod } = this.props
+    const { params, localDelete, fetchMethod, caseId } = this.props
     if (params.id) {
-      caseDetailService.deleteInstanceInfo(params.id, params.judgePeriod).then(() => {
+      caseDetailService.deleteInstanceInfo(params.id, {
+        judgePeriod: params.judgePeriod,
+        caseId
+      }).then(() => {
         fetchMethod()
         localDelete('secondInstanceInfo')
       })

@@ -79,7 +79,7 @@ API_URL.caseDetail = {
   UPDATE_REGISTER_CASE_INFO: 'case/detail/register',
   DELETE_REGISTER_CASE_INFO: (id = '') => `case/detail/register/${id}`,
   UPDATE_INSTANCE_INFO: 'case/detail/judgment',
-  DELETE_INSTANCE_INFO: (id = '', judgePeriod = '') => `case/detail/judgment/${id}?judgePeriod=${judgePeriod}`,
+  DELETE_INSTANCE_INFO: (id = '') => `case/detail/judgment/${id}`,
   UPDATE_EXEC_INFO: 'case/detail/execute',
   DELETE_EXEC_INFO: (id = '') => `case/detail/execute/${id}`,
   UPDATE_END_CASE_INFO: 'case/detail/closed',

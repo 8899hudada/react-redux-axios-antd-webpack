@@ -41,7 +41,7 @@ class CaseImport extends React.PureComponent {
         }
         this.setState({ loading: true })
         commonService.caseImport(data).then(() => {
-          this.props.onBack()
+          window.$history.push('/task-manage')
         }).finally(() => this.setState({ loading: false }))
       }
     })

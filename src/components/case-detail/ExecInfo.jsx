@@ -58,9 +58,9 @@ class ExecInfo extends React.PureComponent {
     })
   }
   onDelete () {
-    const { params, localDelete, fetchMethod } = this.props
+    const { params, localDelete, fetchMethod, caseId } = this.props
     if (params.id) {
-      caseDetailService.deleteExecInfo(params.id).then(() => {
+      caseDetailService.deleteExecInfo(params.id, { caseId }).then(() => {
         fetchMethod()
         localDelete('execInfo')
       })

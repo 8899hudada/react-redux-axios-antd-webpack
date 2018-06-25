@@ -57,9 +57,9 @@ class RegisterCaseInfo extends React.PureComponent {
     })
   }
   onDelete () {
-    const { params, localDelete, fetchMethod } = this.props
+    const { params, localDelete, fetchMethod, caseId } = this.props
     if (params.id) {
-      caseDetailService.deleteRegisterCaseInfo(params.id).then(() => {
+      caseDetailService.deleteRegisterCaseInfo(params.id, { caseId }).then(() => {
         fetchMethod()
         localDelete('registerCaseInfo')
       })
