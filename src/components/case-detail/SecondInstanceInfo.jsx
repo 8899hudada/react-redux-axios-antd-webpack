@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { fileProperties } from './constant'
 import { caseDetailService } from '@services'
-import { getPathFromUrl } from '@utils'
+import { formatAttachments } from './utils'
 
 const FormItem = Form.Item
 const TextArea = Input.TextArea
@@ -46,8 +46,8 @@ class SecondInstanceInfo extends React.PureComponent {
         id: params.id ? params.id : null,
         caseId,
         attachments: [
-          ...values.secondInstanceCitation.map(item => ({ filePath: getPathFromUrl(item), fileProperty: fileProperties.SECOND_INSTANCE_CITATION, caseId })),
-          ...values.secondInstanceJudgement.map(item => ({ filePath: getPathFromUrl(item), fileProperty: fileProperties.SECOND_INSTANCE_JUDGEMENT, caseId }))
+          ...formatAttachments(values.secondInstanceCitation, params.attachments, fileProperties.SECOND_INSTANCE_CITATION, caseId),
+          ...formatAttachments(values.secondInstanceJudgement, params.attachments, fileProperties.SECOND_INSTANCE_JUDGEMENT, caseId)
         ],
         openCourtTime: values.openCourtTime ? values.openCourtTime.format('YYYY-MM-DD hh:mm') : '',
         judgePeriod: params.judgePeriod

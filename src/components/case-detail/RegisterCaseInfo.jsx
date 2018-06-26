@@ -7,7 +7,7 @@ import moment from 'moment'
 import { REGEX } from '@constants'
 import { fileProperties } from './constant'
 import { caseDetailService } from '@services'
-import { getPathFromUrl } from '@utils'
+import { formatAttachments } from './utils'
 
 const FormItem = Form.Item
 
@@ -46,11 +46,7 @@ class RegisterCaseInfo extends React.PureComponent {
         id: params.id ? params.id : null,
         caseId,
         registerTime: values.registerTime ? values.registerTime.format('YYYY-MM-DD') : '',
-        attachments: values.acceptanceNotification.map(item => ({
-          filePath: getPathFromUrl(item),
-          fileProperty: fileProperties.ACCEPTED_NOTICE,
-          caseId
-        }))
+        attachments: formatAttachments(values.acceptanceNotification, params.attachments, fileProperties.ACCEPTED_NOTICE, caseId)
       }
       caseDetailService.updateRegisterCaseInfo(data).then(() => {
         fetchMethod().finally(() => this.setState({ isEdit: false }))

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { fileProperties } from './constant'
 import { caseDetailService } from '@services'
-import { getPathFromUrl } from '@utils'
+import { formatAttachments } from './utils'
 
 const FormItem = Form.Item
 
@@ -45,7 +45,7 @@ class EndCaseInfo extends React.PureComponent {
         id: params.id ? params.id : null,
         caseId,
         attachments: [
-          ...values.mediationAgreement.map(item => ({ filePath: getPathFromUrl(item), fileProperty: fileProperties.MEDIATION_AGREEMENT, caseId }))
+          ...formatAttachments(values.mediationAgreement, params.attachments, fileProperties.MEDIATION_AGREEMENT, caseId)
         ],
         closeCaseDate: values.executeAcceptDate ? values.executeAcceptDate.format('YYYY-MM-DD') : ''
       }

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { fileProperties } from './constant'
 import { caseDetailService } from '@services'
-import { getPathFromUrl } from '@utils'
+import { formatAttachments } from './utils'
 
 const FormItem = Form.Item
 const TextArea = Input.TextArea
@@ -46,8 +46,8 @@ class ExecInfo extends React.PureComponent {
         id: params.id ? params.id : null,
         caseId,
         attachments: [
-          ...values.executeCaseNotification.map(item => ({ filePath: getPathFromUrl(item), fileProperty: fileProperties.EXECUTE_CASE_NOTIFICATION, caseId })),
-          ...values.finalWrittenVerdict.map(item => ({ filePath: getPathFromUrl(item), fileProperty: fileProperties.FINAL_WRITTEN_VERDICT, caseId }))
+          ...formatAttachments(values.executeCaseNotification, params.attachments, fileProperties.EXECUTE_CASE_NOTIFICATION, caseId),
+          ...formatAttachments(values.finalWrittenVerdict, params.attachments, fileProperties.FINAL_WRITTEN_VERDICT, caseId)
         ],
         executeAcceptDate: values.executeAcceptDate ? values.executeAcceptDate.format('YYYY-MM-DD') : '',
         executeEndDate: values.executeEndDate ? values.executeEndDate.format('YYYY-MM-DD') : '',

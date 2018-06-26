@@ -7,7 +7,7 @@ import moment from 'moment'
 import { REGEX } from '@constants'
 import { fileProperties } from './constant'
 import { caseDetailService } from '@services'
-import { getPathFromUrl } from '@utils'
+import { formatAttachments } from './utils'
 
 const FormItem = Form.Item
 const TextArea = Input.TextArea
@@ -48,9 +48,9 @@ class FirstInstanceInfo extends React.PureComponent {
         id: params.id ? params.id : null,
         caseId,
         attachments: [
-          ...values.firstInstanceCitation.map(item => ({ filePath: getPathFromUrl(item), fileProperty: fileProperties.FIRST_INSTANCE_JUDGEMENT, caseId })),
-          ...values.announcement.map(item => ({ filePath: getPathFromUrl(item), fileProperty: fileProperties.ANNOUNCEMENT, caseId })),
-          ...values.firstInstanceJudgement.map(item => ({ filePath: getPathFromUrl(item), fileProperty: fileProperties.FIRST_INSTANCE_JUDGEMENT, caseId }))
+          ...formatAttachments(values.firstInstanceCitation, params.attachments, fileProperties.FIRST_INSTANCE_JUDGEMENT, caseId),
+          ...formatAttachments(values.announcement, params.attachments, fileProperties.ANNOUNCEMENT, caseId),
+          ...formatAttachments(values.firstInstanceJudgement, params.attachments, fileProperties.FIRST_INSTANCE_JUDGEMENT, caseId)
         ],
         openCourtTime: values.openCourtTime ? values.openCourtTime.format('YYYY-MM-DD hh:mm') : '',
         sealUpBeginDate: values.sealUpBeginDate ? values.sealUpBeginDate.format('YYYY-MM-DD') : '',
