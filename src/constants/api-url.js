@@ -58,7 +58,8 @@ API_URL.systemSetting = {
 
 // 任务管理
 API_URL.task = {
-  FETCH_LIST: 'tasks'
+  FETCH_LIST: 'tasks',
+  FETCH_TASK_ERRS: `task/errors`
 }
 
 // 案件管理
