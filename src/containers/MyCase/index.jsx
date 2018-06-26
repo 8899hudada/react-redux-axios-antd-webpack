@@ -2,7 +2,7 @@ import React from 'react'
 import { PageHeader, CaseImport, CaseCreate, LawerTreeSelectModal } from '@components/common'
 import { Actions, Table, TableActions, Search } from '@components/my-case'
 import { Card, message } from 'antd'
-import { myCaseService } from '@services'
+import { myCaseService, caseManageService } from '@services'
 import { formatSearchParams, searchParamsFactory } from './utils'
 
 const columns = [
@@ -54,13 +54,14 @@ class MyCase extends React.PureComponent {
     }
   }
   tableActionsClick (action) {
+    const { selectedRowKeys } = this.state
     switch (action) {
     case 'caseTransfer':
-      if (this.state.selectedRowKeys.length === 0 ) return message.warning('请选择案件')
+      if (selectedRowKeys.length === 0 ) return message.warning('请选择案件')
       this.setState({ treeSelectVisible: true })
       break
     case 'selectedExport':
-      if (this.state.selectedRowKeys.length === 0 ) return message.warning('请选择案件')
+      if (selectedRowKeys.length === 0 ) return message.warning('请选择案件')
       break
     case 'queryExport':
       break
@@ -146,10 +147,12 @@ class MyCase extends React.PureComponent {
         </Card>
         <LawerTreeSelectModal
           visible={treeSelectVisible}
-          onCancel={() => this.setState({ treeSelectVisible: false })}
+          onCancel={() => this.setState({ treeSelectVisible: false }, this.search)}
           title="案件转交"
           unselectedTips="请选择转交对象"
-          confrimContent="确定将案件转交给" />
+          confrimContent="确定将案件转交给"
+          params={{ caseIds: selectedRowKeys }}
+          submitMethod={caseManageService.assignCase} />
       </div>
     )
   }

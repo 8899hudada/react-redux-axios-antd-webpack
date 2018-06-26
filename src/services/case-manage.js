@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { API_URL } from '@/constants'
 
-const { FETCH_LIST, CREATE_CASE } = API_URL.caseManage
+const { FETCH_LIST, CREATE_CASE, DELETE_CASE, ASSIGN_CASE } = API_URL.caseManage
 
 const fetchList = data => {
   return axios({
@@ -19,7 +19,29 @@ const createCase = data => {
   })
 }
 
+const deleteCase = data => {
+  return axios({
+    url: DELETE_CASE,
+    method: 'DELETE',
+    data,
+    showLoading: true,
+    loadingMsg: '删除中...'
+  })
+}
+
+const assignCase = data => {
+  return axios({
+    url: ASSIGN_CASE,
+    method: 'POST',
+    data,
+    showLoading: true,
+    loadingMsg: '处理中...'
+  })
+}
+
 export {
   fetchList,
-  createCase
+  createCase,
+  deleteCase,
+  assignCase
 }

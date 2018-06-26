@@ -65,7 +65,9 @@ API_URL.task = {
 // 案件管理
 API_URL.caseManage = {
   FETCH_LIST: 'case/manage/list',
-  CREATE_CASE: 'case/manage/add'
+  CREATE_CASE: 'case/manage/add',
+  DELETE_CASE: 'case/manage/del',
+  ASSIGN_CASE: 'case/manage/assign'
 }
 
 // 我的案件

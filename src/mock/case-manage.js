@@ -2,7 +2,7 @@ import Mock from 'mockjs'
 import { API_ROOT, API_URL } from '@constants'
 
 const HTTP_ROOT = API_ROOT[process.env.ENV]
-const { FETCH_LIST, CREATE_CASE } = API_URL.caseManage
+const { FETCH_LIST, CREATE_CASE, DELETE_CASE, ASSIGN_CASE } = API_URL.caseManage
 
 Mock.mock(`${HTTP_ROOT}/${FETCH_LIST}`, 'post', () => {
   return Mock.mock({
@@ -27,6 +27,20 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_LIST}`, 'post', () => {
 })
 
 Mock.mock(`${HTTP_ROOT}/${CREATE_CASE}`, 'post', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true
+  })
+})
+
+Mock.mock(`${HTTP_ROOT}/${DELETE_CASE}`, 'delete', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true
+  })
+})
+
+Mock.mock(`${HTTP_ROOT}/${ASSIGN_CASE}`, 'post', () => {
   return Mock.mock({
     code: 200,
     ok: true

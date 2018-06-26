@@ -1,7 +1,7 @@
 import React from 'react'
 import { PageHeader, CaseImport, CaseCreate, LawerTreeSelectModal } from '@components/common'
 import { Actions, Table, TableActions, Search } from '@components/case-manage'
-import { Card, message } from 'antd'
+import { Card, message, Modal } from 'antd'
 import { caseManageService } from '@services'
 import { formatSearchParams, searchParamsFactory } from './utils'
 
@@ -56,15 +56,24 @@ class CaseManage extends React.PureComponent {
     }
   }
   tableActionsClick (action) {
+    const { selectedRowKeys } = this.state
     switch (action) {
     case 'caseDistribution':
-      if (this.state.selectedRowKeys.length === 0 ) return message.warning('请选择案件')
+      if (selectedRowKeys.length === 0 ) return message.warning('请选择案件')
       this.setState({ treeSelectVisible: true })
       break
     case 'selectedExport':
-      if (this.state.selectedRowKeys.length === 0 ) return message.warning('请选择案件')
+      if (selectedRowKeys.length === 0 ) return message.warning('请选择案件')
       break
     case 'queryExport':
+      break
+    case 'caseDelete':
+      if (selectedRowKeys.length === 0 ) return message.warning('请选择案件')
+      Modal.confirm({
+        title: '提示',
+        content: '确定删除已选择案件？',
+        onOk: () => caseManageService.deleteCase(selectedRowKeys).then(() => this.search())
+      })
       break
     }
   }
@@ -148,10 +157,12 @@ class CaseManage extends React.PureComponent {
         </Card>
         <LawerTreeSelectModal
           visible={treeSelectVisible}
-          onCancel={() => this.setState({ treeSelectVisible: false })}
+          onCancel={() => this.setState({ treeSelectVisible: false }, this.search)}
           title="案件分配"
           unselectedTips="请选择分配对象"
-          confrimContent="确定将案件分配给" />
+          confrimContent="确定将案件分配给"
+          params={{ caseIds: selectedRowKeys }}
+          submitMethod={caseManageService.assignCase} />
       </div>
     )
   }
