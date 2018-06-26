@@ -147,7 +147,8 @@ class MyCase extends React.PureComponent {
         </Card>
         <LawerTreeSelectModal
           visible={treeSelectVisible}
-          onCancel={() => this.setState({ treeSelectVisible: false }, this.search)}
+          onCancel={() => this.setState({ treeSelectVisible: false })}
+          onSuccess={this.search}
           title="案件转交"
           unselectedTips="请选择转交对象"
           confrimContent="确定将案件转交给"

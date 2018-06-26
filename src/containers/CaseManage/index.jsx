@@ -157,7 +157,8 @@ class CaseManage extends React.PureComponent {
         </Card>
         <LawerTreeSelectModal
           visible={treeSelectVisible}
-          onCancel={() => this.setState({ treeSelectVisible: false }, this.search)}
+          onCancel={() => this.setState({ treeSelectVisible: false })}
+          onSuccess={this.search}
           title="案件分配"
           unselectedTips="请选择分配对象"
           confrimContent="确定将案件分配给"

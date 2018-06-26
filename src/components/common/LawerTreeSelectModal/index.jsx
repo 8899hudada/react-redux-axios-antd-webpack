@@ -20,7 +20,8 @@ class LawerTreeSelectModal extends React.PureComponent {
     unselectedTips: PropTypes.string,
     confrimContent: PropTypes.string,
     title: PropTypes.string,
-    params: PropTypes.object
+    params: PropTypes.object,
+    onSuccess: PropTypes.func
   }
   constructor (props) {
     super(props)
@@ -52,13 +53,14 @@ class LawerTreeSelectModal extends React.PureComponent {
     this.setState({ selectedKeys })
   }
   submit (selectedKey) {
-    const { submitMethod, onCancel, params } = this.props
+    const { submitMethod, onCancel, params, onSuccess } = this.props
     this.setState({ confirmLoading: true })
     submitMethod({
       ...params,
       userId: selectedKey
     }).then(() => {
       onCancel()
+      onSuccess()
     }).finally(() => this.setState({ confirmLoading: false }))
   }
   onOk () {
@@ -103,7 +105,8 @@ LawerTreeSelectModal.defaultProps = {
   unselectedTips: '请选择操作对象',
   confrimContent: '确定该选择',
   submitMethod: () => new Promise(resolve => setTimeout(() => resolve(), 1000)),
-  params: {}
+  params: {},
+  onSuccess: () => {}
 }
 
 export default LawerTreeSelectModal

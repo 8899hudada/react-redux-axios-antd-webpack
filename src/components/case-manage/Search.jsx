@@ -44,7 +44,7 @@ class Search extends React.PureComponent {
   render () {
     const { search, searchParams, onChange, reset } = this.props
     const { trustors, lawyers } = this.state
-    const { customerName, trustorId, entrustDate, lawCaseCode, caseStatus, assignStatus, proxyLawyerId, createTime } = searchParams
+    const { customName, trustorId, entrustDate, lawCaseCode, caseStatus, assignStatus, proxyLawyerId, createTime } = searchParams
     return (
       <Form
         layout='inline'
@@ -69,8 +69,8 @@ class Search extends React.PureComponent {
         </FormItem>
         <FormItem label="姓名">
           <Input
-            value={customerName}
-            onChange={event => onChange('customerName', event.target.value)}
+            value={customName}
+            onChange={event => onChange('customName', event.target.value)}
             placeholder="请输入姓名" />
         </FormItem>
         <FormItem label="诉讼案号">
