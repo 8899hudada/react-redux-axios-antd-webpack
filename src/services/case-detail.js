@@ -125,10 +125,11 @@ const deleteEndCaseInfo = (id, params = {}) => {
 }
 
 // 下载附件
-const downloadAttachments = (caseId, property) => {
+const downloadAttachments = (caseId, params) => {
   return axios({
-    url: DOWNLOAD_ATTACHMENTS(caseId, property),
-    method: 'POST'
+    url: DOWNLOAD_ATTACHMENTS(caseId),
+    method: 'POST',
+    params
   })
 }
 

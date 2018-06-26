@@ -12,7 +12,8 @@ const {
   UPDATE_EXEC_INFO,
   DELETE_EXEC_INFO,
   UPDATE_END_CASE_INFO,
-  DELETE_END_CASE_INFO
+  DELETE_END_CASE_INFO,
+  DOWNLOAD_ATTACHMENTS
 } = API_URL.caseDetail
 const { Random } = Mock
 
@@ -175,5 +176,15 @@ Mock.mock(new RegExp(`${HTTP_ROOT}/${DELETE_END_CASE_INFO()}\\d+`), 'delete', ()
   return Mock.mock({
     code: 200,
     ok: true
+  })
+})
+
+Mock.mock(new RegExp(`${HTTP_ROOT}/${DOWNLOAD_ATTACHMENTS()}`), 'post', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true,
+    data: {
+      downloadUrl: "@url('http')"
+    }
   })
 })

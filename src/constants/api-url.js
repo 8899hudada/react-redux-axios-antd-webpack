@@ -85,7 +85,7 @@ API_URL.caseDetail = {
   DELETE_EXEC_INFO: (id = '') => `case/detail/execute/${id}`,
   UPDATE_END_CASE_INFO: 'case/detail/closed',
   DELETE_END_CASE_INFO: (id = '') => `case/detail/closed/${id}`,
-  DOWNLOAD_ATTACHMENTS: (caseId = '', property = '') => `case/detail/attachment/${caseId}?property=${property}`
+  DOWNLOAD_ATTACHMENTS: (caseId = '') => `case/detail/attachment/${caseId}`
 }
 
 export default API_URL

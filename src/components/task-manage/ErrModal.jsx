@@ -9,7 +9,7 @@ const columns = [
   { title: '原因', dataIndex: 'reason', key: 'reason',
     render: (text, record) => {
       let errorArr = []
-      if (record.cellErrors) errorArr = record.cellErrors.map(item => `${item.cellTitle}（第${columnNumberToLetter(item.columnIndex)}列）：${item.error}`)
+      if (record.cellErrors) errorArr = record.cellErrors.map(item => `${item.cellTitle}（第${columnNumberToLetter(item.columnIndex + 1)}列）：${item.error}`)
       if (record.error) errorArr.unshift(record.error)
       return (
         <div>{ errorArr.join('；') }</div>
@@ -37,6 +37,7 @@ class ErrModal extends React.PureComponent {
     }
     this.show = this.show.bind(this)
     this.hide = this.hide.bind(this)
+    this.pageChange = this.pageChange.bind(this)
   }
   show () {
     this.setState({
@@ -62,6 +63,15 @@ class ErrModal extends React.PureComponent {
         expire: data.pageData.length === 0
       }))
     }).finally(() => this.setState({ loading: false }))
+  }
+  pageChange (current, pageSize) {
+    this.setState(prevState => ({
+      pagination: {
+        ...prevState.pagination,
+        current,
+        pageSize
+      }
+    }), this.fetchList)
   }
   render () {
     const { visible, data, pagination, loading, expire } = this.state

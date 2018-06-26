@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Modal, Checkbox, Row, Col, message } from 'antd'
 import { FILE_PROPERTIES } from './constant'
-// import { API_URL, API_ROOT } from '@constants'
 import { caseDetailService } from '@services'
 
 const CheckboxGroup = Checkbox.Group
@@ -16,7 +15,8 @@ class AttachmentDownloadModal extends React.PureComponent {
     super(props)
     this.state = {
       visible: false,
-      checkedKeys: []
+      checkedKeys: [],
+      loading: false
     }
     this.onChange = this.onChange.bind(this)
     this.onOk = this.onOk.bind(this)
@@ -41,12 +41,16 @@ class AttachmentDownloadModal extends React.PureComponent {
     const { caseId } = this.props
     const { checkedKeys } = this.state
     if (checkedKeys.length === 0) return message.info('请选择需下载的附件')
-    // window.open(`${API_ROOT[process.env.ENV]}/${API_URL.caseDetail.DOWNLOAD_ATTACHMENTS(caseId, checkedKeys.join(','))}`)
-    caseDetailService.downloadAttachments(caseId, checkedKeys.join(','))
-    this.hide()
+    this.setState({ loading: true })
+    caseDetailService.downloadAttachments(caseId, {
+      property: checkedKeys.join(',')
+    }).then(({ data }) => {
+      window.open(data.downloadUrl)
+      this.hide()
+    }).finally(() => this.setState({ loading: false }))
   }
   render () {
-    const { visible, checkedKeys } = this.state
+    const { visible, checkedKeys, loading } = this.state
     const { attachments } = this.props
     return (
       <Modal
@@ -54,7 +58,8 @@ class AttachmentDownloadModal extends React.PureComponent {
         width={700}
         visible={visible}
         onCancel={this.hide}
-        onOk={this.onOk}>
+        onOk={this.onOk}
+        confirmLoading={loading}>
         <h4>选择要下载的附件内容</h4>
         <CheckboxGroup
           value={checkedKeys}
