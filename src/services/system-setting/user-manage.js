@@ -114,7 +114,7 @@ const updateUserStatus = (id, status) => {
     showLoading: true,
     showMessage: true,
     loadingMsg: `正在${status ? '禁用' : '停用'}...`,
-    data: {
+    params: {
       id,
       status
     }
@@ -124,10 +124,10 @@ const updateUserStatus = (id, status) => {
 /**
  * 更新人员密码
  * @param  {Number} userId 人员ID
- * @param  {String} password 人员密码
+ * @param  {String} passwd 人员密码
  * @return {Promise} Promise
  */
-const updateUserPassword = (userId, password) => {
+const updateUserPassword = (userId, passwd) => {
   return axios({
     url: UPDATE_USER_PASSWORD,
     method: 'PUT',
@@ -136,7 +136,7 @@ const updateUserPassword = (userId, password) => {
     loadingMsg: `正在重置密码...`,
     data: {
       userId,
-      password
+      passwd
     }
   })
 }
