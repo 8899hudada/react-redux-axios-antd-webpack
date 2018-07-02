@@ -69,11 +69,13 @@ Mock.mock(new RegExp(`^${HTTP_ROOT}/${DELETE_USER()}\\d+$`), 'delete', () => Moc
   data: null
 }))
 
-Mock.mock(`${HTTP_ROOT}/${UPDATE_USER_STATUS}`, 'put', () => Mock.mock({
-  code: 200,
-  ok: true,
-  data: null
-}))
+Mock.mock(new RegExp(`^${HTTP_ROOT}/${UPDATE_USER_STATUS}\\?id=\\d+&status=(true|false)$`), 'put', () => (
+  Mock.mock({
+    code: 200,
+    ok: true,
+    data: null
+  })
+))
 
 Mock.mock(`${HTTP_ROOT}/${UPDATE_USER_PASSWORD}`, 'put', () => Mock.mock({
   code: 200,

@@ -41,7 +41,7 @@ class UserModal extends React.PureComponent {
     this.hideModal = this.hideModal.bind(this)
   }
   handleSubmit () {
-    const { form, type, departments, roles, fetchUsers } = this.props
+    const { form, type, departments, roles, fetchUsers, user } = this.props
 
     form.validateFields(err => {
       const data = form.getFieldsValue()
@@ -52,6 +52,11 @@ class UserModal extends React.PureComponent {
       
       data.dept = departments.find(department => department.id === data.dept)
       data.role = roles.find(role => role.id === data.role)
+
+      if (type === 'update') {
+        data.id = user.id
+        data.passwd = user.passwd
+      }
       
       submitAction[type](data).then(() => {
         this.hideModal()
