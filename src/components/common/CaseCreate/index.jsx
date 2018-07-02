@@ -13,7 +13,8 @@ const Option = Select.Option
 class CaseCreate extends React.PureComponent {
   static propTypes = {
     form: PropTypes.object,
-    onBack: PropTypes.func
+    onBack: PropTypes.func,
+    isInMyCase: PropTypes.bool
   }
   constructor (props) {
     super(props)
@@ -52,7 +53,7 @@ class CaseCreate extends React.PureComponent {
     this.setState({ trustorModalVisible: true })
   }
   handleSubmit () {
-    const { form, onBack } = this.props
+    const { form, onBack, isInMyCase } = this.props
     form.validateFields((err, values) => {
       if (err) return false
       const data = {
@@ -61,6 +62,7 @@ class CaseCreate extends React.PureComponent {
         trustorId: values.trustorId ? values.trustorId : '',
         proxyLawyerId: values.proxyLawyerId ? values.proxyLawyerId : ''
       }
+      if (isInMyCase) data.myCaseFlag = true
       this.setState({ loading: true })
       caseManageService.createCase(data).then(() => {
         onBack()
@@ -69,7 +71,7 @@ class CaseCreate extends React.PureComponent {
   }
   render () {
     const { getFieldDecorator, getFieldValue } = this.props.form
-    const { onBack } = this.props
+    const { onBack, isInMyCase } = this.props
     const { loading, trustors, lawyers, trustorModalVisible } = this.state
     const formItemLayout = {
       labelCol: {
@@ -90,7 +92,7 @@ class CaseCreate extends React.PureComponent {
         sm: {
           span: 16,
           offset: 3,
-        },
+        }
       }
     }
     return (
@@ -230,21 +232,23 @@ class CaseCreate extends React.PureComponent {
                 )
               }
             </FormItem>
-            <FormItem
-              label="律师"
-              {...formItemLayout}>
-              {
-                getFieldDecorator('proxyLawyerId')(
-                  <Select
-                    optionFilterProp="children"
-                    showSearch
-                    filterOption={(input, option) => option.props.children.toLowerCase().includes(input.toLowerCase())}
-                    placeholder="请选择律师">
-                    {lawyers.map(lawyer => <Option key={lawyer.id}>{lawyer.name}</Option>)}
-                  </Select>
-                )
-              }
-            </FormItem>
+            {
+              !isInMyCase && <FormItem
+                label="律师"
+                {...formItemLayout}>
+                {
+                  getFieldDecorator('proxyLawyerId')(
+                    <Select
+                      optionFilterProp="children"
+                      showSearch
+                      filterOption={(input, option) => option.props.children.toLowerCase().includes(input.toLowerCase())}
+                      placeholder="请选择律师">
+                      {lawyers.map(lawyer => <Option key={lawyer.id}>{lawyer.name}</Option>)}
+                    </Select>
+                  )
+                }
+              </FormItem>
+            }
             <FormItem {...tailFormItemLayout}>
               <Button
                 type="primary"
@@ -264,7 +268,8 @@ class CaseCreate extends React.PureComponent {
 }
 
 CaseCreate.defaultProps = {
-  onBack: () => {}
+  onBack: () => {},
+  isInMyCase: false
 }
 
 export default CaseCreate

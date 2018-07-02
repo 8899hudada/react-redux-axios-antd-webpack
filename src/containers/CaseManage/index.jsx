@@ -56,7 +56,7 @@ class CaseManage extends React.PureComponent {
     }
   }
   tableActionsClick (action) {
-    const { selectedRowKeys } = this.state
+    const { selectedRowKeys, searchParams } = this.state
     switch (action) {
     case 'caseDistribution':
       if (selectedRowKeys.length === 0 ) return message.warning('请选择案件')
@@ -64,8 +64,16 @@ class CaseManage extends React.PureComponent {
       break
     case 'selectedExport':
       if (selectedRowKeys.length === 0 ) return message.warning('请选择案件')
+      caseManageService.exportCase({
+        caseIds: selectedRowKeys
+      }).then(({ data }) => {
+        window.open(data)
+      })
       break
     case 'queryExport':
+      caseManageService.exportCase(formatSearchParams(searchParams)).then(({ data }) => {
+        window.open(data)
+      })
       break
     case 'caseDelete':
       if (selectedRowKeys.length === 0 ) return message.warning('请选择案件')

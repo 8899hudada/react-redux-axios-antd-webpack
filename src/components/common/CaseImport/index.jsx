@@ -4,9 +4,11 @@ import { PageHeader, DraggerUpload } from '@components/common'
 import { Card, Form, Button, Select } from 'antd'
 import styles from './style'
 import { trustorService, commonService } from '@services'
+import { API_ROOT } from '@constants'
 
 const FormItem = Form.Item
 const Option = Select.Option
+const TEMPLATE_URL = `${API_ROOT[process.env.ENV]}/template/case/律师案件导入模板.xlsx`
 
 @Form.create()
 class CaseImport extends React.PureComponent {
@@ -74,7 +76,7 @@ class CaseImport extends React.PureComponent {
               }
             </FormItem>
             <FormItem
-              label={<span>案件上传（目前支持的文件类型为*.xls，*.xlsx）<a href="javascript:;">查看模板文件</a></span>}>
+              label={<span>案件上传（目前支持的文件类型为*.xls，*.xlsx）<a href={TEMPLATE_URL} target="_blank">查看模板文件</a></span>}>
               {
                 getFieldDecorator('fileList', {
                   valuePropName: 'fileList',

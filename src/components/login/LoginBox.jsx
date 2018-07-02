@@ -24,7 +24,7 @@ const mapStateToProps = () => {
 class LoginForm extends PureComponent {
   static propTypes = {
     form: PropTypes.object,
-    loginAction: PropTypes.func.isRequired
+    loginAction: PropTypes.func
   }
   constructor (props) {
     super(props)

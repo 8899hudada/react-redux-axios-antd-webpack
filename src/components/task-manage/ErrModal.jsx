@@ -80,7 +80,8 @@ class ErrModal extends React.PureComponent {
         title="不规范数据列表"
         width={1000}
         visible={visible}
-        onCancel={this.hide}>
+        onCancel={this.hide}
+        footer={null}>
         <Table
           loading={loading}
           rowKey='id'

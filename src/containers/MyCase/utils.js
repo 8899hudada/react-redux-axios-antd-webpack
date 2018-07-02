@@ -3,6 +3,7 @@
  */
 
 const formatSearchParams = searchParams => ({
+  customName: searchParams.customName ? searchParams.customName : null,
   lawCaseCode: searchParams.lawCaseCode ? searchParams.lawCaseCode : null,
   trustorId: searchParams.trustorId === -1 ? null : searchParams.trustorId,
   caseStatus: searchParams.caseStatus === -1 ? null : searchParams.caseStatus,
@@ -11,7 +12,7 @@ const formatSearchParams = searchParams => ({
 })
 
 const searchParamsFactory = () => ({
-  customerName: '',
+  customName: '',
   entrustDate: [],
   trustorId: -1,
   lawCaseCode: '',

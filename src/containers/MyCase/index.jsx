@@ -54,7 +54,7 @@ class MyCase extends React.PureComponent {
     }
   }
   tableActionsClick (action) {
-    const { selectedRowKeys } = this.state
+    const { selectedRowKeys, searchParams } = this.state
     switch (action) {
     case 'caseTransfer':
       if (selectedRowKeys.length === 0 ) return message.warning('请选择案件')
@@ -62,8 +62,16 @@ class MyCase extends React.PureComponent {
       break
     case 'selectedExport':
       if (selectedRowKeys.length === 0 ) return message.warning('请选择案件')
+      caseManageService.exportCase({
+        caseIds: selectedRowKeys
+      }).then(({ data }) => {
+        window.open(data)
+      })
       break
     case 'queryExport':
+      caseManageService.exportCase(formatSearchParams(searchParams)).then(({ data }) => {
+        window.open(data)
+      })
       break
     }
   }
@@ -124,7 +132,7 @@ class MyCase extends React.PureComponent {
     if (curView === 'import') {
       return <CaseImport onBack={this.actionBack} />
     } else if (curView === 'create') {
-      return <CaseCreate onBack={this.actionBack} />
+      return <CaseCreate onBack={this.actionBack} isInMyCase={true} />
     }
     return (
       <div>
