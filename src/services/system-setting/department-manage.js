@@ -33,9 +33,7 @@ const fetchDepartments = (data = {}) => {
 const fetchDepartmentTree = () => {
   return axios({
     url: FETCH_DEPARTMENT_TREE,
-    method: 'GET',
-    showLoading: true,
-    showMessage: true
+    method: 'GET'
   })
 }
 
@@ -46,9 +44,7 @@ const fetchDepartmentTree = () => {
 const fetchDepartmentUserTree = () => {
   return axios({
     url: FETCH_DEPARTMENT_USER_TREE,
-    method: 'GET',
-    showLoading: true,
-    showMessage: true
+    method: 'GET'
   })
 }
 

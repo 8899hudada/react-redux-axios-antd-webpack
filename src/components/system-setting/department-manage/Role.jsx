@@ -12,19 +12,21 @@ class Role extends React.PureComponent {
       roles: [], // 角色列表
       visibleRoleModal: false, // 显示角色弹窗
       roleModalAction: 'create', // 角色弹窗动作
-      editRoleIndex: -1 // 编辑的角色序号
+      editRoleIndex: -1, // 编辑的角色序号
+      loading: false
     }
 
     this.fetchRoles = this.fetchRoles.bind(this)
     this.deleteRole = this.deleteRole.bind(this)
   }
   fetchRoles () {
+    this.setState({ loading: true })
     roleManageService.fetchRoles({
       current: 1,
       pageSize: 500
     }).then(res => {
       this.setState({roles: res.data.pageData || []})
-    })
+    }).finally(() => this.setState({ loading: false }))
   }
   deleteRole (id) {
     roleManageService.deleteRole(id).then(() => {
@@ -39,7 +41,7 @@ class Role extends React.PureComponent {
     })
   }
   render () {
-    const { roles, visibleRoleModal, roleModalAction, editRoleIndex } = this.state
+    const { roles, visibleRoleModal, roleModalAction, editRoleIndex, loading } = this.state
     const columns = [
       {
         title: '序号',
@@ -87,6 +89,7 @@ class Role extends React.PureComponent {
     return (
       <Card className="margin-top-xs" title={cardTitle}>
         <Table
+          loading={loading}
           dataSource={roles}
           columns={columns}
           pagination={false}

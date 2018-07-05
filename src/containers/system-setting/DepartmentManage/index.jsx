@@ -20,7 +20,8 @@ class DepartmentManage extends React.PureComponent {
       selectedDepartmentKeys: [], //选中的部门树节点
       visibleDepartmentModal: false, // 显示部门弹窗
       departmentModalAction: 'create', // 部门弹窗动作 [update: 编辑， create: 新增]
-      editDepartment: null // 编辑的部门
+      editDepartment: null, // 编辑的部门
+      departmentTreeLoading: false
     }
 
     this.fetchDepartmentTree = this.fetchDepartmentTree.bind(this)
@@ -31,10 +32,11 @@ class DepartmentManage extends React.PureComponent {
     this.updateDepartment = this.updateDepartment.bind(this)
   }
   fetchDepartmentTree () {
+    this.setState({ departmentTreeLoading: true })
     departmentManageService.fetchDepartmentTree().then(res => {
       this.setState({departmentTree: []})
       this.setState({departmentTree: res.data || []})
-    })
+    }).finally(() => this.setState({ departmentTreeLoading: false }))
   }
   handleTreeSelect (type, selectedKeys) {
     this.setState({[type]: selectedKeys})
@@ -59,7 +61,7 @@ class DepartmentManage extends React.PureComponent {
     this.setState({[type]: visible})
   }
   render () {
-    const { departmentTree, selectedDepartmentKeys, visibleDepartmentModal, departmentModalAction, editDepartment } = this.state
+    const { departmentTree, selectedDepartmentKeys, visibleDepartmentModal, departmentModalAction, editDepartment, departmentTreeLoading } = this.state
     const NodeTitle = props => {
       return (
         <div className={styles['tree-node-title']}>
@@ -98,7 +100,7 @@ class DepartmentManage extends React.PureComponent {
     return (
       <div>
         <PageHeader title="部门管理"></PageHeader>
-        <Card title="部门管理">
+        <Card title="部门管理" loading={departmentTreeLoading}>
           {
             departmentTree.length ? (
               <Tree

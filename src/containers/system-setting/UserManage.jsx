@@ -35,7 +35,8 @@ class UserManage extends React.PureComponent {
       userModalType: 'update', // 人员弹窗类型 [create：新增，update：编辑]
       editUserIndex: 0, // 编辑的人员索引
       updatePasswordModalVisible: false, // 显示更新密码弹窗
-      permissionModalVisible: false // 显示分配权限弹窗
+      permissionModalVisible: false, // 显示分配权限弹窗,
+      loading: false
     }
   }
   fetchDepartments () {
@@ -61,7 +62,7 @@ class UserManage extends React.PureComponent {
   fetchUsers () {
     const { searchParams, pagination } = this.state
     const { current, pageSize } = pagination
-    
+    this.setState({ loading: true })
     userManageService.fetchUsers({
       current,
       pageSize,
@@ -74,7 +75,7 @@ class UserManage extends React.PureComponent {
           total: res.data.total || 0
         }
       })
-    })
+    }).finally(() => this.setState({ loading: false }))
   }
   updatePagination (pagination = {}) {
     this.setState({
@@ -133,7 +134,8 @@ class UserManage extends React.PureComponent {
       userModalVisible,
       userModalType,
       updatePasswordModalVisible,
-      permissionModalVisible
+      permissionModalVisible,
+      loading
     } = this.state
     
     return (
@@ -154,6 +156,7 @@ class UserManage extends React.PureComponent {
           </div>
           <div className="margin-top-xs">
             <Table
+              loading={loading}
               pagination={pagination}
               users={users}
               openUserModal={(type, index) => this.toggleUserModal(true, type, index)}

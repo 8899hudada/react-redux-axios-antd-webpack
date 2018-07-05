@@ -15,7 +15,8 @@ class UserTable extends React.PureComponent {
     openUserModal: PropTypes.func.isRequired,
     openUpdatePasswordModal: PropTypes.func.isRequired,
     openPermissionModal: PropTypes.func.isRequired,
-    fetchUsers: PropTypes.func.isRequired
+    fetchUsers: PropTypes.func.isRequired,
+    loading: PropTypes.bool
   }
   constructor (props) {
     super(props)
@@ -35,7 +36,7 @@ class UserTable extends React.PureComponent {
     })
   }
   render () {
-    const { users, pagination, openUserModal, openUpdatePasswordModal, openPermissionModal } = this.props
+    const { users, pagination, openUserModal, openUpdatePasswordModal, openPermissionModal, loading } = this.props
     const columns = [
       {
         title: '姓名',
@@ -112,6 +113,7 @@ class UserTable extends React.PureComponent {
     
     return (
       <Table
+        loading={loading}
         columns={columns}
         dataSource={users}
         pagination={pagination}
@@ -119,6 +121,10 @@ class UserTable extends React.PureComponent {
       </Table>
     )
   }
+}
+
+UserTable.defaultProps = {
+  loading: false
 }
 
 export default UserTable

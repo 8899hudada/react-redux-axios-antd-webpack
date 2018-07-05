@@ -36,7 +36,6 @@ const fetchUsers = (data = {}) => {
   return axios({
     url: FETCH_USERS,
     method: 'POST',
-    showLoading: true,
     data
   })
 }
@@ -148,8 +147,7 @@ const updateUserPassword = (userId, passwd) => {
 const fetchPermissionTree = () => {
   return axios({
     url: FETCH_PERMISSION_TREE,
-    method: 'GET',
-    showLoading: true
+    method: 'GET'
   })
 }
 

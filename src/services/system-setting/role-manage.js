@@ -20,9 +20,7 @@ const fetchRoles = (data = {}) => {
   return axios({
     url: FETCH_ROLES,
     method: 'POST',
-    data,
-    showLoading: true,
-    showMessage: true
+    data
   })
 }
 
