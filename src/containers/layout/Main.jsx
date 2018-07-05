@@ -4,9 +4,9 @@ import { Layout } from 'antd'
 import {
   CompanyInfo,
   RouterMenu,
-  User,
-  GlobalSearch
+  User
 } from '@components/main-layout'
+import { commonService } from '@services'
 
 const { Header, Content, Sider } = Layout
 
@@ -16,19 +16,29 @@ class MainLayout extends Component {
   }
   constructor(props) {
     super(props)
+    this.state = {
+      userName: ''
+    }
+  }
+  componentDidMount () {
+    this.fetchUserInfo()
+  }
+  fetchUserInfo () {
+    commonService.fetchUserInfo().then(({ data }) => {
+      console.log(data)
+      this.setState({ userName: data.name })
+    })
   }
   render () {
+    const { userName } = this.state
     return (
       <Layout className="main-layout">
         <Header className="header">
           <div className="pull-left">
             <CompanyInfo className="company-info" companyAvator={require('@/favicon.ico')}></CompanyInfo>
           </div>
-          <div className="pull-left">
-            <GlobalSearch />
-          </div>
           <div className="pull-right">
-            <User></User>
+            <User userName={userName}></User>
           </div>
         </Header>
         <Layout className="content-layout">

@@ -3,7 +3,9 @@ import { API_ROOT, API_URL } from '@constants'
 
 const HTTP_ROOT = API_ROOT[process.env.ENV]
 
-Mock.mock(`${HTTP_ROOT}/${API_URL.common.UPLOAD_LOCAL}`, 'post', {
+const { UPLOAD_LOCAL, UPLOAD, CASE_IMPORT, FETCH_USER_INFO } = API_URL.common
+
+Mock.mock(`${HTTP_ROOT}/${UPLOAD_LOCAL}`, 'post', {
   code: 200,
   ok: true,
   data: {
@@ -11,7 +13,7 @@ Mock.mock(`${HTTP_ROOT}/${API_URL.common.UPLOAD_LOCAL}`, 'post', {
   }
 })
 
-Mock.mock(`${HTTP_ROOT}/${API_URL.common.UPLOAD}`, 'post', () => {
+Mock.mock(`${HTTP_ROOT}/${UPLOAD}`, 'post', () => {
   return Mock.mock({
     code: 200,
     ok: true,
@@ -21,7 +23,18 @@ Mock.mock(`${HTTP_ROOT}/${API_URL.common.UPLOAD}`, 'post', () => {
   })
 })
 
-Mock.mock(`${HTTP_ROOT}/${API_URL.common.CASE_IMPORT}`, 'post', {
+Mock.mock(`${HTTP_ROOT}/${CASE_IMPORT}`, 'post', {
   code: 200,
   ok: true
+})
+
+Mock.mock(`${HTTP_ROOT}/${FETCH_USER_INFO}`, 'get', {
+  code: 200,
+  ok: true,
+  data: {
+    id: '@id()',
+    name: '@cname(2, 3)',
+    phone: /^1(3|4|5|7|8)\d{9}$/,
+    loginName: '@email()'
+  }
 })

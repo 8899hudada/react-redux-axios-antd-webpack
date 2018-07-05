@@ -10,7 +10,8 @@ API_URL.admin = {
 API_URL.common = {
   UPLOAD_LOCAL: 'file/local',
   UPLOAD: 'file/upload',
-  CASE_IMPORT: 'import/excel'
+  CASE_IMPORT: 'import/excel',
+  FETCH_USER_INFO: 'account/session'
 }
 
 // 系统设置
