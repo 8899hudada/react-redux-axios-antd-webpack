@@ -56,14 +56,14 @@ class CaseManage extends React.PureComponent {
     }
   }
   tableActionsClick (action) {
-    const { selectedRowKeys, searchParams } = this.state
+    const { selectedRowKeys, searchParams, data } = this.state
     switch (action) {
     case 'caseDistribution':
-      if (selectedRowKeys.length === 0 ) return message.warning('请选择案件')
+      if (selectedRowKeys.length === 0) return message.warning('请选择案件')
       this.setState({ treeSelectVisible: true })
       break
     case 'selectedExport':
-      if (selectedRowKeys.length === 0 ) return message.warning('请选择案件')
+      if (selectedRowKeys.length === 0) return message.warning('请选择案件')
       caseManageService.exportCase({
         caseIds: selectedRowKeys
       }).then(({ data }) => {
@@ -71,12 +71,14 @@ class CaseManage extends React.PureComponent {
       })
       break
     case 'queryExport':
+      if (data.length === 0) return message.warning('当前查询结果没有数据')
       caseManageService.exportCase(formatSearchParams(searchParams)).then(({ data }) => {
+        if (!data) return message.warning('当前查询结果没有数据')
         window.open(data)
       })
       break
     case 'caseDelete':
-      if (selectedRowKeys.length === 0 ) return message.warning('请选择案件')
+      if (selectedRowKeys.length === 0) return message.warning('请选择案件')
       Modal.confirm({
         title: '提示',
         content: '确定删除已选择案件？',

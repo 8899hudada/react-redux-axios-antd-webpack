@@ -54,14 +54,14 @@ class MyCase extends React.PureComponent {
     }
   }
   tableActionsClick (action) {
-    const { selectedRowKeys, searchParams } = this.state
+    const { selectedRowKeys, searchParams, data } = this.state
     switch (action) {
     case 'caseTransfer':
-      if (selectedRowKeys.length === 0 ) return message.warning('请选择案件')
+      if (selectedRowKeys.length === 0) return message.warning('请选择案件')
       this.setState({ treeSelectVisible: true })
       break
     case 'selectedExport':
-      if (selectedRowKeys.length === 0 ) return message.warning('请选择案件')
+      if (selectedRowKeys.length === 0) return message.warning('请选择案件')
       caseManageService.exportCase({
         caseIds: selectedRowKeys,
         myCaseFlag: true
@@ -70,10 +70,12 @@ class MyCase extends React.PureComponent {
       })
       break
     case 'queryExport':
+      if (data.length === 0) return message.warning('当前查询结果没有数据')
       caseManageService.exportCase({
         ...formatSearchParams(searchParams),
         myCaseFlag: true
       }).then(({ data }) => {
+        if (!data) return message.warning('当前查询结果没有数据')
         window.open(data)
       })
       break
