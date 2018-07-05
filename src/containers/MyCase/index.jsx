@@ -63,13 +63,17 @@ class MyCase extends React.PureComponent {
     case 'selectedExport':
       if (selectedRowKeys.length === 0 ) return message.warning('请选择案件')
       caseManageService.exportCase({
-        caseIds: selectedRowKeys
+        caseIds: selectedRowKeys,
+        myCaseFlag: true
       }).then(({ data }) => {
         window.open(data)
       })
       break
     case 'queryExport':
-      caseManageService.exportCase(formatSearchParams(searchParams)).then(({ data }) => {
+      caseManageService.exportCase({
+        ...formatSearchParams(searchParams),
+        myCaseFlag: true
+      }).then(({ data }) => {
         window.open(data)
       })
       break
