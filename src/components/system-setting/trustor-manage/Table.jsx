@@ -42,6 +42,7 @@ const TrustorTable = ({ trustors = [], fetchList, toggleTrustorModal, loading = 
 
   return (
     <Table
+      size='middle'
       loading={loading}
       columns={columns}
       dataSource={trustors}

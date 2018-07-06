@@ -184,7 +184,7 @@ class CaseCreate extends React.PureComponent {
                     { required: true, message: `请输入${ACCOUNT_TYPES[getFieldValue('accountType')]}`, whitespace: true }
                   ]
                 })(
-                  <Input placeholder={`请输入${ACCOUNT_TYPES[getFieldValue('accountType')]}`} />
+                  <Input maxLength={30} placeholder={`请输入${ACCOUNT_TYPES[getFieldValue('accountType')]}`} />
                 )
               }
             </FormItem>

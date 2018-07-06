@@ -113,6 +113,7 @@ class UserTable extends React.PureComponent {
     
     return (
       <Table
+        size='middle'
         loading={loading}
         columns={columns}
         dataSource={users}

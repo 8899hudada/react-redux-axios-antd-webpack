@@ -163,6 +163,7 @@ class EntrustInfo extends React.PureComponent {
                       initialValue: params.accountNumber
                     })(
                       <Input
+                        maxLength={30}
                         placeholder="请输入" />
                     )
                     : <span>{params.accountNumber}</span>

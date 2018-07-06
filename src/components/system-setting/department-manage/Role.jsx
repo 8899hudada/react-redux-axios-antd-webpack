@@ -89,6 +89,7 @@ class Role extends React.PureComponent {
     return (
       <Card className="margin-top-xs" title={cardTitle}>
         <Table
+          size='middle'
           loading={loading}
           dataSource={roles}
           columns={columns}
