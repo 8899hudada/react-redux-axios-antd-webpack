@@ -4,6 +4,7 @@ import { Tree, Confirm, PageHeader } from '@components/common'
 import { Card, Button } from 'antd'
 import { DepartmentModal, Role } from '@components/system-setting/department-manage'
 import styles from './style'
+import { formatTreeData } from './utils'
 
 const treeOption = {
   labelKey: 'name',
@@ -24,18 +25,17 @@ class DepartmentManage extends React.PureComponent {
       departmentTreeLoading: false
     }
 
-    this.fetchDepartmentTree = this.fetchDepartmentTree.bind(this)
+    this.fetchDepartmentUserTree = this.fetchDepartmentUserTree.bind(this)
     this.handleTreeSelect = this.handleTreeSelect.bind(this)
     this.createDepartment = this.createDepartment.bind(this)
     this.deleteDepartment = this.deleteDepartment.bind(this)
     this.toggleModal = this.toggleModal.bind(this)
     this.updateDepartment = this.updateDepartment.bind(this)
   }
-  fetchDepartmentTree () {
+  fetchDepartmentUserTree () {
     this.setState({ departmentTreeLoading: true })
-    departmentManageService.fetchDepartmentTree().then(res => {
-      this.setState({departmentTree: []})
-      this.setState({departmentTree: res.data || []})
+    departmentManageService.fetchDepartmentUserTree().then(res => {
+      this.setState({departmentTree: formatTreeData(res.data || [])})
     }).finally(() => this.setState({ departmentTreeLoading: false }))
   }
   handleTreeSelect (type, selectedKeys) {
@@ -54,7 +54,7 @@ class DepartmentManage extends React.PureComponent {
   }
   deleteDepartment (id) {
     departmentManageService.deleteDepartment(id).then(() => {
-      this.fetchDepartmentTree()
+      this.fetchDepartmentUserTree()
     })
   }
   toggleModal (type, visible) {
@@ -66,33 +66,37 @@ class DepartmentManage extends React.PureComponent {
       return (
         <div className={styles['tree-node-title']}>
           <span>{props.name}</span>
-          <div className={styles['action']}>
-            <Button
-              type="primary"
-              size="small"
-              className="margin-left-xs"
-              icon="plus-circle"
-              onClick={() => this.createDepartment(props.id)}>
-              添加子部门
-            </Button>
-            <Button
-              type="primary"
-              size="small"
-              className="margin-left-xs"
-              icon="edit"
-              onClick={() => this.updateDepartment(props)}>
-              编辑部门
-            </Button>
-            <Confirm options={{onOk: () => this.deleteDepartment(props.id)}}>
-              <Button
-                type="danger"
-                size="small"
-                className="margin-left-xs"
-                icon="minus-circle">
-                删除部门
-              </Button>
-            </Confirm>
-          </div>
+          {
+            props.children ? (
+              <div className={styles['action']}>
+                <Button
+                  type="primary"
+                  size="small"
+                  className="margin-left-xs"
+                  icon="plus-circle"
+                  onClick={() => this.createDepartment(props.id)}>
+                  添加子部门
+                </Button>
+                <Button
+                  type="primary"
+                  size="small"
+                  className="margin-left-xs"
+                  icon="edit"
+                  onClick={() => this.updateDepartment(props)}>
+                  编辑部门
+                </Button>
+                <Confirm options={{onOk: () => this.deleteDepartment(props.id)}}>
+                  <Button
+                    type="danger"
+                    size="small"
+                    className="margin-left-xs"
+                    icon="minus-circle">
+                    删除部门
+                  </Button>
+                </Confirm>
+              </div>
+            ) : null
+          }
         </div>
       )
     }
@@ -120,14 +124,14 @@ class DepartmentManage extends React.PureComponent {
           visible={visibleDepartmentModal}
           action={departmentModalAction}
           hideModal={() => this.toggleModal('visibleDepartmentModal', false)}
-          fetchDepartmentTree={this.fetchDepartmentTree}
+          fetchDepartmentUserTree={this.fetchDepartmentUserTree}
           department={editDepartment}>
         </DepartmentModal>
       </div>
     )
   }
   componentDidMount () {
-    this.fetchDepartmentTree()
+    this.fetchDepartmentUserTree()
   }
 }
 
