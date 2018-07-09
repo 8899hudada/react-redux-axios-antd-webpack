@@ -28,7 +28,7 @@ class DepartmentModal extends React.PureComponent {
     action: PropTypes.oneOf(['update', 'create']).isRequired,
     form: PropTypes.object.isRequired,
     hideModal: PropTypes.func.isRequired,
-    fetchDepartmentUserTree: PropTypes.func.isRequired,
+    fetchDepartmentTree: PropTypes.func.isRequired,
     department: PropTypes.shape({
       name: PropTypes.string.isRequired,
       id: PropTypes.number.isRequired,
@@ -62,7 +62,7 @@ class DepartmentModal extends React.PureComponent {
     this.props.hideModal()
   }
   handleSubmit () {
-    const { form, action, fetchDepartmentUserTree, department } = this.props
+    const { form, action, fetchDepartmentTree, department } = this.props
 
     form.validateFields(err => {
       let data = form.getFieldsValue()
@@ -80,7 +80,7 @@ class DepartmentModal extends React.PureComponent {
       
       submitAction[action](data).then(() => {
         this.hideModal()
-        fetchDepartmentUserTree()
+        fetchDepartmentTree()
       })
     })
   }

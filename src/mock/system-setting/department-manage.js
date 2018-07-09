@@ -33,27 +33,42 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_DEPARTMENT_TREE}`, 'get', () => {
     data: [{
       id: '@increment(1)',
       name: '睿码科技',
-      parentId: 1,
       children: [{
         id: '@increment(1)',
         name: '开发部',
-        parentId: 1,
         children: [{
           id: '@increment(1)',
           name: '金融科技组',
           children: [],
-          parentId: 1,
+          users: [{
+            id: '@increment(1)',
+            name: '曾十'
+          }]
+        }],
+        users: [{
+          id: '@increment(1)',
+          name: '张三'
+        }, {
+          id: '@increment(1)',
+          name: '李四'
         }]
+      }],
+      users: [{
+        id: '@increment(1)',
+        name: '陈八'
       }]
     }, {
       id: '@increment(1)',
-      parentId: 1,
       name: '睿码金融',
       children: [{
         id: '@increment(1)',
-        parentId: 1,
         name: '催收部',
-        children: []
+        children: [],
+        users: []
+      }],
+      users: [{
+        id: '@increment(1)',
+        name: '郑九'
       }]
     }]
   })

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Modal, Form, Input, Row, Col, Select } from 'antd'
 import { userManageService } from '@services'
+import { REGEX } from '@constants'
 
 const FormItem = Form.Item
 const Option = Select.Option
@@ -188,7 +189,8 @@ class UserModal extends React.PureComponent {
                       rules: [
                         {
                           required: true,
-                          message: '请输入登录密码'
+                          pattern: REGEX.password,
+                          message: '6-16位字符或数字'
                         }
                       ]
                     })(
