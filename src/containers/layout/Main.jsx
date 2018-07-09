@@ -25,7 +25,6 @@ class MainLayout extends Component {
   }
   fetchUserInfo () {
     commonService.fetchUserInfo().then(({ data }) => {
-      console.log(data)
       this.setState({ userName: data.name })
     })
   }
