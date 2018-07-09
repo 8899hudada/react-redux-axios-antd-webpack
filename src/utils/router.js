@@ -1,3 +1,5 @@
+import { traversalTree } from './tree'
+
 const findParentsByKey = (path = '/', parent = [], key = 'id') => {
   let keyList = []
   const children = parent.children
@@ -38,6 +40,19 @@ const findParentsByKey = (path = '/', parent = [], key = 'id') => {
   return keyList
 }
 
+const routerFactoryByPermissions = (permissions = [], router = {}) => {
+  const permissionCodes = permissions.map(permission => permission.code)
+  traversalTree(router.children, router, node => {
+    return !permissionCodes.includes(node.code)
+  }, (node, parent) => {
+    const index = parent.children.findIndex(item => node === item)
+    parent.children.splice(index, 1)
+  })
+
+  return router
+}
+
 export {
-  findParentsByKey
+  findParentsByKey,
+  routerFactoryByPermissions
 }

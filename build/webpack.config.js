@@ -107,7 +107,8 @@ let commonConfig = {
 			'@styles': path.resolve(SRC_PATH, 'styles'),
 			'@imgs': path.resolve(SRC_PATH, 'imgs'),
       '@redux': path.resolve(SRC_PATH, 'redux'),
-      '@config': path.resolve(SRC_PATH, 'config')
+      '@config': path.resolve(SRC_PATH, 'config'),
+      '@decorator': path.resolve(SRC_PATH, 'decorator')
 		}
 	}
 }
