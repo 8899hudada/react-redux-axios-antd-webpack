@@ -87,6 +87,10 @@ class DepartmentModal extends React.PureComponent {
   componentWillReceiveProps (nextProps) {
     const { visible, action, department } = nextProps
     
+    if (visible) {
+      this.fetchDepartments()
+    }
+
     if (visible && action === 'update' && !this.props.visible && department) {
       this.props.form.setFieldsValue({
         name: nextProps.department.name,
