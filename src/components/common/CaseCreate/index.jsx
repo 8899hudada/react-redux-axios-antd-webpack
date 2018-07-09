@@ -31,6 +31,7 @@ class CaseCreate extends React.PureComponent {
   }
   componentDidMount () {
     this.fetchTrustors()
+    this.fetchLawyers()
   }
   fetchTrustors () {
     trustorService.fetchList().then(({ data }) => {
