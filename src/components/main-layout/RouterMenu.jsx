@@ -1,7 +1,6 @@
 import React from 'react'
 import { Menu } from 'antd'
 import { Link } from 'react-router-dom'
-import router from '@/router'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { updateRouterMenuAction } from '@redux/common'
@@ -18,6 +17,7 @@ class RouterMenu extends React.PureComponent {
   static propTypes = {
     selectedKeys: PropTypes.array.isRequired,
     openKeys: PropTypes.array.isRequired,
+    router: PropTypes.object.isRequired,
     updateRouterMenuAction: PropTypes.func.isRequired
   }
   handleOpenChange ({ key }) {
@@ -52,8 +52,8 @@ class RouterMenu extends React.PureComponent {
     )
   }
   render () {
-    const { openKeys, selectedKeys } = this.props
-    const MenuItems = router.children.map(route => {
+    const { openKeys, selectedKeys, router } = this.props
+    const MenuItems = (router.children || []).map(route => {
       return this.routeRecursion(route)
     })
     
@@ -72,6 +72,7 @@ class RouterMenu extends React.PureComponent {
 
 const mapStateToProps = state => ({
   openKeys: state.commonReducer.openKeys,
+  router: state.commonReducer.router,
   selectedKeys: state.commonReducer.selectedKeys
 })
 

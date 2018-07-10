@@ -25,16 +25,16 @@ class DepartmentManage extends React.PureComponent {
       departmentTreeLoading: false
     }
 
-    this.fetchDepartmentUserTree = this.fetchDepartmentUserTree.bind(this)
+    this.fetchDepartmentTree = this.fetchDepartmentTree.bind(this)
     this.handleTreeSelect = this.handleTreeSelect.bind(this)
     this.createDepartment = this.createDepartment.bind(this)
     this.deleteDepartment = this.deleteDepartment.bind(this)
     this.toggleModal = this.toggleModal.bind(this)
     this.updateDepartment = this.updateDepartment.bind(this)
   }
-  fetchDepartmentUserTree () {
+  fetchDepartmentTree () {
     this.setState({ departmentTreeLoading: true })
-    departmentManageService.fetchDepartmentUserTree().then(res => {
+    departmentManageService.fetchDepartmentTree().then(res => {
       this.setState({departmentTree: formatTreeData(res.data || [])})
     }).finally(() => this.setState({ departmentTreeLoading: false }))
   }
@@ -54,7 +54,7 @@ class DepartmentManage extends React.PureComponent {
   }
   deleteDepartment (id) {
     departmentManageService.deleteDepartment(id).then(() => {
-      this.fetchDepartmentUserTree()
+      this.fetchDepartmentTree()
     })
   }
   toggleModal (type, visible) {
@@ -124,14 +124,14 @@ class DepartmentManage extends React.PureComponent {
           visible={visibleDepartmentModal}
           action={departmentModalAction}
           hideModal={() => this.toggleModal('visibleDepartmentModal', false)}
-          fetchDepartmentUserTree={this.fetchDepartmentUserTree}
+          fetchDepartmentTree={this.fetchDepartmentTree}
           department={editDepartment}>
         </DepartmentModal>
       </div>
     )
   }
   componentDidMount () {
-    this.fetchDepartmentUserTree()
+    this.fetchDepartmentTree()
   }
 }
 

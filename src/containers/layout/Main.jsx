@@ -6,30 +6,15 @@ import {
   RouterMenu,
   User
 } from '@components/main-layout'
-import { commonService } from '@services'
 
 const { Header, Content, Sider } = Layout
 
 class MainLayout extends Component {
   static propTypes = {
-    children: PropTypes.object.isRequired
-  }
-  constructor(props) {
-    super(props)
-    this.state = {
-      userName: ''
-    }
-  }
-  componentDidMount () {
-    this.fetchUserInfo()
-  }
-  fetchUserInfo () {
-    commonService.fetchUserInfo().then(({ data }) => {
-      this.setState({ userName: data.name })
-    })
+    children: PropTypes.object.isRequired,
+    userName: PropTypes.string.isRequired
   }
   render () {
-    const { userName } = this.state
     return (
       <Layout className="main-layout">
         <Header className="header">
@@ -37,7 +22,7 @@ class MainLayout extends Component {
             <CompanyInfo className="company-info" companyAvator={require('@/favicon.ico')}></CompanyInfo>
           </div>
           <div className="pull-right">
-            <User userName={userName}></User>
+            <User userName={this.props.userName}></User>
           </div>
         </Header>
         <Layout className="content-layout">

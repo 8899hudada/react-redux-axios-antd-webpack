@@ -35,6 +35,16 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_USER_INFO}`, 'get', {
     id: '@id()',
     name: '@cname(2, 3)',
     phone: /^1(3|4|5|7|8)\d{9}$/,
-    loginName: '@email()'
+    loginName: '@email()',
+    perms: [
+      {name: '我的案件', code: '21000'},
+      {name: '案件管理', code: '22000'},
+      {name: '任务管理', code: '24000'},
+      {name: '系统设置', code: '23000'},
+      {name: '委托方管理', code: '23500'},
+      {name: '密码设置', code: '23400'},
+      {name: '人员管理', code: '23200'},
+      {name: '部门管理', code: '23300'},
+    ]
   }
 })

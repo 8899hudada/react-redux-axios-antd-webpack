@@ -10,7 +10,8 @@ import { loginService } from '@services'
 
 function stateFactory () {
   return {
-    token: getLocalStorage('token') || ''
+    token: getLocalStorage('token') || '',
+    permissions: [] // 路由权限
   }
 }
 
