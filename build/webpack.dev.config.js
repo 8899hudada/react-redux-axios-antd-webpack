@@ -5,7 +5,7 @@ const DEV_API_ROOT = require('../config/dev-api-root')
 
 const ROOT_PATH = path.resolve(__dirname, '../')
 const GLOBAL_CONFIG = require(`../config/${process.env.ENV}.env.js`)
-console.log( `${DEV_API_ROOT}/admin/login`)
+
 module.exports = {
   output: {
     filename: '[name].[hash].bundle.js'
@@ -22,11 +22,12 @@ module.exports = {
     open: true,
     overlay: true,
     proxy: { // 处理跨域问题
-      '/proxy': {
+      '/proxy/*': {
         target: DEV_API_ROOT,
         pathRewrite: {
           '^/proxy': ''
         },
+        changeOrigin: true,
         secure: false
       }
     }
