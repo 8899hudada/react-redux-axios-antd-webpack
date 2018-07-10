@@ -50,7 +50,7 @@ function* login(option) {
     const {data: {token: token}} = yield call(loginService.login, { data: option.payload })
     setLocalStorage('token', token)
     yield put(updateTokenAction(token))
-    window.$history.push('/my-case')
+    window.location.href = '/my-case'
   } catch (error) {
     console.log(error)
   }
@@ -59,7 +59,7 @@ function* login(option) {
 function* logout() {
   yield call(loginService.logout)
   clearLocalStorage('token')
-  location.href = '/login'
+  window.location.href = '/login'
 }
 
 export function* loginSaga () {

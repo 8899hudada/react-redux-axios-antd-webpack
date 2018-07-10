@@ -10,6 +10,7 @@ import { updateRouterMenuAction, updateRouterAction } from '@redux/common'
 import { commonService } from '@services'
 import routerFactory from '@/router'
 import { loadingDecorator } from '@decorator'
+import { NOT_NEED_AUTH_ROUTE_PATHS } from '@constants'
 
 const MissWay = PageRouterSwitchProgress(AsyncLoadComponent(() => import('@components/MissWay')))
 const Login = PageRouterSwitchProgress(AsyncLoadComponent(() => import('./Login')))
@@ -76,7 +77,10 @@ class Root extends Component {
     }).finally(() => this.toggleLoading(false, 'loadingUserInfo'))
   }
   componentDidMount () {
-    this.fetchUserInfo()
+    const pathname = window.location.pathname
+    if (!NOT_NEED_AUTH_ROUTE_PATHS.includes(pathname)) {
+      this.fetchUserInfo() 
+    }
     setTimeout(() => {
       if (!getLocalStorage('token')) {
         window.$history && window.$history.push('/login')

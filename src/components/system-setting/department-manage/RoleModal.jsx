@@ -42,8 +42,7 @@ class RoleModal extends React.PureComponent {
         data.id = role.id
       }
       
-      submitAction[action](data).then(res => {
-        console.log(res)
+      submitAction[action](data).then(() => {
         this.hideModal()
         fetchRoles()
       })

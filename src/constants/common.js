@@ -34,9 +34,13 @@ const IMPORT_STATES = {
   2: '导入失败'
 }
 
+// 不需要权限的路由
+const NOT_NEED_AUTH_ROUTE_PATHS = ['/login']
+
 export {
   CASE_STATUS,
   ASSIGN_STATUS,
   ACCOUNT_TYPES,
-  IMPORT_STATES
+  IMPORT_STATES,
+  NOT_NEED_AUTH_ROUTE_PATHS
 }

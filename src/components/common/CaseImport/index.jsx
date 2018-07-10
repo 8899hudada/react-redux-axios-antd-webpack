@@ -14,7 +14,8 @@ const TEMPLATE_URL = `${API_ROOT[process.env.ENV]}/template/case/律师案件导
 class CaseImport extends React.PureComponent {
   static propTypes = {
     form: PropTypes.object,
-    onBack: PropTypes.func
+    onBack: PropTypes.func,
+    isInMyCase: PropTypes.bool
   }
   constructor (props) {
     super(props)
@@ -35,12 +36,14 @@ class CaseImport extends React.PureComponent {
     })
   }
   handleSubmit () {
-    this.props.form.validateFields((err, values) => {
+    const { form, isInMyCase } = this.props
+    form.validateFields((err, values) => {
       if (!err) {
         const data = {
           filePath: values.fileList[0].response.data.filePath,
           trustorId: values.trustorId
         }
+        if (isInMyCase) data.myCaseFlag = true
         this.setState({ loading: true })
         commonService.caseImport(data).then(() => {
           window.$history.push('/task-manage')
@@ -102,7 +105,8 @@ class CaseImport extends React.PureComponent {
 }
 
 CaseImport.defaultProps = {
-  onBack: () => {}
+  onBack: () => {},
+  isInMyCase: false
 }
 
 export default CaseImport
