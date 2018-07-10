@@ -2,6 +2,7 @@ import axios from 'axios'
 import { message } from 'antd'
 import store from '@/store'
 import { updateLoadingAction } from '@/redux/common'
+import { clearLocalStorage } from '@utils'
 
 /**
  * 请求拦截器
@@ -55,8 +56,9 @@ axios.interceptors.response.use(
 
     // 未登录或超时，跳转到登陆页面
     if (res.code === 401) {
+      clearLocalStorage('token')
       // 退出登陆时，由于用户可能更改了权限，因此需要刷新应用，以便重新设置路由
-      return window.$history.push('/login')
+      return window.location.href = '/login'
     }
 
     if (!data.ok) {
