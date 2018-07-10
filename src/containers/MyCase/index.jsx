@@ -136,7 +136,7 @@ class MyCase extends React.PureComponent {
       onChange: this.selectedRowKeysChange
     }
     if (curView === 'import') {
-      return <CaseImport onBack={this.actionBack} />
+      return <CaseImport onBack={this.actionBack} isInMyCase={true} />
     } else if (curView === 'create') {
       return <CaseCreate onBack={this.actionBack} isInMyCase={true} />
     }
