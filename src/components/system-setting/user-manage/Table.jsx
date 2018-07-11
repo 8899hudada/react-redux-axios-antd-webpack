@@ -79,7 +79,7 @@ class UserTable extends React.PureComponent {
               <Button
                 type="primary"
                 className="margin-right-xs"
-                onClick={() => this.updateUserStatus(record.id, record.status)}>
+                onClick={() => this.updateUserStatus(record.id, record.status === 1 ? 0 : 1)}>
                 { record.status ? '禁用' : '启用' }
               </Button>
               <Button
