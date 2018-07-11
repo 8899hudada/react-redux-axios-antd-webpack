@@ -29,6 +29,7 @@ class Search extends React.PureComponent {
   }
   handleUserInputTypeChange (userInputType) {
     this.setState({userInputType})
+    this.props.updateSearchParams({name: '', phone: ''})
   }
   render () {
     const { userInputType } = this.state

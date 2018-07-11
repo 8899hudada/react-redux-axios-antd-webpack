@@ -93,7 +93,8 @@ axios.interceptors.response.use(
 
     // 未登录或超时，跳转到登陆页面
     if (response && response.status === 401) {
-      return window.$history.push('/login')
+      clearLocalStorage('token')
+      return window.location.href = '/login'
     }
 
     return Promise.reject(err)
