@@ -76,6 +76,7 @@ class RoleModal extends React.PureComponent {
                 {
                   required: true,
                   min: 1,
+                  max: 8,
                   message: '请输入职务名称',
                 }
               ]
