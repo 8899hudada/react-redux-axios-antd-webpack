@@ -20,6 +20,7 @@ const updatePassword = (data = {}) => {
     data,
     showLoading: true,
     showMessage: true,
+    successMsg: '密码修改成功',
     loadingMsg: '正在修改密码...'
   })
 }
