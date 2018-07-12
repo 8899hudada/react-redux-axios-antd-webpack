@@ -42,10 +42,14 @@ const findParentsByKey = (path = '/', parent = [], key = 'id') => {
 
 const routerFactoryByPermissions = (permissions = [], router = {}) => {
   const permissionCodes = permissions.map(permission => permission.code)
-  traversalTree(router.children, router, node => {
-    return !permissionCodes.includes(node.code)
-  }, (node, parent) => {
+
+  traversalTree(router.children, router, node => (
+    node.children ?
+      !permissionCodes.some(permissionCode => permissionCode.startsWith(node.code.slice(0, 2))) :
+      !permissionCodes.includes(node.code)
+  ), (node, parent) => {
     const index = parent.children.findIndex(item => node === item)
+
     parent.children.splice(index, 1)
   })
 
