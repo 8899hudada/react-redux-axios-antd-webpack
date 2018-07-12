@@ -4,7 +4,7 @@ import { Table, Button } from 'antd'
 import { TableIndex, Confirm } from '@components/common'
 import { trustorService } from '@services'
 
-const TrustorTable = ({ trustors = [], fetchList, toggleTrustorModal, loading = false }) => {
+const TrustorTable = ({ trustors = [], fetchList, toggleTrustorModal, loading = false, pagination }) => {
   const deleteTrustor = (id) => {
     trustorService.deleteTrustor(id).then(() => fetchList())
   }
@@ -46,6 +46,7 @@ const TrustorTable = ({ trustors = [], fetchList, toggleTrustorModal, loading = 
       loading={loading}
       columns={columns}
       dataSource={trustors}
+      pagination={pagination}
       rowKey='id'>
     </Table>
   )
@@ -55,7 +56,8 @@ TrustorTable.propTypes = {
   trustors: PropTypes.array,
   fetchList: PropTypes.func.isRequired,
   toggleTrustorModal: PropTypes.func.isRequired,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  pagination: PropTypes.object.isRequired
 }
 
 export default TrustorTable

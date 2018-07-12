@@ -3,6 +3,7 @@ import { Button, Card } from 'antd'
 import { Table, TrustorModal } from '@components/system-setting/trustor-manage'
 import { PageHeader } from '@components/common'
 import { trustorService } from '@services'
+import config from '@config'
 
 class TrustorManage extends React.PureComponent {
   constructor (props) {
@@ -13,11 +14,16 @@ class TrustorManage extends React.PureComponent {
       trustorModalVisible: false, // 显示委托方弹窗
       trustorModalType: 'update', // 委托方弹窗类型 ['update', 'create']
       editTrustorIndex: 0, // 编辑的委托方索引号,
-      loading: false
+      loading: false,
+      pagination: {
+        ...config.pagination,
+        onChange: current => this.updatePagination({current})
+      }
     }
 
     this.fetchList = this.fetchList.bind(this)
     this.toggleTrustorModal = this.toggleTrustorModal.bind(this)
+    this.updatePagination = this.updatePagination.bind(this)
   }
   fetchList () {
     this.setState({ loading: true })
@@ -38,8 +44,14 @@ class TrustorManage extends React.PureComponent {
 
     this.setState(nextTrustorModalState)
   }
+  updatePagination (pagination = {}) {
+    this.setState({pagination: {
+      ...this.state.pagination,
+      ...pagination
+    }}) 
+  }
   render () {
-    const { trustorModalType, trustorModalVisible, editTrustorIndex, trustors, loading } = this.state
+    const { trustorModalType, trustorModalVisible, editTrustorIndex, trustors, loading, pagination } = this.state
     
     return (
       <div>
@@ -51,7 +63,8 @@ class TrustorManage extends React.PureComponent {
               loading={loading}
               trustors={trustors}
               fetchList={this.fetchList}
-              toggleTrustorModal={this.toggleTrustorModal}>
+              toggleTrustorModal={this.toggleTrustorModal}
+              pagination={pagination}>
             </Table>
           </div>
         </Card>
