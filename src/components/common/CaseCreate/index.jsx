@@ -60,7 +60,6 @@ class CaseCreate extends React.PureComponent {
       const data = {
         ...values,
         entrustDate: values.entrustDate ? values.entrustDate.format('YYYY-MM-DD') : '',
-        trustorId: values.trustorId ? values.trustorId : '',
         proxyLawyerId: values.proxyLawyerId ? values.proxyLawyerId : ''
       }
       if (isInMyCase) data.myCaseFlag = true
@@ -195,7 +194,11 @@ class CaseCreate extends React.PureComponent {
               <Row gutter={8}>
                 <Col span={20}>
                   {
-                    getFieldDecorator('trustorId')(
+                    getFieldDecorator('trustorId', {
+                      rules: [
+                        { required: true, message: '请选择委托方' }
+                      ]
+                    })(
                       <Select
                         optionFilterProp="children"
                         showSearch
