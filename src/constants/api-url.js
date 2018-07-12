@@ -23,10 +23,6 @@ API_URL.systemSetting = {
     CREATE_TRUSTOR: 'system/client/save',
     UPDATE_TRUSTOR: 'system/client/mod'
   },
-  // 密码设置
-  passwordSetting: {
-    UPDATE_PASSWORD: 'account/uppwd'
-  },
   // 部门管理
   departmentManage: {
     FETCH_DEPARTMENTS: 'system/dept/get',
@@ -90,6 +86,11 @@ API_URL.caseDetail = {
   UPDATE_END_CASE_INFO: 'case/detail/closed',
   DELETE_END_CASE_INFO: (id = '') => `case/detail/closed/${id}`,
   DOWNLOAD_ATTACHMENTS: (caseId = '') => `case/detail/attachment/${caseId}`
+}
+
+// 密码设置
+API_URL.passwordSetting = {
+  UPDATE_PASSWORD: 'account/uppwd'
 }
 
 export default API_URL

@@ -3,7 +3,7 @@ import { API_URL } from '@/constants'
 
 const {
   UPDATE_PASSWORD
-} = API_URL.systemSetting.passwordSetting
+} = API_URL.passwordSetting
 
 /**
  * 更新委托方

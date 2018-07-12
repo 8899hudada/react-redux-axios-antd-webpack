@@ -4,7 +4,7 @@ import { API_ROOT, API_URL } from '@constants'
 const HTTP_ROOT = API_ROOT[process.env.ENV]
 const {
   UPDATE_PASSWORD
-} = API_URL.systemSetting.passwordSetting
+} = API_URL.passwordSetting
 
 Mock.mock(`${HTTP_ROOT}/${UPDATE_PASSWORD}`, 'put', () => {
   return Mock.mock({

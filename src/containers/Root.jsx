@@ -15,7 +15,7 @@ import { NOT_NEED_AUTH_ROUTE_PATHS } from '@constants'
 const MissWay = PageRouterSwitchProgress(AsyncLoadComponent(() => import('@components/MissWay')))
 const Login = PageRouterSwitchProgress(AsyncLoadComponent(() => import('./Login')))
 const CaseDetail = PageRouterSwitchProgress(AsyncLoadComponent(() => import('./CaseDetail')))
-
+const PasswordSetting = PageRouterSwitchProgress(AsyncLoadComponent(() => import('@/containers/PasswordSetting')))
 const mapStateToProps = state => {
   return {
     selectedKeys: state.commonReducer.selectedKeys,
@@ -104,6 +104,7 @@ class Root extends Component {
               <Route path="/">
                 <Layout userName={userName}>
                   <Switch>
+                    <Route path="/system-setting/password-setting" component={PasswordSetting}></Route>
                     <RouteWrapper routes={router.children || []}></RouteWrapper>
                     <Redirect from='//' to='/my-case'/>
                     <Route component={MissWay}></Route>

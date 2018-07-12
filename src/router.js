@@ -18,7 +18,6 @@ const TaskManage = wrapperComponent(() => import('@/containers/TaskManage'))
 
 // 系统设置
 const TrustorManage = wrapperComponent(() => import('@/containers/system-setting/TrustorManage'))
-const PasswordSetting = wrapperComponent(() => import('@/containers/system-setting/PasswordSetting'))
 const UserManage = wrapperComponent(() => import('@/containers/system-setting/UserManage'))
 const DepartmentManage = wrapperComponent(() => import('@/containers/system-setting/DepartmentManage'))
 
@@ -54,12 +53,6 @@ const routerFactory = () => ({
           title: '委托方管理',
           code: '23500',
           component: TrustorManage
-        },
-        {
-          path: '/system-setting/password-setting',
-          title: '密码设置',
-          code: '23400',
-          component: PasswordSetting
         },
         {
           path: '/system-setting/user-manage',
