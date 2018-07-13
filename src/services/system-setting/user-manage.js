@@ -132,7 +132,8 @@ const updateUserPassword = (userId, passwd) => {
     method: 'PUT',
     showLoading: true,
     showMessage: true,
-    loadingMsg: `正在重置密码...`,
+    loadingMsg: '正在重置密码...',
+    successMsg: '密码重置成功',
     data: {
       userId,
       passwd

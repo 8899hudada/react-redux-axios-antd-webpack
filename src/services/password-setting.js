@@ -3,7 +3,7 @@ import { API_URL } from '@/constants'
 
 const {
   UPDATE_PASSWORD
-} = API_URL.systemSetting.passwordSetting
+} = API_URL.passwordSetting
 
 /**
  * 更新委托方
@@ -20,6 +20,7 @@ const updatePassword = (data = {}) => {
     data,
     showLoading: true,
     showMessage: true,
+    successMsg: '密码修改成功',
     loadingMsg: '正在修改密码...'
   })
 }
