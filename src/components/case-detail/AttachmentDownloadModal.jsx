@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Modal, Checkbox, Row, Col, message } from 'antd'
 import { FILE_PROPERTIES } from './constant'
 import { caseDetailService } from '@services'
+import { windowOpen } from '@utils'
 
 const CheckboxGroup = Checkbox.Group
 
@@ -45,7 +46,7 @@ class AttachmentDownloadModal extends React.PureComponent {
     caseDetailService.downloadAttachments(caseId, {
       property: checkedKeys.join(',')
     }).then(({ data }) => {
-      window.open(data.downloadUrl)
+      windowOpen(data.downloadUrl)
       this.hide()
     }).finally(() => this.setState({ loading: false }))
   }

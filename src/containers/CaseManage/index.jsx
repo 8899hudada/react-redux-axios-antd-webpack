@@ -4,6 +4,7 @@ import { Actions, Table, TableActions, Search } from '@components/case-manage'
 import { Card, message, Modal } from 'antd'
 import { caseManageService } from '@services'
 import { formatSearchParams, searchParamsFactory } from './utils'
+import { windowOpen } from '@utils'
 
 const columns = [
   { title: '姓名', dataIndex: 'customName', key: 'customName', render: (text, record) => <a href={`/case-detail/${record.id}`} target="_blank">{text}</a> },
@@ -67,14 +68,14 @@ class CaseManage extends React.PureComponent {
       caseManageService.exportCase({
         caseIds: selectedRowKeys
       }).then(({ data }) => {
-        window.open(data)
+        windowOpen(data)
       })
       break
     case 'queryExport':
       if (data.length === 0) return message.warning('当前查询结果没有数据')
       caseManageService.exportCase(formatSearchParams(searchParams)).then(({ data }) => {
         if (!data) return message.warning('当前查询结果没有数据')
-        window.open(data)
+        windowOpen(data)
       })
       break
     case 'caseDelete':
