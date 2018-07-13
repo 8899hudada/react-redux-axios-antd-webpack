@@ -55,7 +55,9 @@ class UpdatePasswordModal extends React.PureComponent {
               rules: [
                 {
                   required: true,
-                  message: '6-16位字符或数字'
+                  message: '6-16位字符或数字',
+                  min: 6,
+                  max: 16
                 }
               ]
             })(

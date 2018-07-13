@@ -97,7 +97,8 @@ class UserModal extends React.PureComponent {
                   rules: [
                     {
                       required: true,
-                      message: '请输入员工姓名'
+                      message: '请输入10个字符以内的员工姓名',
+                      max: 10
                     }
                   ]
                 })(
@@ -134,7 +135,8 @@ class UserModal extends React.PureComponent {
                   rules: [
                     {
                       required: true,
-                      message: '请输入员工电话',
+                      message: '请输入20个字符以内的员工电话',
+                      max: 20
                     }
                   ]
                 })(
@@ -171,7 +173,8 @@ class UserModal extends React.PureComponent {
                   rules: [
                     {
                       required: true,
-                      message: '请输入登录账号'
+                      message: '请输入32个字符以内的登录账号',
+                      max: 32
                     }
                   ]
                 })(
