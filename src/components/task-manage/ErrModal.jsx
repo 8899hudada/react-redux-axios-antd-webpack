@@ -52,8 +52,9 @@ class ErrModal extends React.PureComponent {
   }
   fetchList () {
     const { taskId } = this.props
+    const { pagination: { current, pageSize } } = this.state
     this.setState({ loading: true })
-    taskService.fetchTaskErrs({ taskId }).then(({ data }) => {
+    taskService.fetchTaskErrs({ taskId, current, pageSize }).then(({ data }) => {
       this.setState(prevState => ({
         data: data.pageData,
         pagination: {
