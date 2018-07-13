@@ -4,6 +4,7 @@ import { Actions, Table, TableActions, Search } from '@components/my-case'
 import { Card, message } from 'antd'
 import { myCaseService, caseManageService } from '@services'
 import { formatSearchParams, searchParamsFactory } from './utils'
+import { windowOpen } from '@utils'
 
 const columns = [
   { title: '姓名', dataIndex: 'customName', key: 'customName', render: (text, record) => <a href={`/case-detail/${record.id}`} target="_blank">{text}</a> },
@@ -66,7 +67,7 @@ class MyCase extends React.PureComponent {
         caseIds: selectedRowKeys,
         myCaseFlag: true
       }).then(({ data }) => {
-        window.open(data)
+        windowOpen(data)
       })
       break
     case 'queryExport':
@@ -76,7 +77,7 @@ class MyCase extends React.PureComponent {
         myCaseFlag: true
       }).then(({ data }) => {
         if (!data) return message.warning('当前查询结果没有数据')
-        window.open(data)
+        windowOpen(data)
       })
       break
     }
