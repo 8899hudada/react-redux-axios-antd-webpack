@@ -21,13 +21,13 @@ const TrustorTable = ({ trustors = [], fetchList, toggleTrustorModal, loading = 
     },
     {
       title: '操作',
-      render: (text, record, index) => {
+      render: (text, record) => {
         return (
           <div>
             <Button
               type="primary"
               className="margin-right-xs"
-              onClick={() => {toggleTrustorModal(true, 'update', index)}}>
+              onClick={() => {toggleTrustorModal(true, 'update', record)}}>
               编辑
             </Button>
             <Confirm options={{onOk: () => deleteTrustor(record.id)}}>

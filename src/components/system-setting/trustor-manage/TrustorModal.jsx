@@ -12,6 +12,7 @@ const submitAction = {
   create: trustorService.createTrustor,
   update: trustorService.updateTrustor
 }
+
 class TrustorModal extends React.PureComponent {
   static propTypes = {
     type: PropTypes.oneOf(['update', 'create']).isRequired, // 委托方弹窗类型

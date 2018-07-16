@@ -13,11 +13,12 @@ class TrustorManage extends React.PureComponent {
       trustors: [], // 委托方列表
       trustorModalVisible: false, // 显示委托方弹窗
       trustorModalType: 'update', // 委托方弹窗类型 ['update', 'create']
-      editTrustorIndex: 0, // 编辑的委托方索引号,
+      editTrustor: null, // 编辑的委托方,
       loading: false,
       pagination: {
         ...config.pagination,
-        onChange: current => this.updatePagination({current})
+        onChange: current => this.updatePagination({current}),
+        onShowSizeChange: (current, pageSize) => this.updatePagination({current, pageSize}) 
       }
     }
 
@@ -31,7 +32,7 @@ class TrustorManage extends React.PureComponent {
       this.setState({trustors: res.data})
     }).finally(() => this.setState({ loading: false }))
   }
-  toggleTrustorModal (visible, type, editTrustorIndex) {
+  toggleTrustorModal (visible, type, editTrustor) {
     const nextTrustorModalState = {trustorModalVisible: visible}
     
     if (visible) {
@@ -39,7 +40,7 @@ class TrustorManage extends React.PureComponent {
     }
 
     if (type === 'update') {
-      nextTrustorModalState.editTrustorIndex = editTrustorIndex
+      nextTrustorModalState.editTrustor = editTrustor
     }
 
     this.setState(nextTrustorModalState)
@@ -51,7 +52,7 @@ class TrustorManage extends React.PureComponent {
     }}) 
   }
   render () {
-    const { trustorModalType, trustorModalVisible, editTrustorIndex, trustors, loading, pagination } = this.state
+    const { trustorModalType, trustorModalVisible, editTrustor, trustors, loading, pagination } = this.state
     
     return (
       <div>
@@ -73,7 +74,7 @@ class TrustorManage extends React.PureComponent {
           visible={trustorModalVisible}
           hideModal={() => this.toggleTrustorModal(false)}
           fetchList={this.fetchList}
-          trustor={trustors[editTrustorIndex]}>
+          trustor={editTrustor}>
         </TrustorModal>
       </div>
     )

@@ -29,7 +29,7 @@ class UserManage extends React.PureComponent {
       pagination: { // 分页
         ...config.pagination,
         onChange: current => this.updatePagination({current}),
-        onShowSizeChange: (current, pageSize) => this.updatePagination({pageSize})  
+        onShowSizeChange: (current, pageSize) => this.updatePagination({current, pageSize})  
       },
       userModalVisible: false, // 显示人员弹窗
       userModalType: 'update', // 人员弹窗类型 [create：新增，update：编辑]
