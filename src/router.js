@@ -28,43 +28,50 @@ const routerFactory = () => ({
       path: '/my-case',
       title: '我的案件',
       code: '21000',
-      component: MyCase
+      component: MyCase,
+      icon: 'laptop'
     },
     {
       path: '/case-manage',
       title: '案件管理',
       code: '22000',
-      component: CaseManage
+      component: CaseManage,
+      icon: 'folder'
     },
     {
       path: '/task-manage',
       title: '任务管理',
       code: '24000',
-      component: TaskManage
+      component: TaskManage,
+      icon: 'profile'
     },
     {
       path: '/system-setting',
       title: '系统设置',
       code: '23000',
       component: RouteWrapper,
+      icon: 'tool',
       children: [
         {
           path: '/system-setting/trustor-manage',
           title: '委托方管理',
           code: '23500',
-          component: TrustorManage
+          component: TrustorManage,
+          icon: 'idcard'
         },
         {
           path: '/system-setting/user-manage',
           title: '人员管理',
           code: '23200',
-          component: UserManage
+          component: UserManage,
+          icon: 'usergroup-add'
         },
         {
           path: '/system-setting/department-manage',
           title: '部门管理',
           code: '23300',
-          component: DepartmentManage
+          component: DepartmentManage,
+          icon: 'contacts'
         }
       ]
     }

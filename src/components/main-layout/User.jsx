@@ -38,7 +38,8 @@ const User = props => {
       overlay={DropdownMenu(handleClickMenu)}
       placement="bottomRight"
       trigger={['click']}>
-      <div className="user-box">
+      <div className="user-box" style={{ display: 'flex', alignItems: 'center' }}>
+        <Icon className="margin-right-xs" type="user" style={{ fontSize: '20px' }} />
         <span>{props.userName}</span>
         <Icon className="drop-down-icon" type="down" />
       </div>
