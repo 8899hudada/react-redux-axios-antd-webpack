@@ -6,10 +6,11 @@
 const CASE_STATUS = [
   { id: -1, name: '全部' },
   { id: 1, name: '新案' },
-  { id: 2, name: '一审中' },
-  { id: 3, name: '二审中' },
-  { id: 4, name: '执行中' },
-  { id: 5, name: '已结案' }
+  { id: 2, name: '立案' },
+  { id: 3, name: '一审中' },
+  { id: 4, name: '二审中' },
+  { id: 5, name: '执行中' },
+  { id: 6, name: '已结案' }
 ]
 
 // 分配状态
