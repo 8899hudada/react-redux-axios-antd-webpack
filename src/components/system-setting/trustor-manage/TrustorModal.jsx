@@ -27,6 +27,7 @@ class TrustorModal extends React.PureComponent {
     
     this.handleSubmit = this.handleSubmit.bind(this)
     this.hideModal = this.hideModal.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
   componentWillReceiveProps (nextProps) {
     const { visible, type, trustor } = nextProps
@@ -69,6 +70,12 @@ class TrustorModal extends React.PureComponent {
     })
     this.props.hideModal()
   }
+  handleChange (type, value) {
+    setTimeout(() => {
+      this.props.form.setFieldsValue({[type]: value.trim()})
+      this.props.form.validateFields([type])
+    }, 0)
+  }
   render () {
     const { visible, type, form } = this.props
     const { getFieldDecorator } = form
@@ -99,7 +106,10 @@ class TrustorModal extends React.PureComponent {
                 }
               ],
             })(
-              <Input type="text" placeholder="请输入不超过20个字符的委托方名称" />
+              <Input
+                type="text"
+                placeholder="请输入不超过20个字符的委托方名称"
+                onChange={e => this.handleChange('name', e.target.value)} />
             )}
           </FormItem>
         </Form>

@@ -19,6 +19,7 @@ class RoleModal extends React.PureComponent {
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.hideModal = this.hideModal.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
   static propTypes = {
     form: PropTypes.object.isRequired,
@@ -59,6 +60,12 @@ class RoleModal extends React.PureComponent {
       this.props.form.setFieldsValue({name: role.name})
     }
   }
+  handleChange (type, value) {
+    setTimeout(() => {
+      this.props.form.setFieldsValue({[type]: value.trim()})
+      this.props.form.validateFields([type])
+    }, 0)
+  }
   render () {
     const { visible, action, form } = this.props
     const { getFieldDecorator } = form
@@ -77,11 +84,14 @@ class RoleModal extends React.PureComponent {
                   required: true,
                   min: 1,
                   max: 8,
-                  message: '请输入职务名称',
+                  message: '请输入八个字符以内的角色名称'
                 }
               ]
             })(
-              <Input type="text" placeholder="请输入职务名称"></Input>
+              <Input
+                type="text"
+                placeholder="请输入八个字符以内的角色名称"
+                onChange={e => this.handleChange('name', e.target.value)} />
             )}
           </FormItem>
         </Form>
