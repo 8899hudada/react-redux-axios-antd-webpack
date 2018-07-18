@@ -35,6 +35,10 @@ class ExecInfo extends React.PureComponent {
     this.setState({ isEdit: true })
   }
   onCancel () {
+    const { params, localDelete } = this.props
+    if (!params.id) {
+      localDelete('execInfo')
+    }
     this.setState({ isEdit: false })
   }
   onSave () {

@@ -34,6 +34,10 @@ class EndCaseInfo extends React.PureComponent {
     this.setState({ isEdit: true })
   }
   onCancel () {
+    const { params, localDelete } = this.props
+    if (!params.id) {
+      localDelete('endCaseInfo')
+    }
     this.setState({ isEdit: false })
   }
   onSave () {
@@ -47,7 +51,7 @@ class EndCaseInfo extends React.PureComponent {
         attachments: [
           ...formatAttachments(values.mediationAgreement, params.attachments, fileProperties.MEDIATION_AGREEMENT, caseId)
         ],
-        closeCaseDate: values.executeAcceptDate ? values.executeAcceptDate.format('YYYY-MM-DD') : ''
+        closeCaseDate: values.closeCaseDate ? values.closeCaseDate.format('YYYY-MM-DD') : ''
       }
       caseDetailService.updateEndCaseInfo(data).then(() => {
         fetchMethod().finally(() => this.setState({ isEdit: false }))

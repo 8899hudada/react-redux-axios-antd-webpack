@@ -37,6 +37,10 @@ class FirstInstanceInfo extends React.PureComponent {
     this.setState({ isEdit: true })
   }
   onCancel () {
+    const { params, localDelete } = this.props
+    if (!params.id) {
+      localDelete('firstInstanceInfo')
+    }
     this.setState({ isEdit: false })
   }
   onSave () {
@@ -219,11 +223,21 @@ class FirstInstanceInfo extends React.PureComponent {
                       initialValue: params.isNotice
                     })(
                       <RadioGroup>
-                        <Radio value={false}>是</Radio>
-                        <Radio value={true}>否</Radio>
+                        <Radio value={true}>是</Radio>
+                        <Radio value={false}>否</Radio>
                       </RadioGroup>
                     )
-                    : <span>{params.isNotice ? '是' : '否'}</span>
+                    : (
+                      <span>
+                        {
+                          params.isNotice === null
+                            ? ''
+                            : params.isNotice
+                              ? '是'
+                              : '否'
+                        }
+                      </span>
+                    )
                 }
               </FormItem>
             </Col>

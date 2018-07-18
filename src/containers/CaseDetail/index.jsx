@@ -55,6 +55,7 @@ class CaseDetail extends React.PureComponent {
     })
   }
   menuClick ({ key }) {
+    console.log(key)
     this.setState(prevState => ({
       localMenuShowObj: {
         ...prevState.localMenuShowObj,

@@ -41,7 +41,7 @@ const initDataFactory = () => ({
     sealUpOrder: '',
     openCourtTime: null,
     openCourtResult: '',
-    isNotice: '',
+    isNotice: null,
     noticeFee: '',
     sealUpBeginDate: null,
     sealUpEndDate: null,

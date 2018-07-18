@@ -35,6 +35,10 @@ class RegisterCaseInfo extends React.PureComponent {
     this.setState({ isEdit: true })
   }
   onCancel () {
+    const { params, localDelete } = this.props
+    if (!params.id) {
+      localDelete('registerCaseInfo')
+    }
     this.setState({ isEdit: false })
   }
   onSave () {

@@ -35,6 +35,10 @@ class SecondInstanceInfo extends React.PureComponent {
     this.setState({ isEdit: true })
   }
   onCancel () {
+    const { params, localDelete } = this.props
+    if (!params.id) {
+      localDelete('secondInstanceInfo')
+    }
     this.setState({ isEdit: false })
   }
   onSave () {
