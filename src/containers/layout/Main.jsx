@@ -19,7 +19,7 @@ class MainLayout extends Component {
       <Layout className="main-layout">
         <Header className="header">
           <div className="pull-left">
-            <CompanyInfo className="company-info" companyAvator={require('@/favicon.ico')}></CompanyInfo>
+            <CompanyInfo className="company-info" companyAvator={require('@/imgs/common/logo.png')}></CompanyInfo>
           </div>
           <div className="pull-right">
             <User userName={this.props.userName}></User>

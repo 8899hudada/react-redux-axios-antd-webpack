@@ -5,7 +5,6 @@ const CompanyInfo = ({ className, companyAvator }) => {
   return (
     <div className={className}>
       <img className="avator" src={companyAvator} alt=""/>
-      <span>律所案件系统</span>
     </div>
   )
 }

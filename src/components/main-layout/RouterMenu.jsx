@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu } from 'antd'
+import { Menu, Icon } from 'antd'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -35,7 +35,15 @@ class RouterMenu extends React.PureComponent {
   routeRecursion (route) {
     if (route.children && route.children.length) {
       return (
-        <SubMenu key={route.path} title={route.title} onTitleClick={this.handleOpenChange}>
+        <SubMenu
+          key={route.path}
+          title={(
+            <span>
+              <Icon type={route.icon} />
+              { route.title }
+            </span>
+          )}
+          onTitleClick={this.handleOpenChange}>
           {
             route.children.map(route => (
               this.routeRecursion(route)
@@ -47,7 +55,10 @@ class RouterMenu extends React.PureComponent {
 
     return (
       <MenuItem key={route.path}>
-        <Link key={route.path} to={route.path}>{route.title}</Link>
+        <Link key={route.path} to={route.path}>
+          <Icon type={route.icon} />
+          {route.title}
+        </Link>
       </MenuItem>
     )
   }

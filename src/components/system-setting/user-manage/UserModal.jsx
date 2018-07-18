@@ -140,7 +140,7 @@ class UserModal extends React.PureComponent {
                     }
                   ]
                 })(
-                  <Input type="text" placeholder="请输入员工电话" />
+                  <Input type="text" placeholder="请输入员工电话，app登陆验证码接收" />
                 )}
               </FormItem>
             </Col>
