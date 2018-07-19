@@ -7,7 +7,8 @@ import { formatSearchParams, searchParamsFactory } from './utils'
 import { windowOpen } from '@utils'
 
 const columns = [
-  { title: '姓名', dataIndex: 'customName', key: 'customName', render: (text, record) => <a href={`/case-detail/${record.id}`} target="_blank">{text}</a> },
+  { title: '姓名', dataIndex: 'customName', key: 'customName',
+    render: (text, record) => <a href={`/case-detail/${record.id}?from=my-case`} target="_blank">{text}</a> },
   { title: '身份证号', dataIndex: 'idCard', key: 'idCard' },
   { title: '委托方', dataIndex: 'trustorName', key: 'trustorName' },
   { title: '委案日期', dataIndex: 'entrustDate', key: 'entrustDate' },

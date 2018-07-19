@@ -6,9 +6,11 @@ import { ACCOUNT_TYPES } from '@constants'
 import { trustorService, caseDetailService, userManageService } from '@services'
 import moment from 'moment'
 import { REGEX } from '@constants'
+import { getUrlQuery } from '@utils'
 
 const FormItem = Form.Item
 const Option = Select.Option
+const from = getUrlQuery('from')
 
 @Form.create()
 class EntrustInfo extends React.PureComponent {
@@ -223,7 +225,7 @@ class EntrustInfo extends React.PureComponent {
             <Col span={8}>
               <FormItem label="代理律师" style={{ display: 'flex' }}>
                 {
-                  isEdit
+                  isEdit && from !== 'my-case'
                     ? getFieldDecorator('proxyLawyerId', {
                       initialValue: params.proxyLawyerId ? String(params.proxyLawyerId) : ''
                     })(
