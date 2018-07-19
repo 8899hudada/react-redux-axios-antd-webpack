@@ -51,7 +51,7 @@ class FirstInstanceInfo extends React.PureComponent {
         id: params.id ? params.id : null,
         caseId,
         attachments: [
-          ...formatAttachments(values.firstInstanceCitation, params.attachments, fileProperties.FIRST_INSTANCE_JUDGEMENT, caseId),
+          ...formatAttachments(values.firstInstanceCitation, params.attachments, fileProperties.FIRST_INSTANCE_CITATION, caseId),
           ...formatAttachments(values.announcement, params.attachments, fileProperties.ANNOUNCEMENT, caseId),
           ...formatAttachments(values.firstInstanceJudgement, params.attachments, fileProperties.FIRST_INSTANCE_JUDGEMENT, caseId)
         ],

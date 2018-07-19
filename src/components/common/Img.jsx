@@ -7,7 +7,8 @@ class Img extends React.PureComponent {
     className: PropTypes.string,
     src: PropTypes.string,
     alt: PropTypes.string,
-    style: PropTypes.object
+    style: PropTypes.object,
+    onLoad: PropTypes.func
   }
   constructor (props) {
     super(props)
@@ -20,6 +21,7 @@ class Img extends React.PureComponent {
       this.setState({
         loaded: true
       })
+      this.props.onLoad()
     }
   }
   render () {
@@ -42,7 +44,8 @@ class Img extends React.PureComponent {
 }
 
 Img.default = {
-  style: {}
+  style: {},
+  onLoad: () => {}
 }
 
 export default Img

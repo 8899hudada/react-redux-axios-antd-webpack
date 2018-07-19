@@ -23,13 +23,17 @@ class ImageListUpload extends React.PureComponent {
     super(props)
     this.onChange = this.onChange.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.createImgViewer = this.createImgViewer.bind(this)
+    this.imgList = props.imgList
   }
-  componentDidUpdate () {
+  componentDidMount () {
+    this.viewer = new Viewer(this.imgListBox)
+  }
+  createImgViewer () {
     if (this.viewer) {
-      this.viewer.update()
-    } else {
-      this.viewer = new Viewer(this.imgListBox)
+      this.viewer.destroy()
     }
+    this.viewer = new Viewer(this.imgListBox)
   }
   onChange (info) {
     const { file } = info
@@ -45,7 +49,6 @@ class ImageListUpload extends React.PureComponent {
       onChange([...imgList, response.data.filePath])
       break
     }
-    this.viewer.update()
   }
   handleDelete (index) {
     const { onChange, imgList } = this.props
@@ -64,7 +67,7 @@ class ImageListUpload extends React.PureComponent {
           {
             imgList.map((img, index) => (
               <li key={index}>
-                <Img className="img" src={img} />
+                <Img onLoad={this.createImgViewer} className="img" src={img} />
                 <Popconfirm title="确认删除？" onConfirm={() => this.handleDelete(index)}>
                   <Icon
                     type="delete"
