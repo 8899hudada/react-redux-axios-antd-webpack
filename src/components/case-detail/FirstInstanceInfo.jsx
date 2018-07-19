@@ -1,7 +1,7 @@
 import React from 'react'
 import { InfoCard } from '@components/case-detail'
-import { Form, Row, Col, Input, DatePicker, InputNumber, Radio } from 'antd'
-import { ImageListUpload } from '@components/common'
+import { Form, Row, Col, Input, DatePicker, Radio } from 'antd'
+import { ImageListUpload, TextArea } from '@components/common'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { REGEX } from '@constants'
@@ -10,7 +10,6 @@ import { caseDetailService } from '@services'
 import { formatAttachments } from './utils'
 
 const FormItem = Form.Item
-const TextArea = Input.TextArea
 const RadioGroup = Radio.Group
 
 @Form.create()
@@ -105,6 +104,7 @@ class FirstInstanceInfo extends React.PureComponent {
                     })(
                       <TextArea
                         autosize={{ minRows: 2, maxRows: 6 }}
+                        maxLength={500}
                         placeholder="请输入财产线索" />
                     )
                     : <span>{params.assetsKey}</span>
@@ -122,6 +122,7 @@ class FirstInstanceInfo extends React.PureComponent {
                     })(
                       <TextArea
                         autosize={{ minRows: 2, maxRows: 6 }}
+                        maxLength={500}
                         placeholder="请输入保全财产" />
                     )
                     : <span>{params.guardAssets}</span>
@@ -169,10 +170,8 @@ class FirstInstanceInfo extends React.PureComponent {
                     ? getFieldDecorator('sealUpOrder', {
                       initialValue: params.sealUpOrder
                     })(
-                      <InputNumber
-                        precision={0}
-                        placeholder="请输入查封顺位"
-                        style={{ minWidth: 150 }} />
+                      <Input
+                        placeholder="请输入查封顺位" />
                     )
                     : <span>{params.sealUpOrder}</span>
                 }
@@ -207,6 +206,7 @@ class FirstInstanceInfo extends React.PureComponent {
                     })(
                       <TextArea
                         autosize={{ minRows: 2, maxRows: 6 }}
+                        maxLength={500}
                         placeholder="请输入开庭结果" />
                     )
                     : <span>{params.openCourtResult}</span>

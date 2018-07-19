@@ -1,7 +1,7 @@
 import React from 'react'
 import { InfoCard } from '@components/case-detail'
-import { Form, Row, Col, DatePicker, Input } from 'antd'
-import { ImageListUpload } from '@components/common'
+import { Form, Row, Col, DatePicker } from 'antd'
+import { ImageListUpload, TextArea } from '@components/common'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { fileProperties } from './constant'
@@ -9,7 +9,6 @@ import { caseDetailService } from '@services'
 import { formatAttachments } from './utils'
 
 const FormItem = Form.Item
-const TextArea = Input.TextArea
 
 @Form.create()
 class SecondInstanceInfo extends React.PureComponent {
@@ -117,6 +116,7 @@ class SecondInstanceInfo extends React.PureComponent {
                     })(
                       <TextArea
                         autosize={{ minRows: 2, maxRows: 6 }}
+                        maxLength={500}
                         placeholder="请输入开庭结果" />
                     )
                     : <span>{params.openCourtResult}</span>

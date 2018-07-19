@@ -120,6 +120,7 @@ class RegisterCaseInfo extends React.PureComponent {
                       initialValue: params.judgeName
                     })(
                       <Input
+                        maxLength={16}
                         placeholder="请输入法官姓名" />
                     )
                     : <span>{params.judgeName}</span>
@@ -150,6 +151,7 @@ class RegisterCaseInfo extends React.PureComponent {
                       initialValue: params.judgeAssistName
                     })(
                       <Input
+                        maxLength={16}
                         placeholder="请输入法官助理姓名" />
                     )
                     : <span>{params.judgeAssistName}</span>

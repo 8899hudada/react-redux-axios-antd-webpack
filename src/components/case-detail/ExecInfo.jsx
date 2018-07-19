@@ -1,7 +1,7 @@
 import React from 'react'
 import { InfoCard } from '@components/case-detail'
 import { Form, Row, Col, Input, DatePicker } from 'antd'
-import { ImageListUpload } from '@components/common'
+import { ImageListUpload, TextArea } from '@components/common'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { fileProperties } from './constant'
@@ -9,7 +9,6 @@ import { caseDetailService } from '@services'
 import { formatAttachments } from './utils'
 
 const FormItem = Form.Item
-const TextArea = Input.TextArea
 
 @Form.create()
 class ExecInfo extends React.PureComponent {
@@ -186,6 +185,7 @@ class ExecInfo extends React.PureComponent {
                     })(
                       <TextArea
                         autosize={{ minRows: 2, maxRows: 6 }}
+                        maxLength={500}
                         placeholder="请输入案件特殊情况备注" />
                     )
                     : <span>{params.remark}</span>
