@@ -188,7 +188,7 @@ class ExecInfo extends React.PureComponent {
                         maxLength={500}
                         placeholder="请输入案件特殊情况备注" />
                     )
-                    : <span>{params.remark}</span>
+                    : <div>{params.remark}</div>
                 }
               </FormItem>
             </Col>
