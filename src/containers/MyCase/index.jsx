@@ -8,13 +8,13 @@ import { windowOpen } from '@utils'
 
 const columns = [
   { title: '姓名', dataIndex: 'customName', key: 'customName',
-    render: (text, record) => <a href={`/case-detail/${record.id}?from=my-case`} target="_blank">{text}</a> },
-  { title: '身份证号', dataIndex: 'idCard', key: 'idCard' },
-  { title: '委托方', dataIndex: 'trustorName', key: 'trustorName' },
-  { title: '委案日期', dataIndex: 'entrustDate', key: 'entrustDate' },
-  { title: '委案金额', dataIndex: 'entrustAmt', key: 'entrustAmt' },
-  { title: '诉讼案号', dataIndex: 'lawCaseCode', key: 'lawCaseCode' },
-  { title: '案件进程', dataIndex: 'caseProcess', key: 'caseProcess' }
+    render: (text, record) => <a href={`/case-detail/${record.id}?from=my-case`} target="_blank">{text}</a>, align: 'center' },
+  { title: '身份证号', dataIndex: 'idCard', key: 'idCard', align: 'center' },
+  { title: '委托方', dataIndex: 'trustorName', key: 'trustorName', align: 'center' },
+  { title: '委案日期', dataIndex: 'entrustDate', key: 'entrustDate', align: 'center' },
+  { title: '委案金额', dataIndex: 'entrustAmt', key: 'entrustAmt', align: 'center' },
+  { title: '诉讼案号', dataIndex: 'lawCaseCode', key: 'lawCaseCode', align: 'center' },
+  { title: '案件进程', dataIndex: 'caseProcess', key: 'caseProcess', align: 'center' }
 ]
 
 class MyCase extends React.PureComponent {
