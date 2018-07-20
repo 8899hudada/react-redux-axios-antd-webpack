@@ -5,10 +5,11 @@ import { Card, Alert, Icon, Button } from 'antd'
 import { taskService } from '@services'
 import { IMPORT_STATES } from '@constants'
 
+const pStyle = { marginBottom: 5, fontSize: 12 }
 const alertMessage = <div>
-  <h3>说明</h3>
-  <p>1）进行导入操作时系统会先检查数据的规范性，检查通过后开始进行数据导入；</p>
-  <p>2）如果检查不通过数据将不会导入，可以按“不通过原因”的提示修改数据后重新导入，不通过原因将会保持 3 天。</p>
+  <h5>说明</h5>
+  <p style={pStyle}>1）进行导入操作时系统会先检查数据的规范性，检查通过后开始进行数据导入；</p>
+  <p style={pStyle}>2）如果检查不通过数据将不会导入，可以按“不通过原因”的提示修改数据后重新导入，不通过原因将会保持 3 天。</p>
 </div>
 
 class TaskManage extends React.PureComponent {

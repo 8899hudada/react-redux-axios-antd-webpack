@@ -107,7 +107,7 @@ class FirstInstanceInfo extends React.PureComponent {
                         maxLength={500}
                         placeholder="请输入财产线索" />
                     )
-                    : <div>{params.assetsKey}</div>
+                    : <div className="line-height-24">{params.assetsKey}</div>
                 }
               </FormItem>
             </Col>
@@ -125,7 +125,7 @@ class FirstInstanceInfo extends React.PureComponent {
                         maxLength={500}
                         placeholder="请输入保全财产" />
                     )
-                    : <div>{params.guardAssets}</div>
+                    : <div className="line-height-24">{params.guardAssets}</div>
                 }
               </FormItem>
             </Col>
@@ -209,7 +209,7 @@ class FirstInstanceInfo extends React.PureComponent {
                         maxLength={500}
                         placeholder="请输入开庭结果" />
                     )
-                    : <div>{params.openCourtResult}</div>
+                    : <div className="line-height-24">{params.openCourtResult}</div>
                 }
               </FormItem>
             </Col>

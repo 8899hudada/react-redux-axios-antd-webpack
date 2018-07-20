@@ -119,7 +119,7 @@ class SecondInstanceInfo extends React.PureComponent {
                         maxLength={500}
                         placeholder="请输入开庭结果" />
                     )
-                    : <div>{params.openCourtResult}</div>
+                    : <div className="line-height-24">{params.openCourtResult}</div>
                 }
               </FormItem>
             </Col>
