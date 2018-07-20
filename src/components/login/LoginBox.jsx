@@ -81,7 +81,7 @@ class LoginBox extends PureComponent {
   render () {
     return (
       <div className={style.loginBox}>
-        <h1 className={style.loginBoxTitle}>登录</h1>
+        {/* <h1 className={style.loginBoxTitle}>四川迪扬律师事务所</h1> */}
         <LoginForm />
       </div>
     )
