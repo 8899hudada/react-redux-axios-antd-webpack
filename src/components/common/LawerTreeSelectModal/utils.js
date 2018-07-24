@@ -6,7 +6,7 @@
 const formatTreeData = data => {
   data.forEach(item => {
     if (item.children) {
-      item.children.push(...item.users)
+      item.children.unshift(...item.users)
       formatTreeData(item.children)
     }
   })
