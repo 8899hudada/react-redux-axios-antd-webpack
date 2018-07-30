@@ -33,7 +33,7 @@ const plugins = [
     manifest: path.resolve(ROOT_PATH, `dist/dll/${NODE_ENV}/redux-manifest.json`)
   }),
 	new HtmlWebpackPlugin({
-		favicon: path.resolve(SRC_PATH, 'favicon.ico'),
+		favicon: path.resolve(SRC_PATH, 'favicon.png'),
     template: path.resolve(SRC_PATH, 'index.html'),
     chunks: ['index'],
     vendorBundleName: `${NODE_ENV}/${bundleConfig.vendor.js}`, // 把带hash的dll js插入到html中
