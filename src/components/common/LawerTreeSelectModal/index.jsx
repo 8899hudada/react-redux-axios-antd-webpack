@@ -19,7 +19,9 @@ class LawerTreeSelectModal extends React.PureComponent {
     submitMethod: PropTypes.func,
     unselectedTips: PropTypes.string,
     confrimContent: PropTypes.string,
-    title: PropTypes.string
+    title: PropTypes.string,
+    params: PropTypes.object,
+    onSuccess: PropTypes.func
   }
   constructor (props) {
     super(props)
@@ -51,11 +53,15 @@ class LawerTreeSelectModal extends React.PureComponent {
     this.setState({ selectedKeys })
   }
   submit (selectedKey) {
+    const { submitMethod, onCancel, params, onSuccess } = this.props
     this.setState({ confirmLoading: true })
-    this.props.submitMethod(selectedKey).then(() => {
-      this.props.onCancel()
-      this.setState({ confirmLoading: false })
-    })
+    submitMethod({
+      ...params,
+      userId: selectedKey
+    }).then(() => {
+      onCancel()
+      onSuccess()
+    }).finally(() => this.setState({ confirmLoading: false }))
   }
   onOk () {
     const { selectedKeys, data } = this.state
@@ -71,6 +77,7 @@ class LawerTreeSelectModal extends React.PureComponent {
   render () {
     const { selectedKeys, confirmLoading, data } = this.state
     const { visible, onCancel, title } = this.props
+    
     return (
       <Modal
         title={title}
@@ -97,7 +104,9 @@ LawerTreeSelectModal.defaultProps = {
   title: '选择',
   unselectedTips: '请选择操作对象',
   confrimContent: '确定该选择',
-  submitMethod: () => new Promise(resolve => setTimeout(() => resolve(), 1000))
+  submitMethod: () => new Promise(resolve => setTimeout(() => resolve(), 1000)),
+  params: {},
+  onSuccess: () => {}
 }
 
 export default LawerTreeSelectModal

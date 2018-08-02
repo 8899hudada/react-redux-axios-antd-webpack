@@ -1,8 +1,8 @@
 import React from 'react'
 import { Card, Button } from 'antd'
-import { Search, Table, UserModal, UpdatePasswordModal } from '@components/system-setting/user-manage'
+import { Search, Table, UserModal, UpdatePasswordModal, PermissionModal } from '@components/system-setting/user-manage'
 import { PageHeader } from '@components/common'
-import { departmentManageService, userManageService } from '@services'
+import { departmentManageService, userManageService, roleManageService } from '@services'
 import config from '@config'
 
 class UserManage extends React.PureComponent {
@@ -29,12 +29,14 @@ class UserManage extends React.PureComponent {
       pagination: { // 分页
         ...config.pagination,
         onChange: current => this.updatePagination({current}),
-        onShowSizeChange: (current, pageSize) => this.updatePagination({pageSize})  
+        onShowSizeChange: (current, pageSize) => this.updatePagination({current, pageSize})  
       },
       userModalVisible: false, // 显示人员弹窗
       userModalType: 'update', // 人员弹窗类型 [create：新增，update：编辑]
       editUserIndex: 0, // 编辑的人员索引
-      updatePasswordModalVisible: false // 显示更新密码弹窗
+      updatePasswordModalVisible: false, // 显示更新密码弹窗
+      permissionModalVisible: false, // 显示分配权限弹窗,
+      loading: false
     }
   }
   fetchDepartments () {
@@ -48,7 +50,7 @@ class UserManage extends React.PureComponent {
     })
   }
   fetchRoles () {
-    departmentManageService.fetchRoles({
+    roleManageService.fetchRoles({
       current: 1,
       pageSize: 300
     }).then(res => {
@@ -60,7 +62,7 @@ class UserManage extends React.PureComponent {
   fetchUsers () {
     const { searchParams, pagination } = this.state
     const { current, pageSize } = pagination
-    
+    this.setState({ loading: true })
     userManageService.fetchUsers({
       current,
       pageSize,
@@ -73,7 +75,7 @@ class UserManage extends React.PureComponent {
           total: res.data.total || 0
         }
       })
-    })
+    }).finally(() => this.setState({ loading: false }))
   }
   updatePagination (pagination = {}) {
     this.setState({
@@ -112,8 +114,29 @@ class UserManage extends React.PureComponent {
 
     this.setState(state)
   }
+  togglePermissionModal (visible = false, editUserIndex = 0) {
+    const state = {permissionModalVisible: visible}
+
+    if (visible) {
+      state.editUserIndex = editUserIndex
+    }
+
+    this.setState(state) 
+  }
   render () {
-    const { searchParams, departments, roles, users, editUserIndex, pagination, userModalVisible, userModalType, updatePasswordModalVisible } = this.state
+    const {
+      searchParams,
+      departments,
+      roles,
+      users,
+      editUserIndex,
+      pagination,
+      userModalVisible,
+      userModalType,
+      updatePasswordModalVisible,
+      permissionModalVisible,
+      loading
+    } = this.state
     
     return (
       <div>
@@ -133,10 +156,12 @@ class UserManage extends React.PureComponent {
           </div>
           <div className="margin-top-xs">
             <Table
+              loading={loading}
               pagination={pagination}
               users={users}
               openUserModal={(type, index) => this.toggleUserModal(true, type, index)}
               openUpdatePasswordModal={index => this.toggleUpdatePasswordModal(true, index)}
+              openPermissionModal={index => this.togglePermissionModal(true, index)}
               fetchUsers={this.fetchUsers}>
             </Table>
           </div>
@@ -156,6 +181,12 @@ class UserManage extends React.PureComponent {
           fetchUsers={this.fetchUsers}
           userId={userModalType === 'update' && users[editUserIndex] && users[editUserIndex].id || -1}>
         </UpdatePasswordModal>
+        <PermissionModal
+          visible={permissionModalVisible}
+          user={users[editUserIndex] || {}}
+          fetchUsers={this.fetchUsers}
+          hideModal={() => this.togglePermissionModal(false)}>
+        </PermissionModal>
       </div>
     )
   }

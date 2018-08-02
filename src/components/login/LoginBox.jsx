@@ -7,10 +7,24 @@ import { loginAction } from '@/redux/login'
 
 const FormItem = Form.Item
 
+const mapDispatchToProps = dispatch => {
+  return {
+    loginAction: option => {
+      dispatch(loginAction(option))
+    }
+  }
+}
+
+const mapStateToProps = () => {
+  return {}
+}
+
+@Form.create()
+@connect(mapStateToProps, mapDispatchToProps)
 class LoginForm extends PureComponent {
   static propTypes = {
-    form: PropTypes.object.isRequired,
-    loginAction: PropTypes.func.isRequired
+    form: PropTypes.object,
+    loginAction: PropTypes.func
   }
   constructor (props) {
     super(props)
@@ -29,7 +43,7 @@ class LoginForm extends PureComponent {
         hideRequiredMark>
         <FormItem>
           {
-            getFieldDecorator('userName', {
+            getFieldDecorator('loginName', {
               rules: [{ required: true, message: '请输入用户名' }]
             })(
               <Input
@@ -60,25 +74,6 @@ class LoginForm extends PureComponent {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    loginAction: option => {
-      dispatch(loginAction(option))
-    }
-  }
-}
-
-const mapStateToProps = () => {
-  return {}
-}
-
-const WrappedLoginForm = Form.create()(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(LoginForm)
-)
-
 class LoginBox extends PureComponent {
   constructor (props) {
     super(props)
@@ -86,8 +81,8 @@ class LoginBox extends PureComponent {
   render () {
     return (
       <div className={style.loginBox}>
-        <h1 className={style.loginBoxTitle}>登录</h1>
-        <WrappedLoginForm />
+        {/* <h1 className={style.loginBoxTitle}>四川迪扬律师事务所</h1> */}
+        <LoginForm />
       </div>
     )
   }

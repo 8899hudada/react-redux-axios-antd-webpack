@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Modal, Form, Input, Row, Col, Select } from 'antd'
 import { userManageService } from '@services'
+import { REGEX } from '@constants'
 
 const FormItem = Form.Item
 const Option = Select.Option
@@ -41,7 +42,7 @@ class UserModal extends React.PureComponent {
     this.hideModal = this.hideModal.bind(this)
   }
   handleSubmit () {
-    const { form, type, departments, roles, fetchUsers } = this.props
+    const { form, type, departments, roles, fetchUsers, user } = this.props
 
     form.validateFields(err => {
       const data = form.getFieldsValue()
@@ -52,6 +53,11 @@ class UserModal extends React.PureComponent {
       
       data.dept = departments.find(department => department.id === data.dept)
       data.role = roles.find(role => role.id === data.role)
+
+      if (type === 'update') {
+        data.id = user.id
+        data.passwd = user.passwd
+      }
       
       submitAction[type](data).then(() => {
         this.hideModal()
@@ -91,7 +97,8 @@ class UserModal extends React.PureComponent {
                   rules: [
                     {
                       required: true,
-                      message: '请输入员工姓名'
+                      message: '请输入10个字符以内的员工姓名',
+                      max: 10
                     }
                   ]
                 })(
@@ -128,11 +135,12 @@ class UserModal extends React.PureComponent {
                   rules: [
                     {
                       required: true,
-                      message: '请输入员工电话',
+                      message: '请输入20个字符以内的员工电话',
+                      max: 20
                     }
                   ]
                 })(
-                  <Input type="text" placeholder="请输入员工电话" />
+                  <Input type="text" placeholder="请输入员工电话，app登陆验证码接收" />
                 )}
               </FormItem>
             </Col>
@@ -165,7 +173,8 @@ class UserModal extends React.PureComponent {
                   rules: [
                     {
                       required: true,
-                      message: '请输入登录账号'
+                      message: '请输入32个字符以内的登录账号',
+                      max: 32
                     }
                   ]
                 })(
@@ -183,7 +192,8 @@ class UserModal extends React.PureComponent {
                       rules: [
                         {
                           required: true,
-                          message: '请输入登录密码'
+                          pattern: REGEX.password,
+                          message: '6-16位字符或数字'
                         }
                       ]
                     })(

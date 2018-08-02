@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Upload, Icon, message, Popconfirm } from 'antd'
+import { Img } from '@components/common'
 import { API_URL, API_ROOT } from '@constants'
 import styles from './style'
-import { deepCopy } from '@utils'
+import { deepCopy, getLocalStorage } from '@utils'
 import Viewer from 'viewerjs'
 import 'viewerjs/dist/viewer.min.css'
 
@@ -22,13 +23,17 @@ class ImageListUpload extends React.PureComponent {
     super(props)
     this.onChange = this.onChange.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.createImgViewer = this.createImgViewer.bind(this)
+    this.imgList = props.imgList
   }
-  componentDidUpdate () {
+  componentDidMount () {
+    this.viewer = new Viewer(this.imgListBox)
+  }
+  createImgViewer () {
     if (this.viewer) {
-      this.viewer.update()
-    } else {
-      this.viewer = new Viewer(this.imgListBox)
+      this.viewer.destroy()
     }
+    this.viewer = new Viewer(this.imgListBox)
   }
   onChange (info) {
     const { file } = info
@@ -62,12 +67,12 @@ class ImageListUpload extends React.PureComponent {
           {
             imgList.map((img, index) => (
               <li key={index}>
-                <img src={img} />
+                <Img onLoad={this.createImgViewer} className="img" src={img} />
                 <Popconfirm title="确认删除？" onConfirm={() => this.handleDelete(index)}>
                   <Icon
                     type="delete"
                     className={styles['del-btn']}
-                    style={{ color: '#fff', fontSize: 20, display: !allowDelete && 'none' }} />
+                    style={{ color: '#fa5151', fontSize: 20, display: !allowDelete && 'none' }} />
                 </Popconfirm>
               </li>
             ))
@@ -79,7 +84,7 @@ class ImageListUpload extends React.PureComponent {
             action={`${API_ROOT[process.env.ENV]}/${API_URL.common.UPLOAD}`}
             onChange={this.onChange}
             beforeUpload={beforeUpload}
-            headers={{ 'X-Requested-With': null }}
+            headers={{ 'X-Requested-With': null, token: getLocalStorage('token') }}
             showUploadList={false}
             multiple={multiple}
             style={{ display: (imgList.length >= maxCount || !allowUpload) && 'none' }}>

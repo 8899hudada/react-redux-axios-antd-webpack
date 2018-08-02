@@ -17,12 +17,12 @@ const RouteWrapper = ({ routes = [] }) => {
     </Route>
   ))
 
-  return (
+  return routes.length ? (
     <Switch>
       {Routes}
       <Redirect to={routes[0].path}/>
     </Switch>
-  )
+  ) : null
 }
 
 RouteWrapper.propTypes = {

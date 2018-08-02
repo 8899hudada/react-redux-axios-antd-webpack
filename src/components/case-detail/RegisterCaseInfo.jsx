@@ -7,12 +7,14 @@ import moment from 'moment'
 import { REGEX } from '@constants'
 import { fileProperties } from './constant'
 import { caseDetailService } from '@services'
+import { formatAttachments } from './utils'
 
 const FormItem = Form.Item
 
+@Form.create()
 class RegisterCaseInfo extends React.PureComponent {
   static propTypes = {
-    form: PropTypes.object.isRequired,
+    form: PropTypes.object,
     params: PropTypes.object,
     style: PropTypes.object,
     fetchMethod: PropTypes.func,
@@ -33,6 +35,10 @@ class RegisterCaseInfo extends React.PureComponent {
     this.setState({ isEdit: true })
   }
   onCancel () {
+    const { params, localDelete } = this.props
+    if (!params.id) {
+      localDelete('registerCaseInfo')
+    }
     this.setState({ isEdit: false })
   }
   onSave () {
@@ -43,24 +49,20 @@ class RegisterCaseInfo extends React.PureComponent {
         ...values,
         id: params.id ? params.id : null,
         caseId,
-        registerTime: values.registerTime.format('YYYY-MM-DD'),
-        attachments: values.acceptanceNotification.map(item => ({
-          filePath: item,
-          fileProperty: fileProperties.ACCEPTED_NOTICE,
-          caseId
-        }))
+        registerTime: values.registerTime ? values.registerTime.format('YYYY-MM-DD') : '',
+        attachments: formatAttachments(values.acceptanceNotification, params.attachments, fileProperties.ACCEPTED_NOTICE, caseId)
       }
       caseDetailService.updateRegisterCaseInfo(data).then(() => {
-        fetchMethod()
-        this.setState({ isEdit: false })
+        fetchMethod().finally(() => this.setState({ isEdit: false }))
       })
     })
   }
   onDelete () {
-    const { params, localDelete, fetchMethod } = this.props
+    const { params, localDelete, fetchMethod, caseId } = this.props
     if (params.id) {
-      caseDetailService.deleteRegisterCaseInfo(params.id).then(() => {
+      caseDetailService.deleteRegisterCaseInfo(params.id, { caseId }).then(() => {
         fetchMethod()
+        localDelete('registerCaseInfo')
       })
     } else {
       localDelete('registerCaseInfo')
@@ -78,7 +80,8 @@ class RegisterCaseInfo extends React.PureComponent {
         onCancel={this.onCancel}
         onSave={this.onSave}
         onDelete={this.onDelete}
-        style={style}>
+        style={style}
+        id="registerCaseInfo">
         <Form>
           <Row>
             <Col span={8}>
@@ -117,6 +120,7 @@ class RegisterCaseInfo extends React.PureComponent {
                       initialValue: params.judgeName
                     })(
                       <Input
+                        maxLength={16}
                         placeholder="请输入法官姓名" />
                     )
                     : <span>{params.judgeName}</span>
@@ -147,6 +151,7 @@ class RegisterCaseInfo extends React.PureComponent {
                       initialValue: params.judgeAssistName
                     })(
                       <Input
+                        maxLength={16}
                         placeholder="请输入法官助理姓名" />
                     )
                     : <span>{params.judgeAssistName}</span>
@@ -174,7 +179,7 @@ class RegisterCaseInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('registerTime', {
-                      initialValue: moment(params.registerTime)
+                      initialValue: params.registerTime ? moment(params.registerTime) : null
                     })(
                       <DatePicker
                         placeholder="请输入立案时间" />
@@ -256,7 +261,7 @@ class RegisterCaseInfo extends React.PureComponent {
               {
                 getFieldDecorator('acceptanceNotification', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.map(img => img.filePath),
+                  initialValue: params.attachments.map(img => img.fileUrl),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload
@@ -276,6 +281,4 @@ RegisterCaseInfo.defaultProps = {
   style: {}
 }
 
-const WrappedRegisterCaseInfo = Form.create()(RegisterCaseInfo)
-
-export default WrappedRegisterCaseInfo
+export default RegisterCaseInfo

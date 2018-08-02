@@ -1,20 +1,21 @@
 import React from 'react'
 import { InfoCard } from '@components/case-detail'
-import { Form, Row, Col, Input, DatePicker, InputNumber, Radio } from 'antd'
-import { ImageListUpload } from '@components/common'
+import { Form, Row, Col, Input, DatePicker, Radio } from 'antd'
+import { ImageListUpload, TextArea } from '@components/common'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { REGEX } from '@constants'
 import { fileProperties } from './constant'
 import { caseDetailService } from '@services'
+import { formatAttachments } from './utils'
 
 const FormItem = Form.Item
-const TextArea = Input.TextArea
 const RadioGroup = Radio.Group
 
+@Form.create()
 class FirstInstanceInfo extends React.PureComponent {
   static propTypes = {
-    form: PropTypes.object.isRequired,
+    form: PropTypes.object,
     params: PropTypes.object,
     style: PropTypes.object,
     fetchMethod: PropTypes.func,
@@ -35,6 +36,10 @@ class FirstInstanceInfo extends React.PureComponent {
     this.setState({ isEdit: true })
   }
   onCancel () {
+    const { params, localDelete } = this.props
+    if (!params.id) {
+      localDelete('firstInstanceInfo')
+    }
     this.setState({ isEdit: false })
   }
   onSave () {
@@ -46,9 +51,9 @@ class FirstInstanceInfo extends React.PureComponent {
         id: params.id ? params.id : null,
         caseId,
         attachments: [
-          ...values.firstInstanceCitation.map(item => ({ filePath: item, fileProperty: fileProperties.FIRST_INSTANCE_JUDGEMENT, caseId })),
-          ...values.announcement.map(item => ({ filePath: item, fileProperty: fileProperties.ANNOUNCEMENT, caseId })),
-          ...values.firstInstanceJudgement.map(item => ({ filePath: item, fileProperty: fileProperties.FIRST_INSTANCE_JUDGEMENT, caseId }))
+          ...formatAttachments(values.firstInstanceCitation, params.attachments, fileProperties.FIRST_INSTANCE_CITATION, caseId),
+          ...formatAttachments(values.announcement, params.attachments, fileProperties.ANNOUNCEMENT, caseId),
+          ...formatAttachments(values.firstInstanceJudgement, params.attachments, fileProperties.FIRST_INSTANCE_JUDGEMENT, caseId)
         ],
         openCourtTime: values.openCourtTime ? values.openCourtTime.format('YYYY-MM-DD hh:mm') : '',
         sealUpBeginDate: values.sealUpBeginDate ? values.sealUpBeginDate.format('YYYY-MM-DD') : '',
@@ -56,16 +61,19 @@ class FirstInstanceInfo extends React.PureComponent {
         judgePeriod: params.judgePeriod
       }
       caseDetailService.updateInstanceInfo(data).then(() => {
-        fetchMethod()
-        this.setState({ isEdit: false })
+        fetchMethod().finally(() => this.setState({ isEdit: false }))
       })
     })
   }
   onDelete () {
-    const { params, localDelete, fetchMethod } = this.props
+    const { params, localDelete, fetchMethod, caseId } = this.props
     if (params.id) {
-      caseDetailService.deleteInstanceInfo(params.id).then(() => {
+      caseDetailService.deleteInstanceInfo(params.id, {
+        judgePeriod: params.judgePeriod,
+        caseId
+      }).then(() => {
         fetchMethod()
+        localDelete('firstInstanceInfo')
       })
     } else {
       localDelete('firstInstanceInfo')
@@ -83,7 +91,8 @@ class FirstInstanceInfo extends React.PureComponent {
         onCancel={this.onCancel}
         onSave={this.onSave}
         onDelete={this.onDelete}
-        style={style}>
+        style={style}
+        id="firstInstanceInfo">
         <Form>
           <Row>
             <Col span={24}>
@@ -95,9 +104,10 @@ class FirstInstanceInfo extends React.PureComponent {
                     })(
                       <TextArea
                         autosize={{ minRows: 2, maxRows: 6 }}
+                        maxLength={500}
                         placeholder="请输入财产线索" />
                     )
-                    : <span>{params.assetsKey}</span>
+                    : <div className="line-height-24">{params.assetsKey}</div>
                 }
               </FormItem>
             </Col>
@@ -112,9 +122,10 @@ class FirstInstanceInfo extends React.PureComponent {
                     })(
                       <TextArea
                         autosize={{ minRows: 2, maxRows: 6 }}
+                        maxLength={500}
                         placeholder="请输入保全财产" />
                     )
-                    : <span>{params.guardAssets}</span>
+                    : <div className="line-height-24">{params.guardAssets}</div>
                 }
               </FormItem>
             </Col>
@@ -159,10 +170,8 @@ class FirstInstanceInfo extends React.PureComponent {
                     ? getFieldDecorator('sealUpOrder', {
                       initialValue: params.sealUpOrder
                     })(
-                      <InputNumber
-                        precision={0}
-                        placeholder="请输入查封顺位"
-                        style={{ minWidth: 150 }} />
+                      <Input
+                        placeholder="请输入查封顺位" />
                     )
                     : <span>{params.sealUpOrder}</span>
                 }
@@ -175,7 +184,7 @@ class FirstInstanceInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('openCourtTime', {
-                      initialValue: moment(params.openCourtTime)
+                      initialValue: params.openCourtTime ? moment(params.openCourtTime) : null
                     })(
                       <DatePicker
                         showTime
@@ -197,9 +206,10 @@ class FirstInstanceInfo extends React.PureComponent {
                     })(
                       <TextArea
                         autosize={{ minRows: 2, maxRows: 6 }}
+                        maxLength={500}
                         placeholder="请输入开庭结果" />
                     )
-                    : <span>{params.openCourtResult}</span>
+                    : <div className="line-height-24">{params.openCourtResult}</div>
                 }
               </FormItem>
             </Col>
@@ -213,11 +223,21 @@ class FirstInstanceInfo extends React.PureComponent {
                       initialValue: params.isNotice
                     })(
                       <RadioGroup>
-                        <Radio value={false}>是</Radio>
-                        <Radio value={true}>否</Radio>
+                        <Radio value={true}>是</Radio>
+                        <Radio value={false}>否</Radio>
                       </RadioGroup>
                     )
-                    : <span>{params.isNotice ? '是' : '否'}</span>
+                    : (
+                      <span>
+                        {
+                          params.isNotice === null
+                            ? ''
+                            : params.isNotice
+                              ? '是'
+                              : '否'
+                        }
+                      </span>
+                    )
                 }
               </FormItem>
             </Col>
@@ -243,7 +263,7 @@ class FirstInstanceInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('sealUpBeginDate', {
-                      initialValue: moment(params.sealUpBeginDate)
+                      initialValue: params.sealUpBeginDate ? moment(params.sealUpBeginDate) : null
                     })(
                       <DatePicker
                         placeholder="请输入查封/冻结开始时间" />
@@ -259,7 +279,7 @@ class FirstInstanceInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('sealUpEndDate', {
-                      initialValue: moment(params.sealUpEndDate)
+                      initialValue: params.sealUpEndDate ? moment(params.sealUpEndDate) : null
                     })(
                       <DatePicker
                         placeholder="请输入查封/冻结结束时间" />
@@ -274,7 +294,7 @@ class FirstInstanceInfo extends React.PureComponent {
               {
                 getFieldDecorator('firstInstanceCitation', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.FIRST_INSTANCE_CITATION).map(item => item.filePath),
+                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.FIRST_INSTANCE_CITATION).map(item => item.fileUrl),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload
@@ -287,7 +307,7 @@ class FirstInstanceInfo extends React.PureComponent {
               {
                 getFieldDecorator('announcement', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.ANNOUNCEMENT).map(item => item.filePath),
+                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.ANNOUNCEMENT).map(item => item.fileUrl),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload
@@ -300,7 +320,7 @@ class FirstInstanceInfo extends React.PureComponent {
               {
                 getFieldDecorator('firstInstanceJudgement', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.FIRST_INSTANCE_JUDGEMENT).map(item => item.filePath),
+                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.FIRST_INSTANCE_JUDGEMENT).map(item => item.fileUrl),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload
@@ -320,6 +340,4 @@ FirstInstanceInfo.defaultProps = {
   style: {}
 }
 
-const WrappedFirstInstanceInfo = Form.create()(FirstInstanceInfo)
-
-export default WrappedFirstInstanceInfo
+export default FirstInstanceInfo

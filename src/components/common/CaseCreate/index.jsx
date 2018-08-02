@@ -2,23 +2,26 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { PageHeader } from '@components/common'
 import { Card, Form, Button, Select, Input, DatePicker, Row, Col } from 'antd'
-import { trustorService, caseManageService } from '@services'
+import { trustorService, caseManageService, userManageService } from '@services'
 import { REGEX, ACCOUNT_TYPES } from '@constants'
 import { TrustorModal } from '@components/system-setting/trustor-manage'
 
 const FormItem = Form.Item
 const Option = Select.Option
 
+@Form.create()
 class CaseCreate extends React.PureComponent {
   static propTypes = {
-    form: PropTypes.object.isRequired,
-    onBack: PropTypes.func
+    form: PropTypes.object,
+    onBack: PropTypes.func,
+    isInMyCase: PropTypes.bool
   }
   constructor (props) {
     super(props)
     this.state = {
       loading: false,
       trustors: [],
+      lawyers: [],
       trustorModalVisible: false
     }
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -28,11 +31,19 @@ class CaseCreate extends React.PureComponent {
   }
   componentDidMount () {
     this.fetchTrustors()
+    this.fetchLawyers()
   }
   fetchTrustors () {
     trustorService.fetchList().then(({ data }) => {
       this.setState({
         trustors: data
+      })
+    })
+  }
+  fetchLawyers () {
+    userManageService.fetchAllLawyers().then(({ data }) => {
+      this.setState({
+        lawyers: data
       })
     })
   }
@@ -43,23 +54,25 @@ class CaseCreate extends React.PureComponent {
     this.setState({ trustorModalVisible: true })
   }
   handleSubmit () {
-    const { form, onBack } = this.props
+    const { form, onBack, isInMyCase } = this.props
     form.validateFields((err, values) => {
       if (err) return false
       const data = {
         ...values,
         entrustDate: values.entrustDate ? values.entrustDate.format('YYYY-MM-DD') : '',
-        trustorId: values.trustorId ? values.trustorId : ''
+        proxyLawyerId: values.proxyLawyerId ? values.proxyLawyerId : ''
       }
+      if (isInMyCase) data.myCaseFlag = true
+      this.setState({ loading: true })
       caseManageService.createCase(data).then(() => {
         onBack()
-      })
+      }).finally(() => this.setState({ loading: false }))
     })
   }
   render () {
     const { getFieldDecorator, getFieldValue } = this.props.form
-    const { onBack } = this.props
-    const { loading, trustors, trustorModalVisible } = this.state
+    const { onBack, isInMyCase } = this.props
+    const { loading, trustors, lawyers, trustorModalVisible } = this.state
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -79,7 +92,7 @@ class CaseCreate extends React.PureComponent {
         sm: {
           span: 16,
           offset: 3,
-        },
+        }
       }
     }
     return (
@@ -119,22 +132,6 @@ class CaseCreate extends React.PureComponent {
                   ]
                 })(
                   <Input placeholder="请输入身份证号" />
-                )
-              }
-            </FormItem>
-            <FormItem
-              label="起诉金额"
-              {...formItemLayout}>
-              {
-                getFieldDecorator('prosecutionAmount', {
-                  initialValue: '',
-                  validateTrigger: 'onBlur',
-                  rules: [
-                    { required: true, message: '请输入起诉金额' },
-                    { pattern: REGEX.decimal2Reg, message: '请输入正确的起诉金额' }
-                  ]
-                })(
-                  <Input placeholder="请输入起诉金额" />
                 )
               }
             </FormItem>
@@ -182,9 +179,12 @@ class CaseCreate extends React.PureComponent {
               {
                 getFieldDecorator('accountNumber', {
                   initialValue: '',
-                  validateTrigger: 'onBlur'
+                  validateTrigger: 'onBlur',
+                  rules: [
+                    { required: true, message: `请输入${ACCOUNT_TYPES[getFieldValue('accountType')]}`, whitespace: true }
+                  ]
                 })(
-                  <Input placeholder={`请输入${ACCOUNT_TYPES[getFieldValue('accountType')]}`} />
+                  <Input maxLength={30} placeholder={`请输入${ACCOUNT_TYPES[getFieldValue('accountType')]}`} />
                 )
               }
             </FormItem>
@@ -194,7 +194,11 @@ class CaseCreate extends React.PureComponent {
               <Row gutter={8}>
                 <Col span={20}>
                   {
-                    getFieldDecorator('trustorId')(
+                    getFieldDecorator('trustorId', {
+                      rules: [
+                        { required: true, message: '请选择委托方' }
+                      ]
+                    })(
                       <Select
                         optionFilterProp="children"
                         showSearch
@@ -232,6 +236,23 @@ class CaseCreate extends React.PureComponent {
                 )
               }
             </FormItem>
+            {
+              !isInMyCase && <FormItem
+                label="律师"
+                {...formItemLayout}>
+                {
+                  getFieldDecorator('proxyLawyerId')(
+                    <Select
+                      optionFilterProp="children"
+                      showSearch
+                      filterOption={(input, option) => option.props.children.toLowerCase().includes(input.toLowerCase())}
+                      placeholder="请选择律师">
+                      {lawyers.map(lawyer => <Option key={lawyer.id}>{lawyer.name}</Option>)}
+                    </Select>
+                  )
+                }
+              </FormItem>
+            }
             <FormItem {...tailFormItemLayout}>
               <Button
                 type="primary"
@@ -251,9 +272,8 @@ class CaseCreate extends React.PureComponent {
 }
 
 CaseCreate.defaultProps = {
-  onBack: () => {}
+  onBack: () => {},
+  isInMyCase: false
 }
 
-const WrappedCaseCreate = Form.create()(CaseCreate)
-
-export default WrappedCaseCreate
+export default CaseCreate

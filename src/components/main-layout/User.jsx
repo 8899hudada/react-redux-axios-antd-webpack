@@ -38,8 +38,9 @@ const User = props => {
       overlay={DropdownMenu(handleClickMenu)}
       placement="bottomRight"
       trigger={['click']}>
-      <div className="user-box">
-        <span>张三</span>
+      <div className="user-box" style={{ display: 'flex', alignItems: 'center' }}>
+        <Icon className="margin-right-xs" type="user" style={{ fontSize: '20px' }} />
+        <span>{props.userName}</span>
         <Icon className="drop-down-icon" type="down" />
       </div>
     </Dropdown>
@@ -47,7 +48,12 @@ const User = props => {
 }
 
 User.propTypes = {
-  logoutAction: PropTypes.func.isRequired
+  logoutAction: PropTypes.func.isRequired,
+  userName: PropTypes.string
+}
+
+User.defaultProps = {
+  userName: ''
 }
 
 const mapDispatchToProps = dispatch => {

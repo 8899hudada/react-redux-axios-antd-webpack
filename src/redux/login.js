@@ -10,7 +10,8 @@ import { loginService } from '@services'
 
 function stateFactory () {
   return {
-    token: getLocalStorage('token') || ''
+    token: getLocalStorage('token') || '',
+    permissions: [] // 路由权限
   }
 }
 
@@ -46,10 +47,10 @@ function updateToken (state, action) {
 // saga
 function* login(option) {
   try {
-    const { data } = yield call(loginService.login, { data: option.payload })
-    setLocalStorage('token', data)
-    yield put(updateTokenAction(data))
-    window.$history.push('/home')
+    const {data: {token: token}} = yield call(loginService.login, { data: option.payload })
+    setLocalStorage('token', token)
+    yield put(updateTokenAction(token))
+    window.location.href = '/my-case'
   } catch (error) {
     console.log(error)
   }
@@ -58,7 +59,7 @@ function* login(option) {
 function* logout() {
   yield call(loginService.logout)
   clearLocalStorage('token')
-  location.href = '/login'
+  window.location.href = '/login'
 }
 
 export function* loginSaga () {

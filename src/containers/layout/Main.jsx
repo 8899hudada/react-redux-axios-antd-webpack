@@ -4,31 +4,25 @@ import { Layout } from 'antd'
 import {
   CompanyInfo,
   RouterMenu,
-  User,
-  GlobalSearch
+  User
 } from '@components/main-layout'
 
 const { Header, Content, Sider } = Layout
 
 class MainLayout extends Component {
   static propTypes = {
-    children: PropTypes.object.isRequired
-  }
-  constructor(props) {
-    super(props)
+    children: PropTypes.object.isRequired,
+    userName: PropTypes.string.isRequired
   }
   render () {
     return (
       <Layout className="main-layout">
         <Header className="header">
           <div className="pull-left">
-            <CompanyInfo className="company-info" companyAvator={require('@/favicon.ico')}></CompanyInfo>
-          </div>
-          <div className="pull-left">
-            <GlobalSearch />
+            <CompanyInfo className="company-info" companyAvator={require('@/imgs/common/logo.png')}></CompanyInfo>
           </div>
           <div className="pull-right">
-            <User></User>
+            <User userName={this.props.userName}></User>
           </div>
         </Header>
         <Layout className="content-layout">

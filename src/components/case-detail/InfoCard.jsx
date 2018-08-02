@@ -13,7 +13,8 @@ class InfoCard extends React.PureComponent {
     onCancel: PropTypes.func,
     onSave: PropTypes.func,
     children: PropTypes.node,
-    style: PropTypes.object
+    style: PropTypes.object,
+    id: PropTypes.string
   }
   constructor (props) {
     super(props)
@@ -27,7 +28,7 @@ class InfoCard extends React.PureComponent {
     })
   }
   render () {
-    const { title, isEdit, allowDelete, onEdit, onCancel, onSave, children, style } = this.props
+    const { title, isEdit, allowDelete, onEdit, onCancel, onSave, children, style, id } = this.props
     const normalExtra = (
       <div className={styles['extra-wrap']}>
         { allowDelete && <a href="javascript:;" onClick={this.handleDelete}>删除</a> }
@@ -42,7 +43,7 @@ class InfoCard extends React.PureComponent {
     )
     return (
       <Card
-        title={title}
+        title={<div id={id}>{title}</div>}
         extra={isEdit ? editingExtra : normalExtra}
         style={{ marginTop: 10, ...style }}>
         { children }

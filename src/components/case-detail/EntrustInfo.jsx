@@ -3,16 +3,19 @@ import PropTypes from 'prop-types'
 import { InfoCard } from '@components/case-detail'
 import { Form, Row, Col, Input, DatePicker, Select } from 'antd'
 import { ACCOUNT_TYPES } from '@constants'
-import { trustorService, caseDetailService } from '@services'
+import { trustorService, caseDetailService, userManageService } from '@services'
 import moment from 'moment'
 import { REGEX } from '@constants'
+import { getUrlQuery } from '@utils'
 
 const FormItem = Form.Item
 const Option = Select.Option
+const from = getUrlQuery('from')
 
+@Form.create()
 class EntrustInfo extends React.PureComponent {
   static propTypes = {
-    form: PropTypes.object.isRequired,
+    form: PropTypes.object,
     params: PropTypes.object,
     fetchMethod: PropTypes.func,
     caseId: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
@@ -21,7 +24,8 @@ class EntrustInfo extends React.PureComponent {
     super(props)
     this.state = {
       isEdit: false,
-      trustors: []
+      trustors: [],
+      lawyers: []
     }
     this.onEdit = this.onEdit.bind(this)
     this.onCancel = this.onCancel.bind(this)
@@ -29,11 +33,19 @@ class EntrustInfo extends React.PureComponent {
   }
   componentDidMount () {
     this.fetchTrustors()
+    this.fetchLawyers()
   }
   fetchTrustors () {
     trustorService.fetchList().then(({ data }) => {
       this.setState({
         trustors: data
+      })
+    })
+  }
+  fetchLawyers () {
+    userManageService.fetchAllLawyers().then(({ data }) => {
+      this.setState({
+        lawyers: data
       })
     })
   }
@@ -54,14 +66,13 @@ class EntrustInfo extends React.PureComponent {
         entrustDate: values.entrustDate ? values.entrustDate.format('YYYY-MM-DD') : ''
       }
       caseDetailService.updateEntrustInfo(data).then(() => {
-        fetchMethod()
-        this.setState({ isEdit: false })
+        fetchMethod().finally(() => this.setState({ isEdit: false }))
       })
     })
   }
   render () {
     const { getFieldDecorator } = this.props.form
-    const { isEdit, trustors } = this.state
+    const { isEdit, trustors, lawyers } = this.state
     const { params } = this.props
     return (
       <InfoCard
@@ -154,6 +165,7 @@ class EntrustInfo extends React.PureComponent {
                       initialValue: params.accountNumber
                     })(
                       <Input
+                        maxLength={30}
                         placeholder="请输入" />
                     )
                     : <span>{params.accountNumber}</span>
@@ -165,7 +177,7 @@ class EntrustInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('trustorId', {
-                      initialValue: params.trustorId
+                      initialValue: params.trustorId ? String(params.trustorId) : ''
                     })(
                       <Select
                         style={{ minWidth: 150 }}
@@ -187,7 +199,7 @@ class EntrustInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('entrustDate', {
-                      initialValue: moment(params.entrustDate)
+                      initialValue: params.entrustDate ? moment(params.entrustDate) : null
                     })(
                       <DatePicker
                         placeholder="请选择委案日期" />
@@ -213,12 +225,18 @@ class EntrustInfo extends React.PureComponent {
             <Col span={8}>
               <FormItem label="代理律师" style={{ display: 'flex' }}>
                 {
-                  isEdit
-                    ? getFieldDecorator('proxyLawyer', {
-                      initialValue: params.proxyLawyer
+                  isEdit && from !== 'my-case'
+                    ? getFieldDecorator('proxyLawyerId', {
+                      initialValue: params.proxyLawyerId ? String(params.proxyLawyerId) : ''
                     })(
-                      <Input
-                        placeholder="请输入代理律师" />
+                      <Select
+                        style={{ minWidth: 150 }}
+                        optionFilterProp="children"
+                        showSearch
+                        filterOption={(input, option) => option.props.children.toLowerCase().includes(input.toLowerCase())}
+                        placeholder="请选择代理律师">
+                        {lawyers.map(lawyer => <Option key={lawyer.id}>{lawyer.name}</Option>)}
+                      </Select>
                     )
                     : <span>{params.proxyLawyer}</span>
                 }
@@ -235,6 +253,4 @@ EntrustInfo.defaultProps = {
   fetchMethod: () => {}
 }
 
-const WrappedEntrustInfo = Form.create()(EntrustInfo)
-
-export default WrappedEntrustInfo
+export default EntrustInfo

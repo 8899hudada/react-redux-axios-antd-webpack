@@ -14,7 +14,9 @@ class UserTable extends React.PureComponent {
     }),
     openUserModal: PropTypes.func.isRequired,
     openUpdatePasswordModal: PropTypes.func.isRequired,
-    fetchUsers: PropTypes.func.isRequired
+    openPermissionModal: PropTypes.func.isRequired,
+    fetchUsers: PropTypes.func.isRequired,
+    loading: PropTypes.bool
   }
   constructor (props) {
     super(props)
@@ -34,7 +36,7 @@ class UserTable extends React.PureComponent {
     })
   }
   render () {
-    const { users, pagination, openUserModal, openUpdatePasswordModal } = this.props
+    const { users, pagination, openUserModal, openUpdatePasswordModal, openPermissionModal, loading } = this.props
     const columns = [
       {
         title: '姓名',
@@ -77,7 +79,7 @@ class UserTable extends React.PureComponent {
               <Button
                 type="primary"
                 className="margin-right-xs"
-                onClick={() => this.updateUserStatus(record.id, record.status)}>
+                onClick={() => this.updateUserStatus(record.id, record.status === 1 ? 0 : 1)}>
                 { record.status ? '禁用' : '启用' }
               </Button>
               <Button
@@ -88,7 +90,8 @@ class UserTable extends React.PureComponent {
               </Button>
               <Button
                 type="primary"
-                className="margin-right-xs">
+                className="margin-right-xs"
+                onClick={() => {openPermissionModal(index)}}>
                 权限
               </Button>
               <Button
@@ -110,6 +113,8 @@ class UserTable extends React.PureComponent {
     
     return (
       <Table
+        size='middle'
+        loading={loading}
         columns={columns}
         dataSource={users}
         pagination={pagination}
@@ -117,6 +122,10 @@ class UserTable extends React.PureComponent {
       </Table>
     )
   }
+}
+
+UserTable.defaultProps = {
+  loading: false
 }
 
 export default UserTable

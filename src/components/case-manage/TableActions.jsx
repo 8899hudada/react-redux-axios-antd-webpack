@@ -22,7 +22,7 @@ const TableActions = props => {
     </Menu>
   )
   return (
-    <Form layout="inline" style={{ backgroundColor: '#fcfcfc' }}>
+    <Form layout="inline" className="bg-table-action">
       <FormItem style={{ marginLeft: 16 }}>
         <a
           href="javascript:;"

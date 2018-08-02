@@ -4,7 +4,7 @@ import { Table, Button } from 'antd'
 import { TableIndex, Confirm } from '@components/common'
 import { trustorService } from '@services'
 
-const TrustorTable = ({ trustors = [], fetchList, toggleTrustorModal }) => {
+const TrustorTable = ({ trustors = [], fetchList, toggleTrustorModal, loading = false, pagination }) => {
   const deleteTrustor = (id) => {
     trustorService.deleteTrustor(id).then(() => fetchList())
   }
@@ -21,13 +21,13 @@ const TrustorTable = ({ trustors = [], fetchList, toggleTrustorModal }) => {
     },
     {
       title: '操作',
-      render: (text, record, index) => {
+      render: (text, record) => {
         return (
           <div>
             <Button
               type="primary"
               className="margin-right-xs"
-              onClick={() => {toggleTrustorModal(true, 'update', index)}}>
+              onClick={() => {toggleTrustorModal(true, 'update', record)}}>
               编辑
             </Button>
             <Confirm options={{onOk: () => deleteTrustor(record.id)}}>
@@ -42,8 +42,11 @@ const TrustorTable = ({ trustors = [], fetchList, toggleTrustorModal }) => {
 
   return (
     <Table
+      size='middle'
+      loading={loading}
       columns={columns}
       dataSource={trustors}
+      pagination={pagination}
       rowKey='id'>
     </Table>
   )
@@ -52,7 +55,9 @@ const TrustorTable = ({ trustors = [], fetchList, toggleTrustorModal }) => {
 TrustorTable.propTypes = {
   trustors: PropTypes.array,
   fetchList: PropTypes.func.isRequired,
-  toggleTrustorModal: PropTypes.func.isRequired
+  toggleTrustorModal: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
+  pagination: PropTypes.object.isRequired
 }
 
 export default TrustorTable

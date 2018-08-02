@@ -6,7 +6,10 @@ const {
   FETCH_DEPARTMENTS,
   FETCH_DEPARTMENT_TREE,
   FETCH_DEPARTMENT_USER_TREE,
-  FETCH_ROLES
+  FETCH_ROLES,
+  DELETE_DEPARTMENT,
+  CREATE_DEPARTMENT,
+  UPDATE_DEPARTMENT
 } = API_URL.systemSetting.departmentManage
 
 Mock.mock(`${HTTP_ROOT}/${FETCH_DEPARTMENTS}`, 'post', () => {
@@ -16,7 +19,8 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_DEPARTMENTS}`, 'post', () => {
     data: {
       'pageData|10': [{
         id: '@increment(1)',
-        name: '@csentence(2, 6)'
+        name: '@csentence(2, 6)',
+        parentId: '@increment(1)'
       }]
     }
   })
@@ -35,8 +39,23 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_DEPARTMENT_TREE}`, 'get', () => {
         children: [{
           id: '@increment(1)',
           name: '金融科技组',
-          children: []
+          children: [],
+          users: [{
+            id: '@increment(1)',
+            name: '曾十'
+          }]
+        }],
+        users: [{
+          id: '@increment(1)',
+          name: '张三'
+        }, {
+          id: '@increment(1)',
+          name: '李四'
         }]
+      }],
+      users: [{
+        id: '@increment(1)',
+        name: '陈八'
       }]
     }, {
       id: '@increment(1)',
@@ -44,7 +63,12 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_DEPARTMENT_TREE}`, 'get', () => {
       children: [{
         id: '@increment(1)',
         name: '催收部',
-        children: []
+        children: [],
+        users: []
+      }],
+      users: [{
+        id: '@increment(1)',
+        name: '郑九'
       }]
     }]
   })
@@ -88,13 +112,7 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_DEPARTMENT_USER_TREE}`, 'get', () => {
         id: '@increment(1)',
         name: '催收部',
         children: [],
-        users: [{
-          id: '@increment(1)',
-          name: '王五'
-        }, {
-          id: '@increment(1)',
-          name: '赵六'
-        }]
+        users: []
       }],
       users: [{
         id: '@increment(1)',
@@ -114,5 +132,27 @@ Mock.mock(`${HTTP_ROOT}/${FETCH_ROLES}`, 'post', () => {
         name: '@csentence(2, 6)'
       }]
     }
+  })
+})
+
+Mock.mock(new RegExp(`^${HTTP_ROOT}/${DELETE_DEPARTMENT()}\\d+$`), 'delete', () => Mock.mock({
+  code: 200,
+  ok: true,
+  data: null
+}))
+
+Mock.mock(`${HTTP_ROOT}/${CREATE_DEPARTMENT}`, 'post', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true,
+    data: null
+  })
+})
+
+Mock.mock(`${HTTP_ROOT}/${UPDATE_DEPARTMENT}`, 'put', () => {
+  return Mock.mock({
+    code: 200,
+    ok: true,
+    data: null
   })
 })

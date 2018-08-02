@@ -1,32 +1,23 @@
 import React from 'react'
 import { PageHeader, CaseImport, CaseCreate, LawerTreeSelectModal } from '@components/common'
-import { Actions, Table, TableActions, Search } from '@components/case-manage'
+import { Actions, Table, TableActions, Search } from '@components/my-case'
 import { Card, message } from 'antd'
-import { caseManageService } from '@services'
+import { myCaseService, caseManageService } from '@services'
+import { formatSearchParams, searchParamsFactory } from './utils'
+import { windowOpen } from '@utils'
 
 const columns = [
-  { title: '姓名', dataIndex: 'customName', key: 'customName', render: (text, record) => <a href={`/case-detail/${record.id}`} target="_blank">{text}</a> },
-  { title: '身份证号', dataIndex: 'idCard', key: 'idCard' },
-  { title: '委托方', dataIndex: 'trustorName', key: 'trustorName' },
-  { title: '委案日期', dataIndex: 'entrustDate', key: 'entrustDate' },
-  { title: '委案金额', dataIndex: 'entrustAmt', key: 'entrustAmt' },
-  { title: '诉讼案号', dataIndex: 'lawCaseCode', key: 'lawCaseCode' },
-  { title: '分配状态', dataIndex: 'assignStatus', key: 'assignStatus' },
-  { title: '代理律师', dataIndex: 'proxyLawyer', key: 'proxyLawyer' },
-  { title: '案件进程', dataIndex: 'caseProcess', key: 'caseProcess' }
+  { title: '姓名', dataIndex: 'customName', key: 'customName',
+    render: (text, record) => <a href={`/case-detail/${record.id}?from=my-case`} target="_blank">{text}</a>, align: 'center' },
+  { title: '身份证号', dataIndex: 'idCard', key: 'idCard', align: 'center' },
+  { title: '委托方', dataIndex: 'trustorName', key: 'trustorName', align: 'center' },
+  { title: '委案日期', dataIndex: 'entrustDate', key: 'entrustDate', align: 'center' },
+  { title: '委案金额', dataIndex: 'entrustAmt', key: 'entrustAmt', align: 'center' },
+  { title: '诉讼案号', dataIndex: 'lawCaseCode', key: 'lawCaseCode', align: 'center' },
+  { title: '案件进程', dataIndex: 'caseProcess', key: 'caseProcess', align: 'center' }
 ]
 
-const searchParamsFactory = () => ({
-  customerName: '',
-  entrustDate: [],
-  trustorId: -1,
-  lawCaseCode: '',
-  caseProcess: -1,
-  assignStatus: -1,
-  proxyLawyer: -1
-})
-
-class CaseManage extends React.PureComponent {
+class MyCase extends React.PureComponent {
   constructor (props) {
     super(props)
     this.state = {
@@ -65,31 +56,43 @@ class CaseManage extends React.PureComponent {
     }
   }
   tableActionsClick (action) {
+    const { selectedRowKeys, searchParams, data } = this.state
     switch (action) {
-    case 'caseDistribution':
-      if (this.state.selectedRowKeys.length === 0 ) return message.warning('请选择案件')
+    case 'caseTransfer':
+      if (selectedRowKeys.length === 0) return message.warning('请选择案件')
       this.setState({ treeSelectVisible: true })
       break
     case 'selectedExport':
-      if (this.state.selectedRowKeys.length === 0 ) return message.warning('请选择案件')
+      if (selectedRowKeys.length === 0) return message.warning('请选择案件')
+      caseManageService.exportCase({
+        caseIds: selectedRowKeys,
+        myCaseFlag: true
+      }).then(({ data }) => {
+        windowOpen(data)
+      })
       break
     case 'queryExport':
+      if (data.length === 0) return message.warning('当前查询结果没有数据')
+      caseManageService.exportCase({
+        ...formatSearchParams(searchParams),
+        myCaseFlag: true
+      }).then(({ data }) => {
+        if (!data) return message.warning('当前查询结果没有数据')
+        windowOpen(data)
+      })
       break
     }
   }
   search () {
-    const { searchParams } = this.state
-    const data = {
-      ...searchParams,
-      trustorId: searchParams.trustorId === -1 ? '' : searchParams.trustorId,
-      caseProcess: searchParams.caseProcess === -1 ? '' : searchParams.caseProcess,
-      assignStatus: searchParams.assignStatus === -1 ? '' : searchParams.assignStatus,
-      proxyLawyer: searchParams.proxyLawyer === -1 ? '' : searchParams.proxyLawyer,
-      entrustDateBegin: searchParams.entrustDate.length ? searchParams.entrustDate[0].format('YYYY-MM-DD'): '',
-      entrustDateEnd: searchParams.entrustDate.length ? searchParams.entrustDate[1].format('YYYY-MM-DD'): ''
-    }
+    const { searchParams, pagination } = this.state
+    const { current, pageSize } = pagination
+    const data = formatSearchParams(searchParams)
     this.setState({ loading: true })
-    caseManageService.fetchList(data).then(({ data }) => {
+    myCaseService.fetchList({
+      ...data,
+      current,
+      pageSize
+    }).then(({ data }) => {
       this.setState(prevState => ({
         data: data.pageData,
         pagination: {
@@ -135,13 +138,13 @@ class CaseManage extends React.PureComponent {
       onChange: this.selectedRowKeysChange
     }
     if (curView === 'import') {
-      return <CaseImport onBack={this.actionBack} />
+      return <CaseImport onBack={this.actionBack} isInMyCase={true} />
     } else if (curView === 'create') {
-      return <CaseCreate onBack={this.actionBack} />
+      return <CaseCreate onBack={this.actionBack} isInMyCase={true} />
     }
     return (
       <div>
-        <PageHeader title="案件管理" />
+        <PageHeader title="我的案件" />
         <Card>
           <Actions onClick={this.actionClick} />
           <Search
@@ -161,12 +164,15 @@ class CaseManage extends React.PureComponent {
         <LawerTreeSelectModal
           visible={treeSelectVisible}
           onCancel={() => this.setState({ treeSelectVisible: false })}
-          title="案件分配"
-          unselectedTips="请选择分配对象"
-          confrimContent="确定将案件分配给" />
+          onSuccess={this.search}
+          title="案件转交"
+          unselectedTips="请选择转交对象"
+          confrimContent="确定将案件转交给"
+          params={{ caseIds: selectedRowKeys }}
+          submitMethod={caseManageService.assignCase} />
       </div>
     )
   }
 }
 
-export default CaseManage
+export default MyCase

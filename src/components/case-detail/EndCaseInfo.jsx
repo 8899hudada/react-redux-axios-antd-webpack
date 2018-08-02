@@ -4,12 +4,16 @@ import { Form, Row, Col, DatePicker } from 'antd'
 import { ImageListUpload } from '@components/common'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import { fileProperties } from './constant'
+import { caseDetailService } from '@services'
+import { formatAttachments } from './utils'
 
 const FormItem = Form.Item
 
+@Form.create()
 class EndCaseInfo extends React.PureComponent {
   static propTypes = {
-    form: PropTypes.object.isRequired,
+    form: PropTypes.object,
     params: PropTypes.object,
     style: PropTypes.object,
     fetchMethod: PropTypes.func,
@@ -30,15 +34,37 @@ class EndCaseInfo extends React.PureComponent {
     this.setState({ isEdit: true })
   }
   onCancel () {
+    const { params, localDelete } = this.props
+    if (!params.id) {
+      localDelete('endCaseInfo')
+    }
     this.setState({ isEdit: false })
   }
   onSave () {
-    this.setState({ isEdit: false })
+    const { form, params, caseId, fetchMethod } = this.props
+    form.validateFields((err, values) => {
+      if (err) return false
+      const data = {
+        ...values,
+        id: params.id ? params.id : null,
+        caseId,
+        attachments: [
+          ...formatAttachments(values.mediationAgreement, params.attachments, fileProperties.MEDIATION_AGREEMENT, caseId)
+        ],
+        closeCaseDate: values.closeCaseDate ? values.closeCaseDate.format('YYYY-MM-DD') : ''
+      }
+      caseDetailService.updateEndCaseInfo(data).then(() => {
+        fetchMethod().finally(() => this.setState({ isEdit: false }))
+      })
+    })
   }
   onDelete () {
-    const { params, localDelete } = this.props
+    const { params, localDelete, fetchMethod, caseId } = this.props
     if (params.id) {
-      console.log('删除')
+      caseDetailService.deleteEndCaseInfo(params.id, { caseId }).then(() => {
+        fetchMethod()
+        localDelete('endCaseInfo')
+      })
     } else {
       localDelete('endCaseInfo')
     }
@@ -55,7 +81,8 @@ class EndCaseInfo extends React.PureComponent {
         onCancel={this.onCancel}
         onSave={this.onSave}
         onDelete={this.onDelete}
-        style={style}>
+        style={style}
+        id="endCaseInfo">
         <Form>
           <Row>
             <Col span={8}>
@@ -63,7 +90,7 @@ class EndCaseInfo extends React.PureComponent {
                 {
                   isEdit
                     ? getFieldDecorator('closeCaseDate', {
-                      initialValue: moment(params.closeCaseDate)
+                      initialValue: params.closeCaseDate ? moment(params.closeCaseDate) : null
                     })(
                       <DatePicker
                         placeholder="请输入结案时间" />
@@ -76,9 +103,9 @@ class EndCaseInfo extends React.PureComponent {
           <Row>
             <FormItem label="调解书/结案文书">
               {
-                getFieldDecorator('endCasePaper', {
+                getFieldDecorator('mediationAgreement', {
                   valuePropName: 'imgList',
-                  initialValue: params.attachments.filter(item => item.fileProperty === 9).map(item => item.filePath),
+                  initialValue: params.attachments.filter(item => item.fileProperty === fileProperties.MEDIATION_AGREEMENT).map(item => item.fileUrl),
                   getValueFromEvent: value => value
                 })(
                   <ImageListUpload
@@ -98,6 +125,4 @@ EndCaseInfo.defaultProps = {
   style: {}
 }
 
-const WrappedEndCaseInfo = Form.create()(EndCaseInfo)
-
-export default WrappedEndCaseInfo
+export default EndCaseInfo

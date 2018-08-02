@@ -1,12 +1,12 @@
 import React from 'react'
-import { Tree, Input } from 'antd'
+import { Tree as AntdTree, Input } from 'antd'
 import PropTypes from 'prop-types'
 import style from './style'
 
-const TreeNode = Tree.TreeNode
+const TreeNode = AntdTree.TreeNode
 const Search = Input.Search
 
-class TreeSelect extends React.PureComponent {
+class Tree extends React.PureComponent {
   static propTypes = {
     data: PropTypes.array.isRequired,
     selectedKeys: PropTypes.array,
@@ -20,7 +20,8 @@ class TreeSelect extends React.PureComponent {
     }),
     placeholder: PropTypes.string,
     isSearch: PropTypes.bool,
-    checkable: PropTypes.bool
+    checkable: PropTypes.bool,
+    NodeTitle: PropTypes.func
   }
   constructor (props) {
     super(props)
@@ -91,65 +92,87 @@ class TreeSelect extends React.PureComponent {
   renderTreeNodes (data) {
     const searchValue = this.state.searchValue
     const { labelKey, valueKey, childrenKey } = this.props.option
-    const { checkable } = this.props
+    const { checkable, NodeTitle } = this.props
     return data.map(item => {
       const index = item[labelKey].indexOf(searchValue)
       const beforeStr = item[labelKey].substr(0, index)
       const afterStr = item[labelKey].substr(index + searchValue.length)
-      const title = index > -1 ? (
+      const title = NodeTitle ? (
+        <NodeTitle {...item}></NodeTitle>
+      ) : index > -1 ? (
         <span>
           {beforeStr}
           <span style={{ color: '#f50' }}>{searchValue}</span>
           {afterStr}
         </span>
-      ) : <span>{item[labelKey]}</span>
+      ) : (
+        <span>{item[labelKey]}</span>
+      )
+
       if (checkable) {
         if (item[childrenKey] && item[childrenKey].length) {
           return <TreeNode title={title} key={item[valueKey]} dataRef={item} selectable={false}>
             {this.renderTreeNodes(item[childrenKey])}
           </TreeNode>
         }
-        return <TreeNode title={title} key={item[valueKey]} dataRef={item} selectable={false} />;
+        return <TreeNode title={title} key={item[valueKey]} dataRef={item} selectable={false} />
       } else {
         if (item[childrenKey]) {
-          return item[childrenKey].length ? (
-            <TreeNode className={style['tree-select']} title={title} key={item[valueKey]} dataRef={item} selectable={false}>
-              {this.renderTreeNodes(item[childrenKey])}
+          return (
+            <TreeNode
+              className={`${style['tree-select']} ${NodeTitle ? style['customer-node'] : ''}`}
+              title={title}
+              key={item[valueKey]}
+              dataRef={item}
+              selectable={false}>
+              { 
+                item[childrenKey].length
+                  ? this.renderTreeNodes(item[childrenKey])
+                  : <TreeNode title='hide' key='hide' className={style['hide-node']} /> // antd的tree组件当children为空时，会自动变为可选样式
+              }
             </TreeNode>
-          ) : null
+          ) 
         }
-        return <TreeNode className={style['tree-select']} title={title} key={item[valueKey]} dataRef={item} />;
+
+        return (
+          <TreeNode
+            title={title}
+            key={item[valueKey]}
+            dataRef={item} />
+        )
       }
     })
   }
   render () {
     const { searchValue, expandedKeys, autoExpandParent } = this.state
-    const { data, onSelect, selectedKeys, placeholder, isSearch, onCheck, checkedKeys, checkable } = this.props
+    let { data, placeholder, isSearch, onCheck, checkedKeys = [] } = this.props
+
+    checkedKeys = checkedKeys.map(key => String(key))
     return (
       <div>
         {
-          isSearch && <Search
-            value={searchValue}
-            onChange={this.searchChange}
-            placeholder={placeholder} />
+          isSearch ? (
+            <Search
+              value={searchValue}
+              onChange={this.searchChange}
+              placeholder={placeholder} />
+          ) : null
         }
-        <Tree
+        <AntdTree
+          {...this.props}
+          checkedKeys={checkedKeys}
           autoExpandParent={autoExpandParent}
           onExpand={this.onExpand}
-          onSelect={onSelect}
-          selectedKeys={selectedKeys}
-          onCheck={onCheck}
-          checkedKeys={checkedKeys}
           expandedKeys={expandedKeys}
-          checkable={checkable}>
+          onCheck={(checkedKeys, e) => {e.checkedRealNodes = e.checkedNodes.map(item => item.props.dataRef); onCheck(checkedKeys, e)}}>
           {this.renderTreeNodes(data)}
-        </Tree>
+        </AntdTree>
       </div>
     )
   }
 }
 
-TreeSelect.defaultProps = {
+Tree.defaultProps = {
   option: {
     labelKey: 'label',
     valueKey: 'value',
@@ -164,4 +187,4 @@ TreeSelect.defaultProps = {
   checkable: false
 }
 
-export default TreeSelect
+export default Tree

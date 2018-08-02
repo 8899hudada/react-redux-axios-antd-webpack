@@ -18,56 +18,64 @@ const TaskManage = wrapperComponent(() => import('@/containers/TaskManage'))
 
 // 系统设置
 const TrustorManage = wrapperComponent(() => import('@/containers/system-setting/TrustorManage'))
-const PasswordSetting = wrapperComponent(() => import('@/containers/system-setting/PasswordSetting'))
 const UserManage = wrapperComponent(() => import('@/containers/system-setting/UserManage'))
 const DepartmentManage = wrapperComponent(() => import('@/containers/system-setting/DepartmentManage'))
 
-const router = {
+const routerFactory = () => ({
   path: '/',
   children: [
     {
       path: '/my-case',
       title: '我的案件',
-      component: MyCase
+      code: '21000',
+      component: MyCase,
+      icon: 'laptop'
     },
     {
       path: '/case-manage',
       title: '案件管理',
-      component: CaseManage
+      code: '22000',
+      component: CaseManage,
+      icon: 'folder'
     },
     {
       path: '/task-manage',
       title: '任务管理',
-      component: TaskManage
+      code: '24000',
+      component: TaskManage,
+      icon: 'profile'
     },
     {
       path: '/system-setting',
       title: '系统设置',
+      code: '23000',
       component: RouteWrapper,
+      icon: 'tool',
       children: [
         {
           path: '/system-setting/trustor-manage',
           title: '委托方管理',
-          component: TrustorManage
-        },
-        {
-          path: '/system-setting/password-setting',
-          title: '密码设置',
-          component: PasswordSetting
+          code: '23500',
+          component: TrustorManage,
+          icon: 'idcard'
         },
         {
           path: '/system-setting/user-manage',
           title: '人员管理',
-          component: UserManage
+          code: '23200',
+          component: UserManage,
+          icon: 'usergroup-add'
         },
         {
           path: '/system-setting/department-manage',
           title: '部门管理',
-          component: DepartmentManage
+          code: '23300',
+          component: DepartmentManage,
+          icon: 'contacts'
         }
       ]
     }
   ]
-}
+})
 
-export default router
+export default routerFactory

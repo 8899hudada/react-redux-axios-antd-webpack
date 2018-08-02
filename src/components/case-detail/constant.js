@@ -10,6 +10,19 @@ const fileProperties = {
   MEDIATION_AGREEMENT: 9 // 调解书/结案文书
 }
 
+const FILE_PROPERTIES = [
+  { label: '受理通知书', value: 1 },
+  { label: '一审传票', value: 2 },
+  { label: '公告', value: 3 },
+  { label: '一审判决书', value: 4 },
+  { label: '二审传票', value: 5 },
+  { label: '二审判决书', value: 6 },
+  { label: '执行案件受理通知书', value: 7 },
+  { label: '终本裁定书', value: 8 },
+  { label: '调解书/结案文书', value: 9 }
+]
+
 export {
-  fileProperties
+  fileProperties,
+  FILE_PROPERTIES
 }

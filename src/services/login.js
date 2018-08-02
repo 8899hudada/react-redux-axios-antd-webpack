@@ -12,7 +12,7 @@ const login = settings => {
 const logout = settings => {
   return axios({
     url: API_URL.admin.LOGOUT,
-    method: 'GET',
+    method: 'POST',
     ...settings
   })
 }

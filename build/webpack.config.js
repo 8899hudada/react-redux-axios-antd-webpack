@@ -33,7 +33,7 @@ const plugins = [
     manifest: path.resolve(ROOT_PATH, `dist/dll/${NODE_ENV}/redux-manifest.json`)
   }),
 	new HtmlWebpackPlugin({
-		favicon: path.resolve(SRC_PATH, 'favicon.ico'),
+		favicon: path.resolve(SRC_PATH, 'favicon.png'),
     template: path.resolve(SRC_PATH, 'index.html'),
     chunks: ['index'],
     vendorBundleName: `${NODE_ENV}/${bundleConfig.vendor.js}`, // 把带hash的dll js插入到html中
@@ -107,14 +107,15 @@ let commonConfig = {
 			'@styles': path.resolve(SRC_PATH, 'styles'),
 			'@imgs': path.resolve(SRC_PATH, 'imgs'),
       		'@redux': path.resolve(SRC_PATH, 'redux'),
-      		'@config': path.resolve(SRC_PATH, 'config')
+      		'@config': path.resolve(SRC_PATH, 'config'),
+      		'@decorator': path.resolve(SRC_PATH, 'decorator')
 		}
 	}
 }
 
 // 如果沒有dev-api-root.js，则新建该文件
 if (!devApiRootFileExist) {
-	const devApiRootContent = `const DEV_API_ROOT = 'http://127.0.0.1:8080'\n\nexport default DEV_API_ROOT`
+	const devApiRootContent = `const DEV_API_ROOT = 'http://127.0.0.1:8080'\n\nmodule.exports = DEV_API_ROOT`
 	fs.writeFileSync(DEV_API_ROOT_PATH, devApiRootContent, {encoding:'utf-8'})
 }
 

@@ -4,14 +4,18 @@ import { PageHeader, DraggerUpload } from '@components/common'
 import { Card, Form, Button, Select } from 'antd'
 import styles from './style'
 import { trustorService, commonService } from '@services'
+import { API_ROOT } from '@constants'
 
 const FormItem = Form.Item
 const Option = Select.Option
+const TEMPLATE_URL = `${API_ROOT[process.env.ENV]}/template/case/律师案件导入模板.xlsx`
 
+@Form.create()
 class CaseImport extends React.PureComponent {
   static propTypes = {
-    form: PropTypes.object.isRequired,
-    onBack: PropTypes.func
+    form: PropTypes.object,
+    onBack: PropTypes.func,
+    isInMyCase: PropTypes.bool
   }
   constructor (props) {
     super(props)
@@ -32,15 +36,17 @@ class CaseImport extends React.PureComponent {
     })
   }
   handleSubmit () {
-    this.props.form.validateFields((err, values) => {
+    const { form, isInMyCase } = this.props
+    form.validateFields((err, values) => {
       if (!err) {
         const data = {
-          filePath: values.fileList[0].response.filePath,
+          filePath: values.fileList[0].response.data.filePath,
           trustorId: values.trustorId
         }
+        if (isInMyCase) data.myCaseFlag = true
         this.setState({ loading: true })
         commonService.caseImport(data).then(() => {
-          this.props.onBack()
+          window.$history.push('/task-manage')
         }).finally(() => this.setState({ loading: false }))
       }
     })
@@ -73,7 +79,7 @@ class CaseImport extends React.PureComponent {
               }
             </FormItem>
             <FormItem
-              label={<span>案件上传（目前支持的文件类型为*.xls，*.xlsx）<a href="javascript:;">查看模板文件</a></span>}>
+              label={<span>案件上传（目前支持的文件类型为*.xls，*.xlsx）<a href={TEMPLATE_URL} target="_blank">查看模板文件</a></span>}>
               {
                 getFieldDecorator('fileList', {
                   valuePropName: 'fileList',
@@ -99,9 +105,8 @@ class CaseImport extends React.PureComponent {
 }
 
 CaseImport.defaultProps = {
-  onBack: () => {}
+  onBack: () => {},
+  isInMyCase: false
 }
 
-const WrappedCaseImport = Form.create()(CaseImport)
-
-export default WrappedCaseImport
+export default CaseImport

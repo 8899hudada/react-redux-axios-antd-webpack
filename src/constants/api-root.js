@@ -1,10 +1,8 @@
-import DEV_API_ROOT from '@root/config/dev-api-root'
-
 const API_ROOT = {
-  dev: DEV_API_ROOT,
-  mock: DEV_API_ROOT,
-  test: 'http//127.0.0.1:8080',
-  prod: 'http//127.0.0.1:8080'
+  dev: `${location.origin}/proxy`, // dev开发环境由webpack-dev-server进行后台转发，避免跨域问题
+  mock: 'http://127.0.0.1:8080',
+  test: 'http://lawyer-api.remarkfin.com',
+  prod: 'http://172.16.10.103:8085'
 }
 
 export default API_ROOT

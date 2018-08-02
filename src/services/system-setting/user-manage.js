@@ -7,7 +7,10 @@ const {
   UPDATE_USER,
   DELETE_USER,
   UPDATE_USER_STATUS,
-  UPDATE_USER_PASSWORD
+  UPDATE_USER_PASSWORD,
+  FETCH_PERMISSION_TREE,
+  UPDATE_USER_PERMISSION,
+  FETCH_ALL_LAWYERS
 } = API_URL.systemSetting.userManage
 
 /**
@@ -22,10 +25,17 @@ const {
  * @return {Promise} Promise
  */
 const fetchUsers = (data = {}) => {
+  if (data.deptId === -1) {
+    data.deptId = ''
+  }
+  
+  if (data.roleId === -1) {
+    data.roleId = ''
+  }
+
   return axios({
     url: FETCH_USERS,
     method: 'POST',
-    showLoading: true,
     data
   })
 }
@@ -103,7 +113,7 @@ const updateUserStatus = (id, status) => {
     showLoading: true,
     showMessage: true,
     loadingMsg: `正在${status ? '禁用' : '停用'}...`,
-    data: {
+    params: {
       id,
       status
     }
@@ -113,20 +123,62 @@ const updateUserStatus = (id, status) => {
 /**
  * 更新人员密码
  * @param  {Number} userId 人员ID
- * @param  {String} password 人员密码
+ * @param  {String} passwd 人员密码
  * @return {Promise} Promise
  */
-const updateUserPassword = (userId, password) => {
+const updateUserPassword = (userId, passwd) => {
   return axios({
     url: UPDATE_USER_PASSWORD,
     method: 'PUT',
     showLoading: true,
     showMessage: true,
-    loadingMsg: `正在重置密码...`,
+    loadingMsg: '正在重置密码...',
+    successMsg: '密码重置成功',
     data: {
       userId,
-      password
+      passwd
     }
+  })
+}
+
+/**
+ * 获取权限树
+ * @return {Promise} Promise
+ */
+const fetchPermissionTree = () => {
+  return axios({
+    url: FETCH_PERMISSION_TREE,
+    method: 'GET'
+  })
+}
+
+/**
+ * 更新人员权限
+ * @param  {Object} data 更新人员权限参数
+ * @param  {Number} data.userId 人员ID
+ * @param  {Object} data.roleId 人员角色ID
+ * @param  {Boolean} data.havePerm 默认下次添加该角色的权限
+ * @param  {Array} data.perms 所选权限
+ * @return {Promise} Promise
+ */
+const updateUserPermission = (data = {}) => {
+  return axios({
+    url: UPDATE_USER_PERMISSION,
+    method: 'PUT',
+    data,
+    showLoading: true,
+    showMessage: true
+  })
+}
+
+/**
+ * 获取所有律师
+ * @return {Promise} Promise
+ */
+const fetchAllLawyers = () => {
+  return axios({
+    url: FETCH_ALL_LAWYERS,
+    method: 'GET'
   })
 }
 
@@ -136,5 +188,8 @@ export {
   updateUser,
   deleteUser,
   updateUserStatus,
-  updateUserPassword
+  updateUserPassword,
+  fetchPermissionTree,
+  updateUserPermission,
+  fetchAllLawyers
 }
