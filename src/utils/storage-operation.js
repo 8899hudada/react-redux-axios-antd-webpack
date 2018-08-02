@@ -15,8 +15,8 @@ const setLocalStorage = setStorage(localStorage)
 const getLocalStorage = getStorage(localStorage)
 const clearLocalStorage = clearStorage(localStorage)
 
-const getSessionStorage = getStorage(sessionStorage)
 const setSessionStorage = setStorage(sessionStorage)
+const getSessionStorage = getStorage(sessionStorage)
 const clearSessionStorage = clearStorage(localStorage)
 
 export {

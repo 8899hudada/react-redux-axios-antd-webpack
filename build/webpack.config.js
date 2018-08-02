@@ -60,7 +60,7 @@ let commonConfig = {
 	},
 	output: {
 		path: path.resolve(ROOT_PATH, 'dist'),
-    chunkFilename: '[name].[chunkHash].bundle.js',
+    	chunkFilename: '[name].[chunkHash].bundle.js',
 		publicPath: '/'
 	},
 	module: {
@@ -71,31 +71,31 @@ let commonConfig = {
 				exclude: /node_modules/,
 				use: 'happypack/loader?id=jsx?.eslint'
 			},
-      {
+      		{
 				test: /\.jsx?$/,
 				exclude: /node_modules/,
 				use: 'happypack/loader?id=jsx?'
-      },
+     		},
 			{
 				test: /\.(png|jpe?g|gif|ico)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 8192, // 将小于8192byte的图片转换成base64编码
-          name: '[name].[ext]?[hash]'
-        }
+			    loader: 'url-loader',
+			    options: {
+			      limit: 8192, // 将小于8192byte的图片转换成base64编码
+			      name: '[name].[ext]?[hash]'
+			    }
 			},
 			{
 				test: /\.(woff|svg|eot|ttf)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 8192, // 将小于8192byte的字体转换成base64编码
-        }
+		        loader: 'url-loader',
+		        options: {
+		          limit: 8192, // 将小于8192byte的字体转换成base64编码
+		        }
 			}
 		]
 	},
 	plugins,
 	resolve: {
-    extensions: ['.js', '.jsx', '.less', '.css', '.json'],
+    	extensions: ['.js', '.jsx', '.less', '.css', '.json'],
 		alias: {
 			'@': SRC_PATH,
 			'@root': ROOT_PATH,
@@ -106,8 +106,8 @@ let commonConfig = {
 			'@utils': path.resolve(SRC_PATH, 'utils'),
 			'@styles': path.resolve(SRC_PATH, 'styles'),
 			'@imgs': path.resolve(SRC_PATH, 'imgs'),
-      '@redux': path.resolve(SRC_PATH, 'redux'),
-      '@config': path.resolve(SRC_PATH, 'config')
+      		'@redux': path.resolve(SRC_PATH, 'redux'),
+      		'@config': path.resolve(SRC_PATH, 'config')
 		}
 	}
 }
