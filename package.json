@@ -13,10 +13,6 @@
     "dll:dev": "cross-env NODE_ENV=development webpack --mode development --progress --config build/webpack.dll.config.js",
     "dll:prod": "cross-env NODE_ENV=production webpack --mode production --progress --config build/webpack.dll.config.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lorin19881101/react-redux-axios-antd-webpack.git"
-  },
   "keywords": [
     "react",
     "redux",
@@ -26,10 +22,6 @@
   ],
   "author": "Lorin",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/lorin19881101/react-redux-axios-antd-webpack/issues"
-  },
-  "homepage": "https://github.com/lorin19881101/react-redux-axios-antd-webpack#readme",
   "dependencies": {
     "antd": "^3.6.2",
     "axios": "^0.18.0",
